@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "module": "commonjs",
+    "lib": ["ES2020", "DOM"],
+    "allowJs": false,
+    "noEmit": true,
+    "isolatedModules": false,
+    "strict": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitThis": false,
+    "sourceMap": true,
+    "noImplicitAny": false
+  }
+}
