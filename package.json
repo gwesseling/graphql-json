@@ -1,0 +1,16 @@
+{
+  "name": "graphql-json",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "peerDependencies": {
+    "graphql": "^15.2.0 || ^16.0.0"
+  },
+  "dependencies": {
+    "graphql": "16.6.0"
+  },
+  "devDependencies": {
+    "ts-node": "10.9.1",
+    "typescript": "5.0.4"
+  }
+}
