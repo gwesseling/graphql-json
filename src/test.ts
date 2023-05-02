@@ -1,7 +1,12 @@
+// Remove apollo server
+import { ApolloServer } from "@apollo/server";
+import { startStandaloneServer } from '@apollo/server/standalone'
+
 import createSchema from "./index";
 import { GraphqlFieldType, GraphqlType } from "./types/enums";
 
-const schema = {
+// TODO: create a decent example
+const schemaInput = {
     enum: {
         description: "This is an enum type with the name enum",
         type: GraphqlType.Enum,
@@ -33,6 +38,7 @@ const schema = {
         type: GraphqlType.Object,
         fields: {
             get: {
+                description: "get field",
                 type: "object",
                 args: {
                     id: {
@@ -44,5 +50,18 @@ const schema = {
     },
 }
 
-const schemaInput = createSchema(schema);
-console.log(schemaInput);
+const schema = createSchema(schemaInput);
+
+const server = new ApolloServer({
+    schema: schema,
+});
+
+async function startServer() {
+    const { url } = await startStandaloneServer(server, {
+        listen: { port: 4000 },
+    });
+
+    console.log(url);
+}
+
+startServer();

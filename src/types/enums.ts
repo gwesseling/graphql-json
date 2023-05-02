@@ -3,6 +3,7 @@ export enum GraphqlType {
     Object = "GraphQLObjectType",
 };
 
+// Rename this since we also use this enum for args
 export enum GraphqlFieldType {
     Scalar = "GraphQLScalarType",
     Interface = "GraphQLInterfaceType",
