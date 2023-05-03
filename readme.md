@@ -5,35 +5,40 @@
 ## Schema
 
 ### Base type
+
 All other top object types extend this type and posses the properties down below.
-| Property          | Description | Type        | Required |
+| Property | Description | Type | Required |
 |-------------------|-------------|-------------|----------|
-| description       |             | String      | No       |
-| type              |             | GraphqlType | Yes      |
-| extensions        |             |             | No       |
-| astNode           |             |             | No       |
-| extensionASTNodes |             |             | No       |
+| description | | String | No |
+| type | | GraphqlType | Yes |
+| extensions | | | No |
+| astNode | | | No |
+| extensionASTNodes | | | No |
 
 ### Enum type
-| Property | Description                                         | Type        | Required |
-|----------|-----------------------------------------------------|-------------|----------|
-| values   | An object map with enum values (same as in GraphQL) | Object      | Yes      |
+
+| Property | Description                                         | Type   | Required |
+| -------- | --------------------------------------------------- | ------ | -------- |
+| values   | An object map with enum values (same as in GraphQL) | Object | Yes      |
 
 ### Object type
-| Property   | Description                                    | Type        | Required |
-|------------|------------------------------------------------|------------ |----------|
-| interfaces |                                                |             | No       |
-| fields     | An object map with field                       | Field       | Yes      |
-| isTypeOf   |                                                |             | No       |
+
+| Property   | Description              | Type  | Required |
+| ---------- | ------------------------ | ----- | -------- |
+| interfaces |                          |       | No       |
+| fields     | An object map with field | Field | Yes      |
+| isTypeOf   |                          |       | No       |
 
 #### Field type
-| Property   | Description                                    | Type             | Required          |
-|------------|------------------------------------------------|------------------|-------------------|
-| type       |                                                | GraphqlFieldType | Yes               |
-| item       |                                                | Object           | When type is List |
-| required   |                                                | Boolean          | No (default false)|
+
+| Property | Description | Type             | Required           |
+| -------- | ----------- | ---------------- | ------------------ |
+| type     |             | GraphqlFieldType | Yes                |
+| item     |             | Object           | When type is List  |
+| required |             | Boolean          | No (default false) |
 
 ## Example
+
 ```javascript
 {
     enum: {

@@ -1,9 +1,9 @@
 // Remove apollo server
-import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from '@apollo/server/standalone'
+import {ApolloServer} from "@apollo/server";
+import {startStandaloneServer} from "@apollo/server/standalone";
 
 import createSchema from "./index";
-import { GraphqlFieldType, GraphqlType } from "./types/enums";
+import {GraphqlFieldType, GraphqlType} from "./types/enums";
 
 // TODO: create a decent example
 const schemaInput = {
@@ -13,7 +13,7 @@ const schemaInput = {
         values: {
             value: {value: 1},
             value2: {value: "2"},
-            value3: {value: true}
+            value3: {value: true},
         },
     },
     object: {
@@ -32,7 +32,7 @@ const schemaInput = {
                 type: GraphqlFieldType.Float,
                 required: true,
             },
-        }
+        },
     },
     query: {
         type: GraphqlType.Object,
@@ -43,12 +43,12 @@ const schemaInput = {
                 args: {
                     id: {
                         type: GraphqlFieldType.String,
-                    }
-                }
-            }
-        }
+                    },
+                },
+            },
+        },
     },
-}
+};
 
 const schema = createSchema(schemaInput);
 
@@ -56,9 +56,12 @@ const server = new ApolloServer({
     schema: schema,
 });
 
+/**
+ * Start test server
+ */
 async function startServer() {
-    const { url } = await startStandaloneServer(server, {
-        listen: { port: 4000 },
+    const {url} = await startStandaloneServer(server, {
+        listen: {port: 4000},
     });
 
     console.log(url);

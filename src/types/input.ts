@@ -1,4 +1,4 @@
-import { 
+import {
     GraphQLEnumTypeExtensions,
     EnumTypeDefinitionNode,
     EnumTypeExtensionNode,
@@ -9,18 +9,18 @@ import {
     GraphQLInterfaceType,
     GraphQLEnumValueConfigMap,
     GraphQLIsTypeOfFn,
-    GraphQLFieldResolver
+    GraphQLFieldResolver,
 } from "graphql";
-import { GraphqlFieldType, GraphqlType } from "./enums";
+import {GraphqlFieldType, GraphqlType} from "./enums";
 import type {Maybe, ObjMap} from "./utils";
 
-interface GraphqlConfig<E,D> {
+interface GraphqlConfig<E, D> {
     description?: Maybe<string>;
     extensions?: Maybe<Readonly<E>>;
     astNode?: Maybe<D>;
 }
 
-interface GraphqlBaseConfig<E, D, N> extends GraphqlConfig<E,D> {
+interface GraphqlBaseConfig<E, D, N> extends GraphqlConfig<E, D> {
     // Another option would be to check if a input value has a "field" or "values" property (based on it we can assume if it is an enum or a object)
     type: GraphqlType;
     extensionASTNodes?: Maybe<ReadonlyArray<N>>;
@@ -33,15 +33,21 @@ export interface SubObjectConfig<TSource, TContext> extends GraphqlConfig<TSourc
     required?: boolean;
 }
 
-export interface GraphqlEnumConfig extends GraphqlBaseConfig<GraphQLEnumTypeExtensions, EnumTypeDefinitionNode, EnumTypeExtensionNode> {
+export interface GraphqlEnumConfig
+    extends GraphqlBaseConfig<GraphQLEnumTypeExtensions, EnumTypeDefinitionNode, EnumTypeExtensionNode> {
     values: GraphQLEnumValueConfigMap;
-};
+}
 
-export interface GraphqlObjectConfig<TSource, TContext> extends GraphqlBaseConfig<GraphQLObjectTypeExtensions<TSource, TContext>, ObjectTypeDefinitionNode, ObjectTypeExtensionNode> {
+export interface GraphqlObjectConfig<TSource, TContext>
+    extends GraphqlBaseConfig<
+        GraphQLObjectTypeExtensions<TSource, TContext>,
+        ObjectTypeDefinitionNode,
+        ObjectTypeExtensionNode
+    > {
     interfaces?: ThunkReadonlyArray<GraphQLInterfaceType>;
     fields: ObjMap<GraphqlFieldConfig<TSource, TContext>>;
     isTypeOf?: Maybe<GraphQLIsTypeOfFn<TSource, TContext>>;
-};
+}
 
 export interface GraphqlFieldConfig<TSource, TContext, TArgs = any> extends SubObjectConfig<TSource, TContext> {
     args?: ObjMap<GraphqlArgsConfig<TSource, TContext>>;

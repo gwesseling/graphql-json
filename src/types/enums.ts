@@ -1,7 +1,7 @@
 export enum GraphqlType {
     Enum = "GraphQLEnumType",
     Object = "GraphQLObjectType",
-};
+}
 
 // Rename this since we also use this enum for args
 export enum GraphqlFieldType {
@@ -12,6 +12,6 @@ export enum GraphqlFieldType {
     String = "GraphQLString",
     Boolean = "GraphQLBoolean",
     ID = "GraphQLID",
-    Float= "GraphQLFloat",
+    Float = "GraphQLFloat",
     List = "GraphQLList",
 }
