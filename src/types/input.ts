@@ -10,9 +10,32 @@ import {
     GraphQLEnumValueConfigMap,
     GraphQLIsTypeOfFn,
     GraphQLFieldResolver,
+    GraphQLObjectType,
+    GraphQLEnumType,
+    GraphQLList,
+    GraphQLScalarType,
+    GraphQLUnionType,
+    GraphQLInputObjectType,
 } from "graphql";
-import {GraphqlFieldType, GraphqlType} from "./enums";
 import type {Maybe, ObjMap} from "./utils";
+
+export type GraphqlOutputType =
+    | typeof GraphQLEnumType
+    | typeof GraphQLObjectType
+    | typeof GraphQLScalarType
+    | typeof GraphQLUnionType
+    | typeof GraphQLInputObjectType
+    | typeof GraphQLInterfaceType;
+
+export type GraphqlSubOutputType =
+    | typeof GraphQLList
+    | GraphQLEnumType
+    | GraphQLUnionType
+    | GraphQLInputObjectType
+    | GraphQLInterfaceType
+    | GraphQLScalarType<unknown, unknown>
+    | GraphQLObjectType<unknown, unknown>
+    | string;
 
 interface GraphqlConfig<E, D> {
     description?: Maybe<string>;
@@ -21,14 +44,12 @@ interface GraphqlConfig<E, D> {
 }
 
 interface GraphqlBaseConfig<E, D, N> extends GraphqlConfig<E, D> {
-    // Another option would be to check if a input value has a "field" or "values" property (based on it we can assume if it is an enum or a object)
-    type: GraphqlType;
+    type: GraphqlOutputType;
     extensionASTNodes?: Maybe<ReadonlyArray<N>>;
 }
 
 export interface SubObjectConfig<TSource, TContext> extends GraphqlConfig<TSource, TContext> {
-    // We might want to remove this, since people can create their own Scalars types
-    type: GraphqlFieldType | string;
+    type: GraphqlSubOutputType | typeof GraphQLList;
     item?: GraphqlItemConfig;
     required?: boolean;
 }
@@ -49,7 +70,7 @@ export interface GraphqlObjectConfig<TSource, TContext>
     isTypeOf?: Maybe<GraphQLIsTypeOfFn<TSource, TContext>>;
 }
 
-export interface GraphqlFieldConfig<TSource, TContext, TArgs = any> extends SubObjectConfig<TSource, TContext> {
+export interface GraphqlFieldConfig<TSource, TContext, TArgs = unknown> extends SubObjectConfig<TSource, TContext> {
     args?: ObjMap<GraphqlArgsConfig<TSource, TContext>>;
     resolve?: GraphQLFieldResolver<TSource, TContext, TArgs>;
     subscribe?: GraphQLFieldResolver<TSource, TContext, TArgs>;
@@ -62,6 +83,6 @@ export interface GraphqlArgsConfig<TSource, TContext> extends SubObjectConfig<TS
 }
 
 export interface GraphqlItemConfig {
-    type: GraphqlFieldType | string;
+    type: GraphqlSubOutputType;
     required?: boolean;
 }

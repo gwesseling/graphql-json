@@ -1,48 +1,102 @@
 // Remove apollo server
 import {ApolloServer} from "@apollo/server";
 import {startStandaloneServer} from "@apollo/server/standalone";
+import {GraphQLEnumType, GraphQLFloat, GraphQLID, GraphQLList, GraphQLObjectType, GraphQLString} from "graphql";
 
 import createSchema from "./index";
-import {GraphqlFieldType, GraphqlType} from "./types/enums";
 
-// TODO: create a decent example
+// TODO: might want to force type on query / mutations
 const schemaInput = {
-    enum: {
-        description: "This is an enum type with the name enum",
-        type: GraphqlType.Enum,
+    brand: {
+        description: "This is the brand of the car",
+        type: GraphQLEnumType,
         values: {
-            value: {value: 1},
-            value2: {value: "2"},
-            value3: {value: true},
+            tesla: {description: "Tesla", value: "Tesla"},
+            nio: {description: "NIO", value: "NIO"},
+            lightyear: {description: "Lightyear", value: "Lightyear"},
+            polestar: {description: "Polestar", value: "Polestar"},
         },
     },
-    object: {
-        description: "This is an object type with the name object",
-        type: GraphqlType.Object,
+    car: {
+        description: "This is the car itself",
+        type: GraphQLObjectType,
         fields: {
-            field: {
-                type: GraphqlFieldType.List,
+            id: {
+                type: GraphQLID,
+                required: true,
+            },
+            description: {
+                type: GraphQLString,
+            },
+            brand: {
+                type: "brand",
+                required: true,
+            },
+            price: {
+                type: GraphQLFloat,
+                required: true,
+            },
+            tags: {
+                type: GraphQLList,
                 item: {
-                    type: "enum",
+                    type: GraphQLString,
                     required: true,
                 },
-                required: false,
-            },
-            field1: {
-                type: GraphqlFieldType.Float,
                 required: true,
             },
         },
     },
     query: {
-        type: GraphqlType.Object,
+        description: "GraphQL car queries",
+        type: GraphQLObjectType,
         fields: {
-            get: {
-                description: "get field",
-                type: "object",
+            getCars: {
+                description: "Get all cars",
+                type: GraphQLList,
+                item: {
+                    type: "car",
+                    required: true,
+                },
+                required: true,
+            },
+            getCar: {
+                description: "Get a car",
+                type: "car",
                 args: {
                     id: {
-                        type: GraphqlFieldType.String,
+                        type: GraphQLID,
+                        required: true,
+                    },
+                },
+            },
+        },
+    },
+    mutation: {
+        description: "GraphQL car mutations",
+        type: GraphQLObjectType,
+        fields: {
+            createCar: {
+                description: "Create a car",
+                type: "car",
+                args: {
+                    description: {
+                        type: GraphQLString,
+                    },
+                    brand: {
+                        type: "brand",
+                        required: true,
+                    },
+                    price: {
+                        type: GraphQLFloat,
+                        required: true,
+                    },
+                    tags: {
+                        type: GraphQLList,
+                        item: {
+                            type: GraphQLString,
+                            required: true,
+                        },
+                        required: true,
                     },
                 },
             },
