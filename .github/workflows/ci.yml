@@ -2,7 +2,7 @@ name: CI
 on: [push]
 jobs:
     lint:
-        name: Runs Linting
+        name: Linting
         runs-on: ubuntu-latest
         steps:
           - name: Checkout repository
@@ -19,7 +19,7 @@ jobs:
           - name: Run eslint
             run: yarn lint
   
-          - name: Run eslint
+          - name: Run Prettier
             run: yarn prettier --check
 
           - name: Run TypeScript
