@@ -1,12 +1,46 @@
 // Remove apollo server
 import {ApolloServer} from "@apollo/server";
 import {startStandaloneServer} from "@apollo/server/standalone";
-import {GraphQLEnumType, GraphQLFloat, GraphQLID, GraphQLList, GraphQLObjectType, GraphQLString} from "graphql";
+import {
+    GraphQLEnumType,
+    GraphQLFloat,
+    GraphQLID,
+    // GraphQLInputObjectType,
+    GraphQLList,
+    GraphQLObjectType,
+    GraphQLString,
+} from "graphql";
 
 import createSchema from "./index";
 
 // TODO: might want to force type on query / mutations
 const schemaInput = {
+    // carInput: {
+    //     description: "This is the input for the create car mutation",
+    //     type: GraphQLInputObjectType,
+    //     fields: {
+    //         description: {
+    //             type: GraphQLString,
+    //         },
+    //         brand: {
+    //             type: "brand",
+    //             required: true,
+    //         },
+    //         price: {
+    //             type: GraphQLFloat,
+    //             required: true,
+    //             defaultValue: 0,
+    //         },
+    //         tags: {
+    //             type: GraphQLList,
+    //             item: {
+    //                 type: GraphQLString,
+    //                 required: true,
+    //             },
+    //             required: true,
+    //         },
+    //     },
+    // },
     brand: {
         description: "This is the brand of the car",
         type: GraphQLEnumType,
@@ -47,7 +81,7 @@ const schemaInput = {
         },
     },
     query: {
-        description: "GraphQL car queries",
+        description: "Queries",
         type: GraphQLObjectType,
         fields: {
             getCars: {
@@ -72,31 +106,15 @@ const schemaInput = {
         },
     },
     mutation: {
-        description: "GraphQL car mutations",
+        description: "Mutations",
         type: GraphQLObjectType,
         fields: {
             createCar: {
                 description: "Create a car",
                 type: "car",
                 args: {
-                    description: {
+                    car: {
                         type: GraphQLString,
-                    },
-                    brand: {
-                        type: "brand",
-                        required: true,
-                    },
-                    price: {
-                        type: GraphQLFloat,
-                        required: true,
-                    },
-                    tags: {
-                        type: GraphQLList,
-                        item: {
-                            type: GraphQLString,
-                            required: true,
-                        },
-                        required: true,
                     },
                 },
             },

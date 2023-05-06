@@ -1,31 +1,12 @@
-import {GraphQLEnumType, GraphQLList, GraphQLNonNull, GraphQLObjectType} from "graphql";
-import {
-    GraphqlEnumConfig,
-    GraphqlObjectConfig,
-    GraphqlFieldConfig,
-    SubObjectConfig,
-    GraphqlArgsConfig,
-    GraphqlSubOutputType,
-} from "../types/input";
+import {GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLOutputType} from "graphql";
+import {GraphqlArgumentConfig, GraphqlFieldConfig, GraphqlObjectConfig, GraphqlSubOutputType} from "../types/input";
 import {Context} from "../index";
 
-export const GRAPHQL_OBJECT_RESOLVER = {
-    ["GraphQLEnumType"]: createGraphQLEnumType,
-    ["GraphQLObjectType"]: createGraphqlObjectType,
-};
-
-// TODO: make a resolver folder and split all resolvers
-/**
- * Create a GraphQL Enum Type
- */
-function createGraphQLEnumType(_context: Context, name: string, config: GraphqlEnumConfig) {
-    return new GraphQLEnumType({name, ...config});
-}
-
+// TODO: improve this (especially the last two function, also try to make it sharable with GraphQLInputObjectType)
 /**
  * Create a GraphQL Object Type
  */
-function createGraphqlObjectType(
+export default function createGraphqlObjectType(
     context: Context,
     name: string,
     {fields, ...config}: GraphqlObjectConfig<unknown, unknown>,
@@ -68,7 +49,7 @@ function createGraphqlFieldType(
 function createGraphqlArgumentType(
     context: Context,
     parent: GraphQLObjectType<unknown, unknown>,
-    {type, required, item, ...arg}: GraphqlArgsConfig<unknown, unknown>,
+    {type, required, item, ...arg}: GraphqlArgumentConfig,
 ) {
     const argumentObjectType = createGraphqlType(context, parent, {type, required, item});
 
@@ -78,17 +59,13 @@ function createGraphqlArgumentType(
 /**
  * Get Graphql object type
  */
-function createGraphqlType(
-    context: Context,
-    parent: GraphQLObjectType<unknown, unknown>,
-    {type, required, item}: SubObjectConfig<unknown, unknown>,
-) {
-    let graphqlType: any = getGraphqltype(context, parent, type);
+function createGraphqlType(context: Context, parent: GraphQLObjectType<unknown, unknown>, {type, required, item}) {
+    let graphqlType = getGraphqltype(context, parent, type);
 
     if (typeof graphqlType === typeof GraphQLList) {
         if (!item) throw new Error("Items is required when type is List");
 
-        let itemsType: any = getGraphqltype(context, parent, item.type);
+        let itemsType = getGraphqltype(context, parent, item.type);
 
         if (item.required) itemsType = new GraphQLNonNull(itemsType);
 
@@ -117,5 +94,5 @@ function getGraphqltype(
     // Throw an error if we can't find the type based on the string
     if (typeof type === "string") throw new Error(`Could not find type with the name '${type}'`);
 
-    return type;
+    return type as GraphQLOutputType;
 }

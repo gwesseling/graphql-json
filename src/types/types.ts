@@ -1,4 +1,4 @@
-import type {
+import {
     EnumTypeDefinitionNode,
     EnumTypeExtensionNode,
     FieldDefinitionNode,
@@ -6,6 +6,7 @@ import type {
     GraphQLEnumType,
     GraphQLEnumTypeExtensions,
     GraphQLEnumValueConfigMap,
+    GraphQLFieldConfig,
     GraphQLFieldExtensions,
     GraphQLFieldResolver,
     GraphQLInputFieldConfig,
@@ -24,7 +25,7 @@ import type {
     ObjectTypeDefinitionNode,
     ObjectTypeExtensionNode,
 } from "graphql";
-import type {Maybe, ObjMap} from "./utils";
+import {Maybe, ObjMap} from "./utils";
 
 export type GraphqlOutputType =
     | typeof GraphQLEnumType
@@ -34,7 +35,6 @@ export type GraphqlOutputType =
     | typeof GraphQLInputObjectType
     | typeof GraphQLInterfaceType;
 
-// TODO: recheck this type
 export type GraphqlSubOutputType =
     | typeof GraphQLList
     | GraphQLEnumType
@@ -59,15 +59,8 @@ interface GraphqlPrimitiveTypeConfig<Extensions, AstNode, ExtensionASTNodes>
     extensionASTNodes?: Maybe<ReadonlyArray<ExtensionASTNodes>>;
 }
 
-// Graphql Composite (sub) type config
-interface GraphqlCompositeTypeConfig<Extensions, AstNode> extends GraphqlBaseTypeConfig<Extensions, AstNode> {
-    type: GraphqlSubOutputType | typeof GraphQLList;
-    item?: GraphqlItemConfig<GraphqlSubOutputType>;
-    required?: boolean;
-}
-
 // GraphQLEnumType
-export interface GraphqlEnumConfig
+export interface GraphqlEnumTypeConfig
     extends GraphqlPrimitiveTypeConfig<GraphQLEnumTypeExtensions, EnumTypeDefinitionNode, EnumTypeExtensionNode> {
     values: GraphQLEnumValueConfigMap;
 }
@@ -81,15 +74,18 @@ export interface GraphqlObjectConfig<TSource, TContext>
     > {
     // TODO: exchange types
     interfaces?: ReadonlyArray<GraphQLInterfaceType>;
-    fields: ObjMap<GraphqlFieldConfig<TSource, TContext>>;
+    fields: ObjMap<GraphQLFieldConfig<TSource, TContext>>;
     isTypeOf?: Maybe<GraphQLIsTypeOfFn<TSource, TContext>>;
 }
 
 // GraphQLObjectFieldType
 export interface GraphqlFieldConfig<TSource, TContext, TArgs = unknown>
-    extends GraphqlCompositeTypeConfig<GraphQLFieldExtensions<TSource, TContext, TArgs>, FieldDefinitionNode> {
+    extends GraphqlBaseTypeConfig<GraphQLFieldExtensions<TSource, TContext, TArgs>, FieldDefinitionNode> {
     // TODO: check typing (GraphQLOutputType)
-    args?: ObjMap<GraphqlArgumentConfig>;
+    type: GraphqlSubOutputType | typeof GraphQLList;
+    item?: GraphqlItemConfig<GraphqlSubOutputType>;
+    required?: boolean;
+    args: ObjMap<GraphqlArgumentConfig>;
     resolve?: GraphQLFieldResolver<TSource, TContext, TArgs>;
     subscribe?: GraphQLFieldResolver<TSource, TContext, TArgs>;
     deprecationReason?: Maybe<string>;
@@ -97,8 +93,11 @@ export interface GraphqlFieldConfig<TSource, TContext, TArgs = unknown>
 
 // GraphQLObjectFieldArgumentsType
 export interface GraphqlArgumentConfig
-    extends GraphqlCompositeTypeConfig<GraphQLArgumentExtensions, InputValueDefinitionNode> {
+    extends GraphqlBaseTypeConfig<GraphQLArgumentExtensions, InputValueDefinitionNode> {
     // TODO: check typing (GraphQLInputType)
+    type: GraphqlSubOutputType | typeof GraphQLList;
+    item?: GraphqlItemConfig<GraphqlSubOutputType>;
+    required?: boolean;
     defaultValue?: unknown;
     deprecationReason?: Maybe<string>;
 }

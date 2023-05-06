@@ -1,13 +1,14 @@
 import {GraphQLEnumType, GraphQLObjectType, GraphQLSchema} from "graphql";
-import {GRAPHQL_OBJECT_RESOLVER} from "./libs/resolvers";
-// import {GRAPHQL_OBJECT_RESOLVERS} from "./libs/resolvers";
+import {GRAPHQL_OBJECT_RESOLVER} from "./resolvers";
 import type {GraphqlEnumConfig, GraphqlObjectConfig} from "./types/input";
 
+// TODO: move these types
 type InputConfigType = GraphqlObjectConfig<unknown, unknown> | GraphqlEnumConfig;
 type InputConfig = {[name: string]: InputConfigType};
 
 export type Context = {[name: string]: GraphQLEnumType | GraphQLObjectType<unknown, unknown>};
 
+// TODO: move this function outside the index
 /**
  * Create a schema from a JSON or a JavaScript object
  */
