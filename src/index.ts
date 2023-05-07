@@ -1,12 +1,6 @@
-import {GraphQLEnumType, GraphQLObjectType, GraphQLSchema} from "graphql";
+import {GraphQLObjectType, GraphQLSchema} from "graphql";
 import resolvers from "./resolvers";
-import type {GraphqlEnumConfig, GraphqlObjectConfig} from "./types/input";
-
-// TODO: move these types
-type InputConfigType = GraphqlObjectConfig<unknown, unknown> | GraphqlEnumConfig;
-type InputConfig = {[name: string]: InputConfigType};
-
-export type Context = {[name: string]: GraphQLEnumType | GraphQLObjectType<unknown, unknown>};
+import {Context, InputConfig} from "./types";
 
 // TODO: move this function outside the index
 /**

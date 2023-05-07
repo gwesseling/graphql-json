@@ -6,15 +6,16 @@ import {
     GraphQLFloat,
     GraphQLID,
     GraphQLInputObjectType,
-    // GraphQLInputObjectType,
     GraphQLList,
     GraphQLObjectType,
     GraphQLString,
+    GraphQLUnionType,
 } from "graphql";
 
 import createSchema from "./index";
 
 // TODO: might want to force type on query / mutations
+// TODO: create a clean example
 const schemaInput = {
     brand: {
         description: "This is the brand of the car",
@@ -50,6 +51,32 @@ const schemaInput = {
                 required: true,
             },
         },
+    },
+    // TODO: make car interface, union type for types of car
+    electricCar: {
+        description: "Electric engine car",
+        type: GraphQLObjectType,
+        fields: {
+            charge: {
+                type: GraphQLFloat,
+                required: true,
+            },
+        },
+    },
+    combustionCar: {
+        description: "Combustion engine car",
+        type: GraphQLObjectType,
+        fields: {
+            fuel: {
+                type: GraphQLString,
+                required: true,
+            },
+        },
+    },
+    carTypes: {
+        description: "Any car",
+        type: GraphQLUnionType,
+        types: ["electricCar", "combustionCar"],
     },
     car: {
         description: "This is the car itself",
@@ -95,7 +122,7 @@ const schemaInput = {
             },
             getCar: {
                 description: "Get a car",
-                type: "car",
+                type: "carTypes",
                 args: {
                     id: {
                         type: GraphQLID,

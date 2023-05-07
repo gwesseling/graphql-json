@@ -17,12 +17,16 @@ import type {
     GraphQLObjectType,
     GraphQLObjectTypeExtensions,
     GraphQLScalarType,
+    GraphQLTypeResolver,
     GraphQLUnionType,
+    GraphQLUnionTypeExtensions,
     InputObjectTypeDefinitionNode,
     InputObjectTypeExtensionNode,
     InputValueDefinitionNode,
     ObjectTypeDefinitionNode,
     ObjectTypeExtensionNode,
+    UnionTypeDefinitionNode,
+    UnionTypeExtensionNode,
 } from "graphql";
 import type {Maybe, ObjMap} from "./utils";
 
@@ -42,7 +46,7 @@ export type GraphqlOutputType =
     | GraphQLEnumType
     | string;
 
-export type GraphQLInputType = GraphQLScalarType | GraphQLEnumType | GraphQLInputObjectType | string;
+export type GraphqlInputType = GraphQLScalarType | GraphQLEnumType | GraphQLInputObjectType | string;
 
 // Base GraphQL type config
 interface GraphqlBaseTypeConfig<Extensions, AstNode> {
@@ -60,6 +64,7 @@ interface GraphqlPrimitiveTypeConfig<Extensions, AstNode, ExtensionASTNodes>
 
 // Graphql Composite (sub) type config
 interface GraphqlCompositeTypeConfig<Type, Extensions, AstNode> extends GraphqlBaseTypeConfig<Extensions, AstNode> {
+    // Would be nice if we can do this in a better way (typeof GraphQLList)
     type: Type | typeof GraphQLList;
     item?: GraphqlItemConfig<Type>;
     required?: boolean;
@@ -104,8 +109,7 @@ export interface GraphqlFieldConfig<TSource, TContext, TArgs = unknown>
 
 // GraphQLObjectFieldArgumentsType
 export interface GraphqlArgumentConfig
-    extends GraphqlCompositeTypeConfig<GraphQLInputType, GraphQLArgumentExtensions, InputValueDefinitionNode> {
-    // TODO: check typing (GraphQLInputType)
+    extends GraphqlCompositeTypeConfig<GraphqlInputType, GraphQLArgumentExtensions, InputValueDefinitionNode> {
     defaultValue?: unknown;
     deprecationReason?: Maybe<string>;
 }
@@ -120,8 +124,16 @@ export interface GraphqlInputObjectConfig
     fields: ReadonlyArray<GraphqlInputFieldConfig>;
 }
 
+// GraphQLInputField
 export interface GraphqlInputFieldConfig
-    extends GraphqlCompositeTypeConfig<GraphQLInputType, GraphQLInputFieldExtensions, InputValueDefinitionNode> {
+    extends GraphqlCompositeTypeConfig<GraphqlInputType, GraphQLInputFieldExtensions, InputValueDefinitionNode> {
     defaultValue?: unknown;
     deprecationReason?: Maybe<string>;
+}
+
+// GraphQLUnionType
+export interface GraphqlUnionConfig<TSource, TContext>
+    extends GraphqlPrimitiveTypeConfig<GraphQLUnionTypeExtensions, UnionTypeDefinitionNode, UnionTypeExtensionNode> {
+    types: ReadonlyArray<GraphQLObjectType | string>;
+    resolveType?: Maybe<GraphQLTypeResolver<TSource, TContext>>;
 }

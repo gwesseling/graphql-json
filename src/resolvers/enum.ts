@@ -1,6 +1,6 @@
 import {GraphQLEnumType} from "graphql";
+import {Context} from "../types";
 import {GraphqlEnumConfig} from "../types/input";
-import {Context} from "../index";
 
 /**
  * Create a GraphQL Enum Type

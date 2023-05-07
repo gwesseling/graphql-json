@@ -1,5 +1,5 @@
-import {GraphQLInputType, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLOutputType} from "graphql";
-import {Context} from "../index";
+import {GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLType} from "graphql";
+import {Context} from "../types";
 import {GraphqlOutputType} from "../types/input";
 
 /**
@@ -10,12 +10,12 @@ export function composeGraphqlType(
     parent: GraphQLObjectType<unknown, unknown> | undefined,
     {type, required, item},
 ) {
-    let graphqlType: GraphQLOutputType | GraphQLInputType = getGraphqltype(context, parent, type);
+    let graphqlType: GraphQLType = getGraphqltype(context, parent, type);
 
-    if (typeof graphqlType === typeof GraphQLList) {
+    if (graphqlType.name === "GraphQLList") {
         if (!item) throw new Error("Items is required when type is List");
 
-        let itemsType: GraphQLOutputType | GraphQLInputType = getGraphqltype(context, parent, item.type);
+        let itemsType: GraphQLType = getGraphqltype(context, parent, item.type);
 
         if (item.required) itemsType = new GraphQLNonNull(itemsType);
 
