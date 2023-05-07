@@ -8,7 +8,7 @@ import type {
     GraphQLEnumValueConfigMap,
     GraphQLFieldExtensions,
     GraphQLFieldResolver,
-    GraphQLInputFieldConfig,
+    GraphQLInputFieldExtensions,
     GraphQLInputObjectType,
     GraphQLInputObjectTypeExtensions,
     GraphQLInterfaceType,
@@ -26,7 +26,7 @@ import type {
 } from "graphql";
 import type {Maybe, ObjMap} from "./utils";
 
-export type GraphqlOutputType =
+export type GraphqlType =
     | typeof GraphQLEnumType
     | typeof GraphQLObjectType
     | typeof GraphQLScalarType
@@ -34,16 +34,15 @@ export type GraphqlOutputType =
     | typeof GraphQLInputObjectType
     | typeof GraphQLInterfaceType;
 
-// TODO: recheck this type
-export type GraphqlSubOutputType =
-    | typeof GraphQLList
-    | GraphQLEnumType
-    | GraphQLUnionType
-    | GraphQLInputObjectType
+export type GraphqlOutputType =
+    | GraphQLScalarType
+    | GraphQLObjectType
     | GraphQLInterfaceType
-    | GraphQLScalarType<unknown, unknown>
-    | GraphQLObjectType<unknown, unknown>
+    | GraphQLUnionType
+    | GraphQLEnumType
     | string;
+
+export type GraphQLInputType = GraphQLScalarType | GraphQLEnumType | GraphQLInputObjectType | string;
 
 // Base GraphQL type config
 interface GraphqlBaseTypeConfig<Extensions, AstNode> {
@@ -55,14 +54,19 @@ interface GraphqlBaseTypeConfig<Extensions, AstNode> {
 // GraphQL primary type config
 interface GraphqlPrimitiveTypeConfig<Extensions, AstNode, ExtensionASTNodes>
     extends GraphqlBaseTypeConfig<Extensions, AstNode> {
-    type: GraphqlOutputType;
+    type: GraphqlType;
     extensionASTNodes?: Maybe<ReadonlyArray<ExtensionASTNodes>>;
 }
 
 // Graphql Composite (sub) type config
-interface GraphqlCompositeTypeConfig<Extensions, AstNode> extends GraphqlBaseTypeConfig<Extensions, AstNode> {
-    type: GraphqlSubOutputType | typeof GraphQLList;
-    item?: GraphqlItemConfig<GraphqlSubOutputType>;
+interface GraphqlCompositeTypeConfig<Type, Extensions, AstNode> extends GraphqlBaseTypeConfig<Extensions, AstNode> {
+    type: Type | typeof GraphQLList;
+    item?: GraphqlItemConfig<Type>;
+    required?: boolean;
+}
+
+export interface GraphqlItemConfig<T> {
+    type: T;
     required?: boolean;
 }
 
@@ -87,8 +91,11 @@ export interface GraphqlObjectConfig<TSource, TContext>
 
 // GraphQLObjectFieldType
 export interface GraphqlFieldConfig<TSource, TContext, TArgs = unknown>
-    extends GraphqlCompositeTypeConfig<GraphQLFieldExtensions<TSource, TContext, TArgs>, FieldDefinitionNode> {
-    // TODO: check typing (GraphQLOutputType)
+    extends GraphqlCompositeTypeConfig<
+        GraphqlOutputType,
+        GraphQLFieldExtensions<TSource, TContext, TArgs>,
+        FieldDefinitionNode
+    > {
     args?: ObjMap<GraphqlArgumentConfig>;
     resolve?: GraphQLFieldResolver<TSource, TContext, TArgs>;
     subscribe?: GraphQLFieldResolver<TSource, TContext, TArgs>;
@@ -97,24 +104,24 @@ export interface GraphqlFieldConfig<TSource, TContext, TArgs = unknown>
 
 // GraphQLObjectFieldArgumentsType
 export interface GraphqlArgumentConfig
-    extends GraphqlCompositeTypeConfig<GraphQLArgumentExtensions, InputValueDefinitionNode> {
+    extends GraphqlCompositeTypeConfig<GraphQLInputType, GraphQLArgumentExtensions, InputValueDefinitionNode> {
     // TODO: check typing (GraphQLInputType)
     defaultValue?: unknown;
     deprecationReason?: Maybe<string>;
 }
 
 // GraphQLInputObjectType
-export interface GraphQLInputObjectConfig
+export interface GraphqlInputObjectConfig
     extends GraphqlPrimitiveTypeConfig<
         GraphQLInputObjectTypeExtensions,
         InputObjectTypeDefinitionNode,
         InputObjectTypeExtensionNode
     > {
-    // TODO: exchange types
-    fields: ReadonlyArray<GraphQLInputFieldConfig>;
+    fields: ReadonlyArray<GraphqlInputFieldConfig>;
 }
 
-export interface GraphqlItemConfig<T> {
-    type: T;
-    required?: boolean;
+export interface GraphqlInputFieldConfig
+    extends GraphqlCompositeTypeConfig<GraphQLInputType, GraphQLInputFieldExtensions, InputValueDefinitionNode> {
+    defaultValue?: unknown;
+    deprecationReason?: Maybe<string>;
 }

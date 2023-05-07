@@ -1,5 +1,5 @@
 import {GraphQLEnumType, GraphQLObjectType, GraphQLSchema} from "graphql";
-import {GRAPHQL_OBJECT_RESOLVER} from "./resolvers";
+import resolvers from "./resolvers";
 import type {GraphqlEnumConfig, GraphqlObjectConfig} from "./types/input";
 
 // TODO: move these types
@@ -14,11 +14,12 @@ export type Context = {[name: string]: GraphQLEnumType | GraphQLObjectType<unkno
  */
 export default function createSchema(schema: InputConfig) {
     const schemaTypes = Object.entries(schema).reduce<Context>((context, [name, {type, ...input}]) => {
-        const graphqlTypeResolver = GRAPHQL_OBJECT_RESOLVER[type.name];
+        const graphqlTypeResolver = resolvers[type.name];
+
+        if (!graphqlTypeResolver) throw new Error(`${type.name} is not supported`);
 
         // @ts-ignore
         context[name] = graphqlTypeResolver(context, name, input);
-
         return context;
     }, {});
 

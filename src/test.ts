@@ -5,6 +5,7 @@ import {
     GraphQLEnumType,
     GraphQLFloat,
     GraphQLID,
+    GraphQLInputObjectType,
     // GraphQLInputObjectType,
     GraphQLList,
     GraphQLObjectType,
@@ -15,32 +16,6 @@ import createSchema from "./index";
 
 // TODO: might want to force type on query / mutations
 const schemaInput = {
-    // carInput: {
-    //     description: "This is the input for the create car mutation",
-    //     type: GraphQLInputObjectType,
-    //     fields: {
-    //         description: {
-    //             type: GraphQLString,
-    //         },
-    //         brand: {
-    //             type: "brand",
-    //             required: true,
-    //         },
-    //         price: {
-    //             type: GraphQLFloat,
-    //             required: true,
-    //             defaultValue: 0,
-    //         },
-    //         tags: {
-    //             type: GraphQLList,
-    //             item: {
-    //                 type: GraphQLString,
-    //                 required: true,
-    //             },
-    //             required: true,
-    //         },
-    //     },
-    // },
     brand: {
         description: "This is the brand of the car",
         type: GraphQLEnumType,
@@ -49,6 +24,31 @@ const schemaInput = {
             nio: {description: "NIO", value: "NIO"},
             lightyear: {description: "Lightyear", value: "Lightyear"},
             polestar: {description: "Polestar", value: "Polestar"},
+        },
+    },
+    carInput: {
+        description: "This is the input for the create car mutation",
+        type: GraphQLInputObjectType,
+        fields: {
+            description: {
+                type: GraphQLString,
+            },
+            brand: {
+                type: "brand",
+                required: true,
+            },
+            price: {
+                type: GraphQLFloat,
+                defaultValue: 0,
+            },
+            tags: {
+                type: GraphQLList,
+                item: {
+                    type: GraphQLString,
+                    required: true,
+                },
+                required: true,
+            },
         },
     },
     car: {
@@ -114,7 +114,7 @@ const schemaInput = {
                 type: "car",
                 args: {
                     car: {
-                        type: GraphQLString,
+                        type: "carInput",
                     },
                 },
             },
