@@ -1,6 +1,6 @@
 import {GraphQLInputFieldConfig, GraphQLInputObjectType, GraphQLInputType} from "graphql";
 import {GraphqlInputFieldConfig, GraphqlInputObjectConfig} from "../types/input";
-import {Context} from "../index";
+import {Context} from "../types";
 import {composeGraphqlType} from "../libs/utils";
 
 type FieldContext = {[key: string]: GraphQLInputFieldConfig};
