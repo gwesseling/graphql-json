@@ -5,22 +5,22 @@ jobs:
         name: Linting
         runs-on: ubuntu-latest
         steps:
-          - name: Checkout repository
-            uses: actions/checkout@v3
+            - name: Checkout repository
+              uses: actions/checkout@v3
 
-          - name: Install Node
-            uses: actions/setup-node@v3
-            with:
-              cache: yarn
-          
-          - name: Install dependencies
-            run: yarn --frozen-lockfile
+            - name: Install Node
+              uses: actions/setup-node@v3
+              with:
+                  cache: yarn
 
-          - name: Run eslint
-            run: yarn lint
-  
-          - name: Run Prettier
-            run: yarn prettier --check
+            - name: Install dependencies
+              run: yarn --frozen-lockfile
 
-          - name: Run TypeScript
-            run: yarn tsc
+            - name: Run eslint
+              run: yarn lint
+
+            - name: Run Prettier
+              run: yarn prettier --check
+
+            - name: Run TypeScript
+              run: yarn tsc
