@@ -17,7 +17,11 @@ import type {
     GraphQLList,
     GraphQLObjectType,
     GraphQLObjectTypeExtensions,
+    GraphQLScalarLiteralParser,
+    GraphQLScalarSerializer,
     GraphQLScalarType,
+    GraphQLScalarTypeExtensions,
+    GraphQLScalarValueParser,
     GraphQLTypeResolver,
     GraphQLUnionType,
     GraphQLUnionTypeExtensions,
@@ -28,6 +32,8 @@ import type {
     InterfaceTypeExtensionNode,
     ObjectTypeDefinitionNode,
     ObjectTypeExtensionNode,
+    ScalarTypeDefinitionNode,
+    ScalarTypeExtensionNode,
     UnionTypeDefinitionNode,
     UnionTypeExtensionNode,
 } from "graphql";
@@ -150,4 +156,13 @@ export interface GraphqlInterfaceConfig<TSource, TContext>
     interfaces?: ReadonlyArray<GraphQLInterfaceType | string>;
     fields: ObjMap<GraphqlFieldConfig<TSource, TContext>>;
     resolveType?: Maybe<GraphQLTypeResolver<TSource, TContext>>;
+}
+
+// GraphQLScalarType
+export interface GraphqlScalarConfig<TInternal, TExternal>
+    extends GraphqlPrimitiveTypeConfig<GraphQLScalarTypeExtensions, ScalarTypeDefinitionNode, ScalarTypeExtensionNode> {
+    specifiedByURL?: Maybe<string>;
+    serialize?: GraphQLScalarSerializer<TExternal>;
+    parseValue?: GraphQLScalarValueParser<TInternal>;
+    parseLiteral?: GraphQLScalarLiteralParser<TInternal>;
 }

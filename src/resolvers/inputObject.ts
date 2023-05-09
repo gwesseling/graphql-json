@@ -34,6 +34,5 @@ export default function createGraphQLObjectInputType(
  */
 function createGraphqlFieldType(context: Context, {type, required, item, ...field}: GraphqlInputFieldConfig) {
     const fieldObjectType = composeGraphqlType(context, undefined, {type, required, item}) as GraphQLInputType;
-
     return {...field, type: fieldObjectType};
 }

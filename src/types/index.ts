@@ -3,6 +3,7 @@ import {
     GraphQLInputObjectType,
     GraphQLInterfaceType,
     GraphQLObjectType,
+    GraphQLScalarType,
     GraphQLUnionType,
 } from "graphql";
 import type {
@@ -11,6 +12,7 @@ import type {
     GraphqlObjectConfig,
     GraphqlUnionConfig,
     GraphqlInterfaceConfig,
+    GraphqlScalarConfig,
 } from "./input";
 
 type InputConfigType =
@@ -18,7 +20,8 @@ type InputConfigType =
     | GraphqlEnumConfig
     | GraphqlInputObjectConfig
     | GraphqlUnionConfig<unknown, unknown>
-    | GraphqlInterfaceConfig<unknown, unknown>;
+    | GraphqlInterfaceConfig<unknown, unknown>
+    | GraphqlScalarConfig<unknown, unknown>;
 
 export type InputConfig = {[name: string]: InputConfigType};
 
@@ -27,7 +30,8 @@ export type ContextValue =
     | GraphQLObjectType<unknown, unknown>
     | GraphQLInputObjectType
     | GraphQLUnionType
-    | GraphQLInterfaceType;
+    | GraphQLInterfaceType
+    | GraphQLScalarType;
 
 export type Context = {
     [name: string]: ContextValue;

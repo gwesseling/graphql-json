@@ -10,14 +10,42 @@ import {
     GraphQLInterfaceType,
     GraphQLList,
     GraphQLObjectType,
+    GraphQLScalarType,
     GraphQLString,
     GraphQLUnionType,
+    Kind,
+    ValueNode,
 } from "graphql";
 
 import createSchema from "./index";
 
 // TODO: might want to force type on query / mutations
 const schemaInput = {
+    date: {
+        description: "Date custom scalar type",
+        type: GraphQLScalarType,
+        /**
+         * Convert date to json
+         */
+        serialize(value: unknown) {
+            if (value instanceof Date) return value.getTime();
+            throw Error("GraphQL Date Scalar serializer expected a `Date` object");
+        },
+        /**
+         * Convert integer to Date
+         */
+        parseValue(value: unknown) {
+            if (typeof value === "number") return new Date(value);
+            throw new Error("GraphQL Date Scalar parser expected a `number`");
+        },
+        /**
+         * Convert hard-coded AST string to integer and then to Date
+         */
+        parseLiteral(ast: ValueNode) {
+            if (ast.kind === Kind.INT) return new Date(parseInt(ast.value, 10));
+            return null;
+        },
+    },
     brand: {
         description: "This is the brand of the car",
         type: GraphQLEnumType,
@@ -80,6 +108,10 @@ const schemaInput = {
                 },
                 required: true,
             },
+            createdAt: {
+                type: "date",
+                required: true,
+            },
         },
     },
     electricCar: {
@@ -108,6 +140,10 @@ const schemaInput = {
                     type: GraphQLString,
                     required: true,
                 },
+                required: true,
+            },
+            createdAt: {
+                type: "date",
                 required: true,
             },
             charge: {
@@ -142,6 +178,10 @@ const schemaInput = {
                     type: GraphQLString,
                     required: true,
                 },
+                required: true,
+            },
+            createdAt: {
+                type: "date",
                 required: true,
             },
             fuel: {
