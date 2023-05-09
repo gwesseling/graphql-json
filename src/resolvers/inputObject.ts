@@ -9,7 +9,7 @@ type FieldEntry = [name: string, fieldconfig: GraphqlInputFieldConfig];
 /**
  * Create a GraphQL Object Input Type
  */
-export default function createGraphqlObjectInputType(
+export default function createGraphQLObjectInputType(
     context: Context,
     name: string,
     {fields, ...config}: GraphqlInputObjectConfig,

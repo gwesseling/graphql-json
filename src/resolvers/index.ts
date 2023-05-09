@@ -1,13 +1,15 @@
 import createGraphQLEnumType from "./enum";
-import createGraphqlObjectType from "./object";
-import createGraphqlObjectInputType from "./inputObject";
+import createGraphQLObjectType from "./object";
+import createGraphQLObjectInputType from "./inputObject";
 import createGraphQLUnionType from "./union";
+import createGraphQLInterfaceType from "./interface";
 
 const resolvers = {
     GraphQLEnumType: createGraphQLEnumType,
-    GraphQLObjectType: createGraphqlObjectType,
-    GraphQLInputObjectType: createGraphqlObjectInputType,
+    GraphQLObjectType: createGraphQLObjectType,
+    GraphQLInputObjectType: createGraphQLObjectInputType,
     GraphQLUnionType: createGraphQLUnionType,
+    GraphQLInterfaceType: createGraphQLInterfaceType,
 };
 
 export default resolvers;

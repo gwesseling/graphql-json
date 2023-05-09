@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 // Remove apollo server
 import {ApolloServer} from "@apollo/server";
 import {startStandaloneServer} from "@apollo/server/standalone";
@@ -6,6 +7,7 @@ import {
     GraphQLFloat,
     GraphQLID,
     GraphQLInputObjectType,
+    GraphQLInterfaceType,
     GraphQLList,
     GraphQLObjectType,
     GraphQLString,
@@ -15,16 +17,15 @@ import {
 import createSchema from "./index";
 
 // TODO: might want to force type on query / mutations
-// TODO: create a clean example
 const schemaInput = {
     brand: {
         description: "This is the brand of the car",
         type: GraphQLEnumType,
         values: {
             tesla: {description: "Tesla", value: "Tesla"},
-            nio: {description: "NIO", value: "NIO"},
             lightyear: {description: "Lightyear", value: "Lightyear"},
-            polestar: {description: "Polestar", value: "Polestar"},
+            volkwagen: {description: "Volkwagen", value: "Volkwagen"},
+            porsche: {description: "Porsche", value: "Porsche"},
         },
     },
     carInput: {
@@ -52,35 +53,9 @@ const schemaInput = {
             },
         },
     },
-    // TODO: make car interface, union type for types of car
-    electricCar: {
-        description: "Electric engine car",
-        type: GraphQLObjectType,
-        fields: {
-            charge: {
-                type: GraphQLFloat,
-                required: true,
-            },
-        },
-    },
-    combustionCar: {
-        description: "Combustion engine car",
-        type: GraphQLObjectType,
-        fields: {
-            fuel: {
-                type: GraphQLString,
-                required: true,
-            },
-        },
-    },
-    carTypes: {
-        description: "Any car",
-        type: GraphQLUnionType,
-        types: ["electricCar", "combustionCar"],
-    },
     car: {
         description: "This is the car itself",
-        type: GraphQLObjectType,
+        type: GraphQLInterfaceType,
         fields: {
             id: {
                 type: GraphQLID,
@@ -107,6 +82,79 @@ const schemaInput = {
             },
         },
     },
+    electricCar: {
+        description: "Electric engine car",
+        type: GraphQLObjectType,
+        interfaces: ["car"],
+        fields: {
+            id: {
+                type: GraphQLID,
+                required: true,
+            },
+            description: {
+                type: GraphQLString,
+            },
+            brand: {
+                type: "brand",
+                required: true,
+            },
+            price: {
+                type: GraphQLFloat,
+                required: true,
+            },
+            tags: {
+                type: GraphQLList,
+                item: {
+                    type: GraphQLString,
+                    required: true,
+                },
+                required: true,
+            },
+            charge: {
+                type: GraphQLFloat,
+                required: true,
+            },
+        },
+    },
+    combustionCar: {
+        description: "Combustion engine car",
+        type: GraphQLObjectType,
+        interfaces: ["car"],
+        fields: {
+            id: {
+                type: GraphQLID,
+                required: true,
+            },
+            description: {
+                type: GraphQLString,
+            },
+            brand: {
+                type: "brand",
+                required: true,
+            },
+            price: {
+                type: GraphQLFloat,
+                required: true,
+            },
+            tags: {
+                type: GraphQLList,
+                item: {
+                    type: GraphQLString,
+                    required: true,
+                },
+                required: true,
+            },
+            fuel: {
+                type: GraphQLString,
+                required: true,
+            },
+        },
+    },
+    carTypes: {
+        description: "Any car",
+        type: GraphQLUnionType,
+        types: ["electricCar", "combustionCar"],
+    },
     query: {
         description: "Queries",
         type: GraphQLObjectType,
@@ -115,7 +163,25 @@ const schemaInput = {
                 description: "Get all cars",
                 type: GraphQLList,
                 item: {
-                    type: "car",
+                    type: "carTypes",
+                    required: true,
+                },
+                required: true,
+            },
+            getElectricCars: {
+                description: "Get all electric engine cars",
+                type: GraphQLList,
+                item: {
+                    type: "electricCar",
+                    required: true,
+                },
+                required: true,
+            },
+            getCombustionCars: {
+                description: "Get all combustion engine cars",
+                type: GraphQLList,
+                item: {
+                    type: "combustionCar",
                     required: true,
                 },
                 required: true,
@@ -138,7 +204,7 @@ const schemaInput = {
         fields: {
             createCar: {
                 description: "Create a car",
-                type: "car",
+                type: "carTypes",
                 args: {
                     car: {
                         type: "carInput",

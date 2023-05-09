@@ -12,6 +12,7 @@ import type {
     GraphQLInputObjectType,
     GraphQLInputObjectTypeExtensions,
     GraphQLInterfaceType,
+    GraphQLInterfaceTypeExtensions,
     GraphQLIsTypeOfFn,
     GraphQLList,
     GraphQLObjectType,
@@ -23,6 +24,8 @@ import type {
     InputObjectTypeDefinitionNode,
     InputObjectTypeExtensionNode,
     InputValueDefinitionNode,
+    InterfaceTypeDefinitionNode,
+    InterfaceTypeExtensionNode,
     ObjectTypeDefinitionNode,
     ObjectTypeExtensionNode,
     UnionTypeDefinitionNode,
@@ -88,8 +91,7 @@ export interface GraphqlObjectConfig<TSource, TContext>
         ObjectTypeDefinitionNode,
         ObjectTypeExtensionNode
     > {
-    // TODO: exchange types
-    interfaces?: ReadonlyArray<GraphQLInterfaceType>;
+    interfaces?: ReadonlyArray<GraphQLInterfaceType | string>;
     fields: ObjMap<GraphqlFieldConfig<TSource, TContext>>;
     isTypeOf?: Maybe<GraphQLIsTypeOfFn<TSource, TContext>>;
 }
@@ -135,5 +137,17 @@ export interface GraphqlInputFieldConfig
 export interface GraphqlUnionConfig<TSource, TContext>
     extends GraphqlPrimitiveTypeConfig<GraphQLUnionTypeExtensions, UnionTypeDefinitionNode, UnionTypeExtensionNode> {
     types: ReadonlyArray<GraphQLObjectType | string>;
+    resolveType?: Maybe<GraphQLTypeResolver<TSource, TContext>>;
+}
+
+// GraphQLInterfaceType
+export interface GraphqlInterfaceConfig<TSource, TContext>
+    extends GraphqlPrimitiveTypeConfig<
+        GraphQLInterfaceTypeExtensions,
+        InterfaceTypeDefinitionNode,
+        InterfaceTypeExtensionNode
+    > {
+    interfaces?: ReadonlyArray<GraphQLInterfaceType | string>;
+    fields: ObjMap<GraphqlFieldConfig<TSource, TContext>>;
     resolveType?: Maybe<GraphQLTypeResolver<TSource, TContext>>;
 }
