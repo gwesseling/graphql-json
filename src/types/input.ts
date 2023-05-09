@@ -55,6 +55,7 @@ export type GraphqlOutputType =
     | GraphQLEnumType
     | string;
 
+// TODO: check on this
 export type GraphqlInputType = GraphQLScalarType | GraphQLEnumType | GraphQLInputObjectType | string;
 
 // Base GraphQL type config
