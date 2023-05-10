@@ -110,20 +110,9 @@ enum brand {
 
 (explain)
 
--   [Base types](#base-type)
--   [Sub types](#sub-type)
-
 ### Base type
 
 (explain)
-
--   [Base type](#base-type)
--   [Enum type](#enum-type)
--   [Object type](#object-type)
--   [Input object type](#input-object-type)
--   [Union type](#union-type)
--   [Interface type](#interface-type)
--   [Scalar type](#scalar-type)
 
 | Property    | Description              | Type                                                | Required | Not allowed                       |
 | ----------- | ------------------------ | --------------------------------------------------- | -------- | --------------------------------- |
@@ -177,13 +166,6 @@ enum brand {
 ### Sub type
 
 (explain)
-
--   [Field type](#field-type)
--   [Field item type](#field-item-type)
--   [Field argument](#field-argument)
--   [Field argument item type](#field-argument-item-type)
--   [Input Object field type](#input-object-field-type)
--   [Input Object field item type](#input-object-field-item-type)
 
 #### Field type
 
