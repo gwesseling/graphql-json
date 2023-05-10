@@ -128,10 +128,10 @@ enum brand {
 #### Object type
 
 | Property   | Description                                                  | Type                                                 | Required |
-| ---------- | ------------------------------------------------------------ | ---------------------------------------------------- | -------- | --- |
+| ---------- | ------------------------------------------------------------ | ---------------------------------------------------- | -------- |
 | interfaces | Array of interfaces to implement                             | `Array` (`string` or `GraphQLInterface`)             | No       |
 | fields     | An object map of fields                                      | [Field](#field-type)                                 | Yes      |
-| isTypeOf   | A function that helps resolve the GraphQL type of the object | `(value: any, info?: GraphQLResolveInfo) => boolean` | No       |     |
+| isTypeOf   | A function that helps resolve the GraphQL type of the object | `(value: any, info?: GraphQLResolveInfo) => boolean` | No       |
 
 #### Input object type
 
