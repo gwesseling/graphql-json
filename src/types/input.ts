@@ -130,7 +130,7 @@ export interface GraphqlInputObjectConfig
         InputObjectTypeDefinitionNode,
         InputObjectTypeExtensionNode
     > {
-    fields: ReadonlyArray<GraphqlInputFieldConfig>;
+    fields: ObjMap<GraphqlInputFieldConfig>;
 }
 
 // GraphQLInputField

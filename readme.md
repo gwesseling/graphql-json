@@ -6,93 +6,235 @@
 
 (explain)
 
+```javascript
+{
+    // Enum type
+    brand: {
+        description: "This is the brand of the car",
+        type: GraphQLEnumType,
+        values: {
+            tesla: {description: "Tesla", value: "Tesla"},
+            lightyear: {description: "Lightyear", value: "Lightyear"},
+            volkwagen: {description: "Volkwagen", value: "Volkwagen"},
+            porsche: {description: "Porsche", value: "Porsche"},
+        },
+    },
+    // Object type
+    car: {
+        description: "This is the car itself",
+        type: GraphQLObjectType,
+        fields: {
+            id: {
+                type: GraphQLID,
+                required: true,
+            },
+            description: {
+                type: GraphQLString,
+            },
+            brand: {
+                type: "brand",
+                required: true,
+            },
+        },
+    },
+    // Queries (object type)
+    query: {
+        description: "Queries",
+        type: GraphQLObjectType,
+        fields: {
+            getCars: {
+                description: "Get all cars",
+                type: GraphQLList,
+                item: {
+                    type: "carTypes",
+                    required: true,
+                },
+                required: true,
+            },
+            getCar: {
+                description: "Get a car",
+                type: "carTypes",
+                args: {
+                    id: {
+                        type: GraphQLID,
+                        required: true,
+                    },
+                },
+            },
+        },
+    },
+}
+```
+
+Will result in
+
+```
+schema {
+  query: query
+  mutation: mutation
+}
+
+"""Queries"""
+type query {
+  """Get all cars"""
+  getCars: [carTypes!]!
+
+  """Get a car"""
+  getCar(id: ID!): carTypes
+}
+
+"""This is the car itself"""
+type car {
+  id: ID!
+  description: String
+  brand: brand!
+}
+
+"""This is the brand of the car"""
+enum brand {
+  """Tesla"""
+  tesla
+
+  """Lightyear"""
+  lightyear
+
+  """Volkwagen"""
+  volkwagen
+
+  """Porsche"""
+  porsche
+}
+```
+
 ## Schema
 
 (explain)
 
+-   [Base types](#base-type)
+-   [Sub types](#sub-type)
+
 ### Base type
+
+(explain)
+
+-   [Base type](#base-type)
+-   [Enum type](#enum-type)
+-   [Object type](#object-type)
+-   [Input object type](#input-object-type)
+-   [Union type](#union-type)
+-   [Interface type](#interface-type)
+-   [Scalar type](#scalar-type)
 
 | Property    | Description              | Type                                                | Required | Not allowed                       |
 | ----------- | ------------------------ | --------------------------------------------------- | -------- | --------------------------------- |
 | description | description of your type | `string`                                            | No       | -                                 |
 | type        | The related GraphQL type | [GraphQLType](https://graphql.org/graphql-js/type/) | Yes      | `GraphQLNonNull` or `GraphQLList` |
 
-### Enum type
+#### Enum type
 
 | Property | Description                                         | Type     | Required |
 | -------- | --------------------------------------------------- | -------- | -------- |
 | values   | An object map with enum values (same as in GraphQL) | `Object` | Yes      |
 
-### Object type
+#### Object type
 
 | Property   | Description                                                  | Type                                                 | Required |
-| ---------- | ------------------------------------------------------------ | ---------------------------------------------------- | -------- |
-| interfaces | Interfaces to implement                                      | `Array` (`string` or `GraphQLInterface`)             | No       |
-| fields     | An object map with field                                     | [Field](#field-type)                                 | Yes      |
-| isTypeOf   | A fucntion that helps resolve the GraphQL type of the object | `(value: any, info?: GraphQLResolveInfo) => boolean` | No       |
+| ---------- | ------------------------------------------------------------ | ---------------------------------------------------- | -------- | --- |
+| interfaces | Array of interfaces to implement                             | `Array` (`string` or `GraphQLInterface`)             | No       |
+| fields     | An object map of fields                                      | [Field](#field-type)                                 | Yes      |
+| isTypeOf   | A function that helps resolve the GraphQL type of the object | `(value: any, info?: GraphQLResolveInfo) => boolean` | No       |     |
+
+#### Input object type
+
+| Property | Description             | Type                              | Required |
+| -------- | ----------------------- | --------------------------------- | -------- |
+| fields   | An object map of fields | [Field](#input-object-field-type) | Yes      |
+
+#### Union type
+
+| Property    | Description                                                  | Type                                                                                                                                       | Required |
+| ----------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
+| types       | Types to combine as an Union type                            | `GraphQLObjectType` or `string`                                                                                                            | Yes      |
+| resolveType | A function that helps resolve the GraphQL type of the object | `(value: TSource, context: TContext, info: GraphQLResolveInfo, abstractType: GraphQLAbstractType, ) => PromiseOrValue<string / undefined>` | No       |
+
+#### Interface type
+
+| Property    | Description                                                  | Type                                                                                                                                       | Required |
+| ----------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
+| interfaces  | Array of interfaces to implement                             | `Array` (`string` or `GraphQLInterface`)                                                                                                   | No       |
+| fields      | An object map of fields                                      | [Field](#field-type)                                                                                                                       | Yes      |
+| resolveType | A function that helps resolve the GraphQL type of the object | `(value: TSource, context: TContext, info: GraphQLResolveInfo, abstractType: GraphQLAbstractType, ) => PromiseOrValue<string / undefined>` | No       |
+
+#### Scalar type
+
+| Property       | Description                             | Type                                                                       | Required |
+| -------------- | --------------------------------------- | -------------------------------------------------------------------------- | -------- |
+| specifiedByURL | Scalar specification URL                | `string`                                                                   | No       |
+| serialize      | Function to serialize the value to JSON | `(outputValue: unknown) => TExternal`                                      | No       |
+| parseValue     | Function to parse the value             | `(inputValue: unknown) => TInternal;`                                      | No       |
+| parseLiteral   | Function to partse the hard-coded AST   | `(valueNode: ValueNode, variables?: Maybe<ObjMap<unknown>>) => TInternal;` | No       |
+
+### Sub type
+
+(explain)
+
+-   [Field type](#field-type)
+-   [Field item type](#field-item-type)
+-   [Field argument](#field-argument)
+-   [Field argument item type](#field-argument-item-type)
+-   [Input Object field type](#input-object-field-type)
+-   [Input Object field item type](#input-object-field-item-type)
 
 #### Field type
 
-| Property          | Description                        | Type                                                                                      | Required           | Not allowed      |
-| ----------------- | ---------------------------------- | ----------------------------------------------------------------------------------------- | ------------------ | ---------------- |
-| type              | Type of the field                  | [GraphQLType](https://graphql.org/graphql-js/type/) or `string`                           | Yes                | `GraphQLNonNull` |
-| item              | List item type                     | [Item](#field-item-type)                                                                  | When type is List  | -                |
-| required          | Whenever the field is non-nullable | `boolean`                                                                                 | No (default false) | -                |
-| args              | Object map of arguments            | [Arguments](#field-argument)                                                              | no                 | -                |
-| resolve           | Resolves field data                | `(source: TSource, args: TArgs, context: TContext, info: GraphQLResolveInfo) => TResult;` | No                 | -                |
-| subscribe         | Subscribe to field                 | `(source: TSource, args: TArgs, context: TContext, info: GraphQLResolveInfo) => TResult;` | No                 | -                |
-| deprecationReason | Reason why field is deprecated     | `string`                                                                                  | No                 | -                |
+| Property          | Description                        | Type                                                                                      | Required                   | Not allowed      |
+| ----------------- | ---------------------------------- | ----------------------------------------------------------------------------------------- | -------------------------- | ---------------- |
+| type              | Type of the field                  | [GraphQLType](https://graphql.org/graphql-js/type/) or `string`                           | Yes                        | `GraphQLNonNull` |
+| item              | List item type                     | [Item](#field-item-type)                                                                  | When type is `GraphQLList` | -                |
+| required          | Whenever the field is non-nullable | `boolean`                                                                                 | No (default false)         | -                |
+| args              | Object map of arguments            | [Arguments](#field-argument)                                                              | no                         | -                |
+| resolve           | Resolves field data                | `(source: TSource, args: TArgs, context: TContext, info: GraphQLResolveInfo) => TResult;` | No                         | -                |
+| subscribe         | Subscribe to field                 | `(source: TSource, args: TArgs, context: TContext, info: GraphQLResolveInfo) => TResult;` | No                         | -                |
+| deprecationReason | Reason why field is deprecated     | `string`                                                                                  | No                         | -                |
 
 #### Field item type
 
 | Property | Description                        | Type                                                            | Required | Not allowed                       |
 | -------- | ---------------------------------- | --------------------------------------------------------------- | -------- | --------------------------------- |
-| type     | Type of the field                  | [GraphQLType](https://graphql.org/graphql-js/type/) or `string` | Yes      | `GraphQLNonNull` or `GraphQLList` |
+| type     | `GraphQLList` type                 | [GraphQLType](https://graphql.org/graphql-js/type/) or `string` | Yes      | `GraphQLNonNull` or `GraphQLList` |
 | required | Whenever the field is non-nullable | `boolean`                                                       | No       | -                                 |
 
-### Field argument
+#### Field argument
 
-| Property          | Description                       | Type                                                            | Required          | Not allowed                                                                         |
-| ----------------- | --------------------------------- | --------------------------------------------------------------- | ----------------- | ----------------------------------------------------------------------------------- |
-| type              | Type of the argument              | [GraphQLType](https://graphql.org/graphql-js/type/) or `string` | Yes               | `GraphQLNonNull`, `GraphQLObjectType`, `GraphQLInterfaceType` or `GraphQLUnionType` |
-| item              | List item type                    | [Item](#field-argument-item-type)                               | When type is List | -                                                                                   |
-| deprecationReason | Reason why argument is deprecated | `string`                                                        | No                | -                                                                                   |
+| Property          | Description                       | Type                                                            | Required                   | Not allowed                                                                         |
+| ----------------- | --------------------------------- | --------------------------------------------------------------- | -------------------------- | ----------------------------------------------------------------------------------- |
+| type              | Type of the argument              | [GraphQLType](https://graphql.org/graphql-js/type/) or `string` | Yes                        | `GraphQLNonNull`, `GraphQLObjectType`, `GraphQLInterfaceType` or `GraphQLUnionType` |
+| item              | List item type                    | [Item](#field-argument-item-type)                               | When type is `GraphQLList` | -                                                                                   |
+| deprecationReason | Reason why argument is deprecated | `string`                                                        | No                         | -                                                                                   |
 
-### Field argument item type
+#### Field argument item type
 
 | Property | Description                        | Type                                                            | Required | Not allowed                                                                                        |
 | -------- | ---------------------------------- | --------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------- |
-| type     | Type of the field                  | [GraphQLType](https://graphql.org/graphql-js/type/) or `string` | Yes      | `GraphQLNonNull`, `GraphQLObjectType`, `GraphQLInterfaceType`, `GraphQLUnionType` or `GraphQLList` |
+| type     | `GraphQLList` type                 | [GraphQLType](https://graphql.org/graphql-js/type/) or `string` | Yes      | `GraphQLNonNull`, `GraphQLObjectType`, `GraphQLInterfaceType`, `GraphQLUnionType` or `GraphQLList` |
 | required | Whenever the field is non-nullable | `boolean`                                                       | No       | -                                                                                                  |
 
-### Input Object type
+#### Input object field type
 
-| Property | Description | Type | Required |
-| -------- | ----------- | ---- | -------- |
+| Property          | Description                        | Type                                                            | Required                   | Not allowed                                                                         |
+| ----------------- | ---------------------------------- | --------------------------------------------------------------- | -------------------------- | ----------------------------------------------------------------------------------- |
+| type              | Type of the field                  | [GraphQLType](https://graphql.org/graphql-js/type/) or `string` | Yes                        | `GraphQLNonNull`, `GraphQLObjectType`, `GraphQLInterfaceType` or `GraphQLUnionType` |
+| item              | List item type                     | [Item](#input-object-field-item-type)                           | When type is `GraphQLList` | -                                                                                   |
+| required          | Whenever the field is non-nullable | `boolean`                                                       | No                         | -                                                                                   |
+| defaultValue      | Default field value                | `unknown`                                                       | No                         | -                                                                                   |
+| deprecationReason | Reason why argument is deprecated  | `string`                                                        | No                         | -                                                                                   |
 
-### Union type
+#### Input object field item type
 
-| Property    | Description                                                  | Type                                                                                                                                       | Required |
-| ----------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
-| types       | Types to combine as an Union type                            | `GraphQLObjectType` or `string`                                                                                                            | Yes      |
-| resolveType | A fucntion that helps resolve the GraphQL type of the object | `(value: TSource, context: TContext, info: GraphQLResolveInfo, abstractType: GraphQLAbstractType, ) => PromiseOrValue<string / undefined>` | No       |
-
-### Interface type
-
-| Property    | Description                                                  | Type | Required |
-| ----------- | ------------------------------------------------------------ | ---- | -------- |
-| interfaces  |                                                              |      | No       |
-| fields      |                                                              |      | Yes      |
-| resolveType | A fucntion that helps resolve the GraphQL type of the object |      | No       |
-
-### Scalar type
-
-| Property       | Description | Type     | Required |
-| -------------- | ----------- | -------- | -------- |
-| specifiedByURL |             | `string` | No       |
-| serialize      |
-| parseValue     |
-| parseLiteral   |
+| Property | Description                        | Type                                                            | Required | Not allowed                                                                                        |
+| -------- | ---------------------------------- | --------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------- |
+| type     | `GraphQLList` type                 | [GraphQLType](https://graphql.org/graphql-js/type/) or `string` | Yes      | `GraphQLNonNull`, `GraphQLObjectType`, `GraphQLInterfaceType`, `GraphQLUnionType` or `GraphQLList` |
+| required | Whenever the field is non-nullable | `boolean`                                                       | No       | -                                                                                                  |
 
 ## Example
 
