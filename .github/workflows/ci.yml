@@ -24,3 +24,20 @@ jobs:
 
             - name: Run TypeScript
               run: yarn tsc
+      unit:
+        name: Unit tests
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+
+            - name: Install Node
+              uses: actions/setup-node@v3
+              with:
+                  cache: yarn
+
+            - name: Install dependencies
+              run: yarn --frozen-lockfile
+
+            - name: Run jest
+              run: run test

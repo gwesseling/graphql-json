@@ -9,9 +9,9 @@ import {
     GraphQLOutputType,
     GraphQLType,
 } from "graphql";
-import {ObjMap} from "../types/utils";
-import {Context, ContextValue} from "../types";
-import {GraphqlArgumentConfig, GraphqlFieldConfig, GraphqlOutputType} from "../types/input";
+import {ObjMap} from "../../types/utils";
+import {Context, ContextValue} from "../../types";
+import {GraphqlArgumentConfig, GraphqlFieldConfig, GraphqlOutputType} from "../../types/input";
 
 type FieldContext = {[key: string]: GraphQLFieldConfig<unknown, unknown>};
 type FieldEntry = [name: string, fieldconfig: GraphqlFieldConfig<unknown, unknown>];
@@ -31,7 +31,7 @@ export function getGraphqlInterfaces(context: Context, interfaces?: ReadonlyArra
 
         // Throw error if the final GraphQl interface is not an GraphQLInterfaceType
         if (!(graphqlInterface instanceof GraphQLInterfaceType))
-            throw new Error(`Only GraphQLInterfaceTypes can be added to a Object or an interface type (${inter})`);
+            throw new Error(`Only GraphQLInterfaceTypes can be added to a Object or interface type (${inter})`);
 
         return graphqlInterface;
     });
@@ -86,18 +86,19 @@ function createGraphqlArgumentType(
     return {...arg, type: argumentObjectType};
 }
 
+// TODO: type the input
 /**
  * Compose GraphQL type based on context, parent and given type
  */
 export function composeGraphqlType(
     context: Context,
     parent: GraphQLObjectType<unknown, unknown> | GraphQLInterfaceType | undefined,
-    {type, required, item},
+    {type, required, item}: any,
 ) {
     let graphqlType: GraphQLType = getGraphqltype(context, parent, type);
 
     if (graphqlType.name === "GraphQLList") {
-        if (!item) throw new Error("Items is required when type is List");
+        if (!item) throw new Error("Item is required when type is GraphQLList");
 
         let itemsType: GraphQLType = getGraphqltype(context, parent, item.type);
 
@@ -114,19 +115,19 @@ export function composeGraphqlType(
 /**
  * Get a GraphQL type based on a string (context/parent) or use an GraphQL type directly
  */
-function getGraphqltype(
+export function getGraphqltype(
     context: Context,
     parent: GraphQLObjectType<unknown, unknown> | GraphQLInterfaceType | undefined,
     type: GraphqlOutputType,
 ) {
-    // Check if type is one of the previous created types
-    if (typeof type === "string" && context[type]) return context[type];
-
     // Check if type is the parent type (recursion)
     if (typeof type === "string" && parent?.name === type) return parent;
 
+    // Check if type is one of the previous created types
+    if (typeof type === "string" && context[type]) return context[type];
+
     // Throw an error if we can't find the type based on the string
-    if (typeof type === "string") throw new Error(`Could not find type with the name '${type}'`);
+    if (typeof type === "string") throw new Error(`Could not find type '${type}'`);
 
     return type;
 }
