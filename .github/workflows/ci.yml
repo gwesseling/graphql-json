@@ -24,7 +24,7 @@ jobs:
 
             - name: Run TypeScript
               run: yarn tsc
-      unit:
+    unit:
         name: Unit tests
         runs-on: ubuntu-latest
         steps:
