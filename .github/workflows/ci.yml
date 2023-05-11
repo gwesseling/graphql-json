@@ -39,5 +39,5 @@ jobs:
             - name: Install dependencies
               run: yarn --frozen-lockfile
 
-            - name: Run jest
-              run: run test
+            - name: Run Jest
+              run: yarn test
