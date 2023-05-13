@@ -1,16 +1,16 @@
 import {GraphQLObjectType, GraphQLUnionType} from "graphql";
-import {Context, ContextValue} from "../types";
-import {GraphqlUnionConfig} from "../types/input";
+import type {Context, ContextValue} from "../../types";
+import type {GraphqlUnionConfig} from "../../types/input";
 
 /**
  * Create a GraphQL Union Type
  */
-export default function createGraphQLUnionType(
+export default function composeGraphQLUnionType(
     context: Context,
     name: string,
     {types, ...config}: GraphqlUnionConfig<unknown, unknown>,
 ) {
-    const graphqlTypes = getTypes(context, types);
+    const graphqlTypes = composeTypes(context, types);
 
     return new GraphQLUnionType({
         name,
@@ -22,7 +22,7 @@ export default function createGraphQLUnionType(
 /**
  * Get GraphQL types from context
  */
-function getTypes(context: Context, types: ReadonlyArray<GraphQLObjectType | string>) {
+function composeTypes(context: Context, types: ReadonlyArray<GraphQLObjectType | string>) {
     return types.map((type) => {
         let graphqlType: ContextValue | string = type;
 

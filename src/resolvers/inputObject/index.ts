@@ -1,7 +1,7 @@
 import {GraphQLInputFieldConfig, GraphQLInputObjectType, GraphQLInputType} from "graphql";
-import {GraphqlInputFieldConfig, GraphqlInputObjectConfig} from "../types/input";
-import {Context} from "../types";
-import {composeGraphqlType} from "../libs/utils";
+import type {GraphqlInputFieldConfig, GraphqlInputObjectConfig} from "../../types/input";
+import type {Context} from "../../types";
+import {composeGraphQLType} from "../../libs";
 
 type FieldContext = {[key: string]: GraphQLInputFieldConfig};
 type FieldEntry = [name: string, fieldconfig: GraphqlInputFieldConfig];
@@ -9,7 +9,7 @@ type FieldEntry = [name: string, fieldconfig: GraphqlInputFieldConfig];
 /**
  * Create a GraphQL Object Input Type
  */
-export default function createGraphQLObjectInputType(
+export default function composeGraphQLObjectInputType(
     context: Context,
     name: string,
     {fields, ...config}: GraphqlInputObjectConfig,
@@ -18,7 +18,7 @@ export default function createGraphQLObjectInputType(
      * Get a GraphQL fielld
      */
     function getField(fieldContext: FieldContext, [name, fieldconfig]: FieldEntry) {
-        fieldContext[name] = createGraphqlFieldType(context, fieldconfig);
+        fieldContext[name] = createGraphQLFieldType(context, fieldconfig);
         return fieldContext;
     }
 
@@ -32,7 +32,7 @@ export default function createGraphQLObjectInputType(
 /**
  * Create GraphQL field object
  */
-function createGraphqlFieldType(context: Context, {type, required, item, ...field}: GraphqlInputFieldConfig) {
-    const fieldObjectType = composeGraphqlType(context, undefined, {type, required, item}) as GraphQLInputType;
+function createGraphQLFieldType(context: Context, {type, required, item, ...field}: GraphqlInputFieldConfig) {
+    const fieldObjectType = composeGraphQLType(context, undefined, {type, required, item}) as GraphQLInputType;
     return {...field, type: fieldObjectType};
 }

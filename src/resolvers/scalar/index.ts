@@ -1,11 +1,11 @@
 import {GraphQLScalarType} from "graphql";
-import {Context} from "../types";
-import {GraphqlScalarConfig} from "..//types/input";
+import type {Context} from "../../types";
+import type {GraphqlScalarConfig} from "../../types/input";
 
 /**
  * Create a GraphQL Scalar Type
  */
-export default function createGraphQLUnionType(
+export default function composeGraphQLUnionType(
     _context: Context,
     name: string,
     config: GraphqlScalarConfig<unknown, unknown>,

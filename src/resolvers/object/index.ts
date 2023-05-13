@@ -1,12 +1,12 @@
 import {GraphQLObjectType} from "graphql";
-import {GraphqlObjectConfig} from "../types/input";
-import {Context} from "../types";
-import {getGraphqlFields, getGraphqlInterfaces} from "../libs/utils";
+import {composeGraphQLFields, composeGraphQLInterfaces} from "../../libs";
+import type {GraphqlObjectConfig} from "../../types/input";
+import type {Context} from "../../types";
 
 /**
  * Create a GraphQL Object Type
  */
-export default function createGraphQLObjectType(
+export default function composeGraphQLObjectType(
     context: Context,
     name: string,
     {fields, interfaces, ...config}: GraphqlObjectConfig<unknown, unknown>,
@@ -15,8 +15,8 @@ export default function createGraphQLObjectType(
     const graphqlObjectType = new GraphQLObjectType({
         name,
         ...config,
-        interfaces: getGraphqlInterfaces(context, interfaces),
-        fields: () => getGraphqlFields(context, graphqlObjectType, fields),
+        interfaces: composeGraphQLInterfaces(context, interfaces),
+        fields: () => composeGraphQLFields(context, graphqlObjectType, fields),
     });
 
     return graphqlObjectType;
