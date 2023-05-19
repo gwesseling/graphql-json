@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-        "baseUrl": ".",
         "module": "commonjs",
         "lib": ["ES2020", "DOM"],
         "allowJs": false,
@@ -16,6 +15,14 @@
         "forceConsistentCasingInFileNames": true,
         "noImplicitThis": false,
         "sourceMap": true,
-        "noImplicitAny": false
+        "noImplicitAny": false,
+        "baseUrl": ".",
+        "paths": {
+            "*": ["src/*"],
+            "_TYPES/*": ["src/types/*"],
+            "_MOCKS/*": ["src/mocks/*"],
+            "_LIBS/*": ["src/libs/*"],
+            "_RESOLVERS/*": ["src/resolvers/*"],
+        }
     }
 }

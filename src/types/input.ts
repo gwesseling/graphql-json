@@ -36,7 +36,7 @@ import type {
     UnionTypeDefinitionNode,
     UnionTypeExtensionNode,
 } from "graphql";
-import type {Maybe, ObjMap} from "./utils";
+import type {Maybe, ObjMap} from "_TYPES/utils";
 
 export type GraphqlType =
     | typeof GraphQLEnumType

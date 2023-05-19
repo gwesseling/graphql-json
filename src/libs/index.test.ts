@@ -10,7 +10,7 @@ import {
     argumentConfig,
     fieldConfig,
     fieldMapConfig,
-} from "../mocks/config";
+} from "_MOCKS/config";
 import {
     context,
     graphqlArg,
@@ -19,7 +19,7 @@ import {
     graphqlfieldWithArg,
     graphqlInterface,
     graphqlObject,
-} from "../mocks/graphqlTypes";
+} from "_MOCKS/graphqlTypes";
 import {
     composeGraphQLType,
     composeGraphQLArgumentType,

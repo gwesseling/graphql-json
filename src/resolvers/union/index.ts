@@ -1,6 +1,6 @@
 import {GraphQLObjectType, GraphQLUnionType} from "graphql";
-import type {Context, ContextValue} from "../../types";
-import type {GraphqlUnionConfig} from "../../types/input";
+import type {Context, ContextValue} from "_TYPES/index";
+import type {GraphqlUnionConfig} from "_TYPES/input";
 
 /**
  * Create a GraphQL Union Type
