@@ -1,23 +1,29 @@
 import {
-    GraphQLArgumentConfig,
-    GraphQLFieldConfig,
+    GraphQLEnumType,
+    GraphQLInputObjectType,
     GraphQLInputType,
     GraphQLInterfaceType,
     GraphQLList,
     GraphQLNonNull,
     GraphQLObjectType,
     GraphQLOutputType,
+    GraphQLScalarType,
     GraphQLType,
+    GraphQLUnionType,
 } from "graphql";
 import type {ObjMap} from "../types/utils";
-import type {Context, ContextValue} from "../types";
+import type {ArgumentContext, ArgumentEntry, Context, ContextValue, FieldContext, FieldEntry} from "../types";
 import type {GraphqlArgumentConfig, GraphqlFieldConfig, GraphqlOutputType} from "../types/input";
 
-type FieldContext = {[key: string]: GraphQLFieldConfig<unknown, unknown>};
-type FieldEntry = [name: string, fieldconfig: GraphqlFieldConfig<unknown, unknown>];
-
-type ArgumentContext = {[key: string]: GraphQLArgumentConfig};
-type ArgumentEntry = [name: string, fieldconfig: GraphqlArgumentConfig];
+const typeResolver = {
+    enum: GraphQLEnumType,
+    object: GraphQLObjectType,
+    input: GraphQLInputObjectType,
+    union: GraphQLUnionType,
+    interface: GraphQLInterfaceType,
+    scalar: GraphQLScalarType,
+    list: GraphQLList<GraphQLType>,
+};
 
 /**
  * Get GraphQL interface type from context
@@ -97,6 +103,7 @@ export function composeGraphQLType(
 ) {
     let graphqlType: GraphQLType = getGraphQLtype(context, parent, type);
 
+    // TODO: do this another way (change item prop to list)
     if (graphqlType.name === "GraphQLList") {
         if (!item) throw new Error("Item is required when type is GraphQLList");
 
@@ -122,6 +129,9 @@ export function getGraphQLtype(
 ) {
     // Check if type is the parent type (recursion)
     if (typeof type === "string" && parent?.name === type) return parent;
+
+    // Resolve type based on string
+    if (typeof type === "string" && typeResolver[type]) return typeResolver[type];
 
     // Check if type is one of the previous created types
     if (typeof type === "string" && context[type]) return context[type];

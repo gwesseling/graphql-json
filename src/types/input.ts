@@ -45,7 +45,8 @@ export type GraphqlType =
     | typeof GraphQLScalarType
     | typeof GraphQLUnionType
     | typeof GraphQLInputObjectType
-    | typeof GraphQLInterfaceType;
+    | typeof GraphQLInterfaceType
+    | string;
 
 export type GraphqlOutputType =
     | GraphQLScalarType
@@ -55,7 +56,6 @@ export type GraphqlOutputType =
     | GraphQLEnumType
     | string;
 
-// TODO: check on this
 export type GraphqlInputType = GraphQLScalarType | GraphQLEnumType | GraphQLInputObjectType | string;
 
 // Base GraphQL type config
@@ -68,7 +68,7 @@ interface GraphqlBaseTypeConfig<Extensions, AstNode> {
 // GraphQL primary type config
 interface GraphqlPrimitiveTypeConfig<Extensions, AstNode, ExtensionASTNodes>
     extends GraphqlBaseTypeConfig<Extensions, AstNode> {
-    type: GraphqlType;
+    type?: GraphqlType;
     extensionASTNodes?: Maybe<ReadonlyArray<ExtensionASTNodes>>;
 }
 
