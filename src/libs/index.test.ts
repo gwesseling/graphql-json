@@ -1,5 +1,5 @@
 /* eslint-disable max-lines-per-function */
-import {GraphQLFloat, GraphQLList, GraphQLNonNull, GraphQLString} from "graphql";
+import {GraphQLFloat, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString} from "graphql";
 import {
     listOfContextObject,
     listOfNonNullableObject,
@@ -110,10 +110,10 @@ describe("ComposeGraphQLType", () => {
         expect(result).toMatchObject(expected);
     });
 
-    test("Should throw an error when item in not defined and type is GraphQLList", () => {
+    test("Should throw an error when both item and type are not defined", () => {
         // eslint-disable-next-line require-jsdoc
         const result = () => composeGraphQLType(context, undefined, listWithoutItem);
-        expect(result).toThrow("Item is required when type is GraphQLList");
+        expect(result).toThrow("Type and list property cannot both be undefined");
     });
 
     test("Should resolve to a non-nullable type", () => {
@@ -132,6 +132,11 @@ describe("GetGraphQLtype", () => {
     test("Should return type when type is not a string", () => {
         const result = getGraphQLtype(context, context.graphqlObject, context.graphqlInterface);
         expect(result.toConfig()).toMatchObject(graphqlInterface);
+    });
+
+    test("Should return type based on string input", () => {
+        const result = getGraphQLtype(context, context.graphqlObject, "object");
+        expect(result).toBe(GraphQLObjectType);
     });
 
     test("Should return from context when type is equal to context value", () => {

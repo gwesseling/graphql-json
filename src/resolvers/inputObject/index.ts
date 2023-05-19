@@ -32,7 +32,7 @@ export default function composeGraphQLObjectInputType(
 /**
  * Create GraphQL field object
  */
-function createGraphQLFieldType(context: Context, {type, required, item, ...field}: GraphqlInputFieldConfig) {
-    const fieldObjectType = composeGraphQLType(context, undefined, {type, required, item}) as GraphQLInputType;
+function createGraphQLFieldType(context: Context, {type, required, list, ...field}: GraphqlInputFieldConfig) {
+    const fieldObjectType = composeGraphQLType(context, undefined, {type, required, list}) as GraphQLInputType;
     return {...field, type: fieldObjectType};
 }

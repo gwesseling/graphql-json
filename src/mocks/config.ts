@@ -4,7 +4,6 @@ import {
     GraphQLFloat,
     GraphQLInputObjectType,
     GraphQLInterfaceType,
-    GraphQLList,
     GraphQLScalarType,
     GraphQLString,
     GraphQLUnionType,
@@ -13,8 +12,7 @@ import {
 } from "graphql";
 
 const nonNullableListOfNonNullableString = {
-    type: GraphQLList,
-    item: {
+    list: {
         type: GraphQLString,
         required: true,
     },
@@ -22,22 +20,19 @@ const nonNullableListOfNonNullableString = {
 };
 
 const listOfNonNullableObject = {
-    type: GraphQLList,
-    item: {
+    list: {
         type: "graphqlObjectType",
         required: true,
     },
 };
 
 const listOfContextObject = {
-    type: GraphQLList,
-    item: {
+    list: {
         type: "graphqlObject",
     },
 };
 
 const listWithoutItem = {
-    type: GraphQLList,
     required: true,
 };
 
@@ -60,8 +55,7 @@ const argumentConfig = {
 
 const fieldConfig = {
     description: "this is a field",
-    type: GraphQLList,
-    item: {
+    list: {
         type: GraphQLString,
         required: true,
     },
