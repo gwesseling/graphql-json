@@ -9,7 +9,7 @@ import type {Context, GraphqlResolverFunction, InputConfig, InputSchema} from ".
 import type {Maybe} from "../types/utils";
 import type {GraphqlType} from "../types/input";
 
-const FORCE_TYPE = ["query", "mutation", "subscription"];
+const FORCED_TYPE = ["query", "mutation", "subscription"];
 
 const classResolvers = {
     GraphQLEnumType: composeGraphQLEnumType,
@@ -33,7 +33,8 @@ const stringResolvers = {
  * Get input type
  */
 function getInputType(name: string, type?: GraphqlType) {
-    if (FORCE_TYPE.includes(name)) return composeGraphQLObjectType;
+    // Force GraphQLObject type for Query, Mutation and Subscription
+    if (FORCED_TYPE.includes(name)) return composeGraphQLObjectType;
 
     if (!type) throw new Error("Type is not defined");
 

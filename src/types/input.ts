@@ -14,7 +14,6 @@ import type {
     GraphQLInterfaceType,
     GraphQLInterfaceTypeExtensions,
     GraphQLIsTypeOfFn,
-    GraphQLList,
     GraphQLObjectType,
     GraphQLObjectTypeExtensions,
     GraphQLScalarLiteralParser,
@@ -74,14 +73,13 @@ interface GraphqlPrimitiveTypeConfig<Extensions, AstNode, ExtensionASTNodes>
 
 // Graphql Composite (sub) type config
 interface GraphqlCompositeTypeConfig<Type, Extensions, AstNode> extends GraphqlBaseTypeConfig<Extensions, AstNode> {
-    // Would be nice if we can do this in a better way (typeof GraphQLList)
-    type: Type | typeof GraphQLList;
-    item?: GraphqlItemConfig<Type>;
+    type?: Type;
+    list?: GraphqlItemConfig<Type>;
     required?: boolean;
 }
 
-export interface GraphqlItemConfig<T> {
-    type: T;
+export interface GraphqlItemConfig<Type> {
+    type: Type;
     required?: boolean;
 }
 

@@ -22,6 +22,9 @@ import type {
     GraphqlScalarConfig,
     GraphqlFieldConfig,
     GraphqlArgumentConfig,
+    GraphqlInputType,
+    GraphqlItemConfig,
+    GraphqlOutputType,
 } from "./input";
 import {Maybe} from "./utils";
 
@@ -64,3 +67,9 @@ export type FieldEntry = [name: string, fieldconfig: GraphqlFieldConfig<unknown,
 
 export type ArgumentContext = {[key: string]: GraphQLArgumentConfig};
 export type ArgumentEntry = [name: string, fieldconfig: GraphqlArgumentConfig];
+
+export type GraphqlCompositeTypeInput = {
+    type?: GraphqlInputType | GraphqlOutputType;
+    required?: boolean;
+    list?: GraphqlItemConfig<GraphqlInputType | GraphqlOutputType>;
+};

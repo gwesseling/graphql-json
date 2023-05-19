@@ -12,8 +12,16 @@ import {
     GraphQLUnionType,
 } from "graphql";
 import type {ObjMap} from "../types/utils";
-import type {ArgumentContext, ArgumentEntry, Context, ContextValue, FieldContext, FieldEntry} from "../types";
-import type {GraphqlArgumentConfig, GraphqlFieldConfig, GraphqlOutputType} from "../types/input";
+import type {
+    ArgumentContext,
+    ArgumentEntry,
+    Context,
+    ContextValue,
+    FieldContext,
+    FieldEntry,
+    GraphqlCompositeTypeInput,
+} from "../types";
+import type {GraphqlArgumentConfig, GraphqlFieldConfig, GraphqlInputType, GraphqlOutputType} from "../types/input";
 
 const typeResolver = {
     enum: GraphQLEnumType,
@@ -63,7 +71,7 @@ export function composeGraphQLFields(
 export function composeGraphQLFieldType(
     context: Context,
     parent: GraphQLObjectType<unknown, unknown> | GraphQLInterfaceType | undefined,
-    {type, required, item, args = {}, ...field}: GraphqlFieldConfig<unknown, unknown>,
+    {type, required, list, args = {}, ...field}: GraphqlFieldConfig<unknown, unknown>,
 ) {
     /**
      * Get a GraphQL argument
@@ -74,7 +82,7 @@ export function composeGraphQLFieldType(
     }
 
     const argsObjectMap = Object.entries(args).reduce(getArgument, {});
-    const fieldObjectType = composeGraphQLType(context, parent, {type, required, item}) as GraphQLOutputType;
+    const fieldObjectType = composeGraphQLType(context, parent, {type, required, list}) as GraphQLOutputType;
 
     return {...field, type: fieldObjectType, args: argsObjectMap};
 }
@@ -85,9 +93,9 @@ export function composeGraphQLFieldType(
 export function composeGraphQLArgumentType(
     context: Context,
     parent: GraphQLObjectType<unknown, unknown> | GraphQLInterfaceType | undefined,
-    {type, required, item, ...arg}: GraphqlArgumentConfig,
+    {type, required, list, ...arg}: GraphqlArgumentConfig,
 ) {
-    const argumentObjectType = composeGraphQLType(context, parent, {type, required, item}) as GraphQLInputType;
+    const argumentObjectType = composeGraphQLType(context, parent, {type, required, list}) as GraphQLInputType;
 
     return {...arg, type: argumentObjectType};
 }
@@ -98,21 +106,21 @@ export function composeGraphQLArgumentType(
 export function composeGraphQLType(
     context: Context,
     parent: GraphQLObjectType<unknown, unknown> | GraphQLInterfaceType | undefined,
-    // TODO: type
-    {type, required, item}: any,
+    {type, required, list}: GraphqlCompositeTypeInput,
 ) {
-    let graphqlType: GraphQLType = getGraphQLtype(context, parent, type);
+    let graphqlType: GraphQLType | undefined;
 
-    // TODO: do this another way (change item prop to list)
-    if (graphqlType.name === "GraphQLList") {
-        if (!item) throw new Error("Item is required when type is GraphQLList");
+    if (list) {
+        let itemsType: GraphQLType = getGraphQLtype(context, parent, list.type);
 
-        let itemsType: GraphQLType = getGraphQLtype(context, parent, item.type);
-
-        if (item.required) itemsType = new GraphQLNonNull(itemsType);
+        if (list.required) itemsType = new GraphQLNonNull(itemsType);
 
         graphqlType = new GraphQLList(itemsType);
     }
+
+    if (type) graphqlType = getGraphQLtype(context, parent, type);
+
+    if (!graphqlType) throw new Error("Type and list property cannot both be undefined");
 
     if (required) return new GraphQLNonNull(graphqlType);
 
@@ -125,16 +133,16 @@ export function composeGraphQLType(
 export function getGraphQLtype(
     context: Context,
     parent: GraphQLObjectType<unknown, unknown> | GraphQLInterfaceType | undefined,
-    type: GraphqlOutputType,
+    type: GraphqlInputType | GraphqlOutputType,
 ) {
     // Check if type is the parent type (recursion)
     if (typeof type === "string" && parent?.name === type) return parent;
 
-    // Resolve type based on string
-    if (typeof type === "string" && typeResolver[type]) return typeResolver[type];
-
     // Check if type is one of the previous created types
     if (typeof type === "string" && context[type]) return context[type];
+
+    // Resolve type based on string
+    if (typeof type === "string" && typeResolver[type]) return typeResolver[type];
 
     // Throw an error if we can't find the type based on the string
     if (typeof type === "string") throw new Error(`Could not find type '${type}'`);

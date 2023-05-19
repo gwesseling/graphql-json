@@ -8,7 +8,6 @@ import {
     GraphQLID,
     GraphQLInputObjectType,
     GraphQLInterfaceType,
-    GraphQLList,
     GraphQLObjectType,
     GraphQLScalarType,
     GraphQLString,
@@ -71,8 +70,7 @@ const schemaInput = {
                 defaultValue: 0,
             },
             tags: {
-                type: GraphQLList,
-                item: {
+                list: {
                     type: GraphQLString,
                     required: true,
                 },
@@ -100,8 +98,7 @@ const schemaInput = {
                 required: true,
             },
             tags: {
-                type: GraphQLList,
-                item: {
+                list: {
                     type: GraphQLString,
                     required: true,
                 },
@@ -134,8 +131,7 @@ const schemaInput = {
                 required: true,
             },
             tags: {
-                type: GraphQLList,
-                item: {
+                list: {
                     type: GraphQLString,
                     required: true,
                 },
@@ -172,8 +168,7 @@ const schemaInput = {
                 required: true,
             },
             tags: {
-                type: GraphQLList,
-                item: {
+                list: {
                     type: GraphQLString,
                     required: true,
                 },
@@ -199,8 +194,7 @@ const schemaInput = {
         fields: {
             getCars: {
                 description: "Get all cars",
-                type: GraphQLList,
-                item: {
+                list: {
                     type: "carTypes",
                     required: true,
                 },
@@ -208,8 +202,7 @@ const schemaInput = {
             },
             getElectricCars: {
                 description: "Get all electric engine cars",
-                type: GraphQLList,
-                item: {
+                list: {
                     type: "electricCar",
                     required: true,
                 },
@@ -217,8 +210,7 @@ const schemaInput = {
             },
             getCombustionCars: {
                 description: "Get all combustion engine cars",
-                type: GraphQLList,
-                item: {
+                list: {
                     type: "combustionCar",
                     required: true,
                 },
