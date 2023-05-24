@@ -1,5 +1,5 @@
-import {context, graphqlObject, graphqlUnion} from "../../mocks/graphqlTypes";
-import {graphqlUnionConfig} from "../../mocks/config";
+import {context, graphqlObject, graphqlUnion} from "_MOCKS/graphqlTypes";
+import {graphqlUnionConfig} from "_MOCKS/config";
 import createGraphQLUnionType from "./index";
 
 describe("ComposeGraphQLUnionType", () => {

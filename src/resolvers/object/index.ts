@@ -1,7 +1,7 @@
 import {GraphQLObjectType} from "graphql";
-import {composeGraphQLFields, composeGraphQLInterfaces} from "../../libs";
-import type {GraphqlObjectConfig} from "../../types/input";
-import type {Context} from "../../types";
+import {composeGraphQLFields, composeGraphQLInterfaces} from "_LIBS/index";
+import type {GraphqlObjectConfig} from "_TYPES/input";
+import type {Context} from "_TYPES/index";
 
 /**
  * Create a GraphQL Object Type

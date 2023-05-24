@@ -1,5 +1,5 @@
-import {context, graphqlEnum} from "../../mocks/graphqlTypes";
-import {enumConfig} from "../../mocks/config";
+import {context, graphqlEnum} from "_MOCKS/graphqlTypes";
+import {enumConfig} from "_MOCKS/config";
 import composeGraphQLEnumType from "./index";
 
 describe("ComposeGraphQLEnumType", () => {

@@ -1,5 +1,5 @@
-import {context, graphqlInputObject} from "../../mocks/graphqlTypes";
-import {inputObjectConfig} from "../../mocks/config";
+import {context, graphqlInputObject} from "_MOCKS/graphqlTypes";
+import {inputObjectConfig} from "_MOCKS/config";
 import composeGraphQLObjectInputType from "./index";
 
 describe("ComposeGraphQLObjectInputType", () => {

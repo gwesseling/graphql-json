@@ -1,5 +1,5 @@
-import {context, graphqlScalar} from "../../mocks/graphqlTypes";
-import {scalarConfig} from "../../mocks/config";
+import {context, graphqlScalar} from "_MOCKS/graphqlTypes";
+import {scalarConfig} from "_MOCKS/config";
 import composeGraphQLScalarType from "./index";
 
 describe("ComposeGraphQLUnionType", () => {

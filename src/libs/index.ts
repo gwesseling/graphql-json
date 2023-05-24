@@ -11,7 +11,7 @@ import {
     GraphQLType,
     GraphQLUnionType,
 } from "graphql";
-import type {ObjMap} from "../types/utils";
+import type {ObjMap} from "_TYPES/utils";
 import type {
     ArgumentContext,
     ArgumentEntry,
@@ -21,7 +21,7 @@ import type {
     FieldEntry,
     GraphqlCompositeTypeInput,
 } from "../types";
-import type {GraphqlArgumentConfig, GraphqlFieldConfig, GraphqlInputType, GraphqlOutputType} from "../types/input";
+import type {GraphqlArgumentConfig, GraphqlFieldConfig, GraphqlInputType, GraphqlOutputType} from "_TYPES/input";
 
 const typeResolver = {
     enum: GraphQLEnumType,

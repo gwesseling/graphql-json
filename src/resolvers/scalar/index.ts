@@ -1,6 +1,6 @@
 import {GraphQLScalarType} from "graphql";
-import type {Context} from "../../types";
-import type {GraphqlScalarConfig} from "../../types/input";
+import type {Context} from "_TYPES/index";
+import type {GraphqlScalarConfig} from "_TYPES/input";
 
 /**
  * Create a GraphQL Scalar Type
