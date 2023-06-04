@@ -1,6 +1,11 @@
 # dependencies
 **/node_modules
-test-schema.txt
 
 # test
 coverage
+
+# build
+build
+
+# cache
+.eslintcache
