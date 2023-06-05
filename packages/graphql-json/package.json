@@ -5,7 +5,7 @@
         "apollo",
         "graphql",
         "json"
-      ],
+    ],
     "version": "0.0.1",
     "author": "gwesseling",
     "license": "MIT",
