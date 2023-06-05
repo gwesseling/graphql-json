@@ -1,7 +1,19 @@
 {
     "name": "@gwesseling/graphql-json",
+    "description": "graphql-json - a powerful tool that helps you create GraphQL schemas using JSON",
+    "keywords": [
+        "apollo",
+        "graphql",
+        "json"
+      ],
     "version": "0.0.1",
+    "author": "gwesseling",
     "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/gwesseling/graphql-json.git",
+        "directory": "packages/graphql-json"
+      },
     "main": "build/index.cjs.js",
     "module": "build/index.esm.js",
     "scripts": {
@@ -28,5 +40,5 @@
     "files": [
         "build",
         "README.md"
-      ]
+    ]
 }

@@ -1,12 +1,16 @@
 {
     "private": true,
     "scripts": {
+        "build": "yarn workspaces run build",
+        "release": "changeset publish",
         "lint": "eslint --cache .",
         "prettier": "prettier --cache --write .",
         "tsc":  "yarn workspaces run tsc",
         "test": "yarn workspaces run test"
     },
     "devDependencies": {
+        "@changesets/changelog-github": "0.4.8",
+        "@changesets/cli": "2.26.1",
         "@typescript-eslint/eslint-plugin": "5.59.2",
         "@typescript-eslint/parser": "5.59.2",
         "eslint": "8.39.0",
