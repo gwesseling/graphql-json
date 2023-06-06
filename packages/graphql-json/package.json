@@ -14,8 +14,8 @@
         "url": "https://github.com/gwesseling/graphql-json.git",
         "directory": "packages/graphql-json"
     },
-    "main": "build/index.js",
-    "module": "build/index.mjs",
+    "main": "build/index.cjs.js",
+    "module": "build/index.esm.js",
     "typings": "build/index.d.ts",
     "scripts": {
         "build": "tsup",
