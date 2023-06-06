@@ -1,2 +1,11 @@
 # dependencies
 **/node_modules
+
+# test
+coverage
+
+# build
+build
+
+# cache
+.eslintcache

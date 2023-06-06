@@ -1,0 +1,44 @@
+{
+    "name": "@gwesseling/graphql-json",
+    "description": "graphql-json - a powerful tool that helps you create GraphQL schemas using JSON",
+    "keywords": [
+        "apollo",
+        "graphql",
+        "json"
+    ],
+    "version": "0.0.1",
+    "author": "gwesseling",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/gwesseling/graphql-json.git",
+        "directory": "packages/graphql-json"
+      },
+    "main": "build/index.cjs.js",
+    "module": "build/index.esm.js",
+    "scripts": {
+        "build": "node esbuild.config.js",
+        "tsc": "tsc --pretty --noEmit",
+        "test": "jest"
+    },
+    "peerDependencies": {
+        "graphql": "^15.2.0 || ^16.0.0"
+    },
+    "devDependencies": {
+        "@babel/core": "7.21.8",
+        "@babel/preset-env": "7.21.5",
+        "@babel/preset-typescript": "7.21.5",
+        "@types/jest": "29.5.1",
+        "@types/node": "18.16.3",
+        "babel-jest": "29.5.0",
+        "esbuild": "0.17.19",
+        "graphql": "16.6.0",
+        "jest": "29.5.0",
+        "ts-node": "10.9.1",
+        "typescript": "*"
+    },
+    "files": [
+        "build",
+        "README.md"
+    ]
+}
