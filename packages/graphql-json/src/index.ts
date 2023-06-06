@@ -1,3 +1,3 @@
-import createSchema from "_RESOLVERS/index";
+import createSchema from "./resolvers/index";
 
 export default createSchema;

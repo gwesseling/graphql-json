@@ -4,13 +4,6 @@
       "module": "commonjs",
       "target": "es2017",
       "baseUrl": ".",
-      "paths": {
-          "*": ["src/*"],
-          "_TYPES/*": ["src/types/*"],
-          "_MOCKS/*": ["src/mocks/*"],
-          "_LIBS/*": ["src/libs/*"],
-          "_RESOLVERS/*": ["src/resolvers/*"],
-      }
     },
     "exclude": ["build"]
   }

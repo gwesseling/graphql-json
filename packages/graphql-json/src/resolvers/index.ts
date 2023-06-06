@@ -1,13 +1,13 @@
 import {GraphQLNamedType, GraphQLObjectType, GraphQLSchema} from "graphql";
-import type {Context, GraphqlResolverFunction, InputConfig, InputSchema} from "_TYPES/index";
-import type {Maybe} from "_TYPES/utils";
-import type {GraphqlType} from "_TYPES/input";
-import composeGraphQLEnumType from "_RESOLVERS/enum";
-import composeGraphQLObjectType from "_RESOLVERS/object";
-import composeGraphQLObjectInputType from "_RESOLVERS/inputObject";
-import composeGraphQLUnionType from "_RESOLVERS/union";
-import composeGraphQLInterfaceType from "_RESOLVERS/interface";
-import composeGraphqlScalarType from "_RESOLVERS/scalar";
+import type {Context, GraphqlResolverFunction, InputConfig, InputSchema} from "../types/index";
+import type {Maybe} from "../types/utils";
+import type {GraphqlType} from "../types/input";
+import composeGraphQLEnumType from "../resolvers/enum";
+import composeGraphQLObjectType from "../resolvers/object";
+import composeGraphQLObjectInputType from "../resolvers/inputObject";
+import composeGraphQLUnionType from "../resolvers/union";
+import composeGraphQLInterfaceType from "../resolvers/interface";
+import composeGraphqlScalarType from "../resolvers/scalar";
 
 const FORCED_TYPE = ["query", "mutation", "subscription"];
 
