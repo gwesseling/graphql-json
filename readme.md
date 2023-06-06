@@ -2,6 +2,8 @@
 
 GraphQL JSON is a powerful tool that helps you create GraphQL schemas using JSON. With an input schema based on the GraphQL type API, it should feel familiar to most users.
 
+![graphql-json](https://github.com/gwesseling/graphql-json/assets/12099455/3a896db4-b2b8-4089-a775-906bdbacc94a)
+
 This package offers a TypeScript-typed solution for creating schemas for your GraphQL server, allowing you to take advantage of TypeScript to avoid errors. At the same time, it preserves the flexibility that GraphQL offers, enabling you to shape your schema to your liking.
 
 The main goal of this package is to simplify the process of constructing GraphQL schemas. It helps you eliminate unnecessary clutter, making it easier to understand and modify your schemas. This way, you can reduce errors and build a reliable GraphQL API without the downsides of the GraphQL Types API or the GraphQL Schema Language.
