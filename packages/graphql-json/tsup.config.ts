@@ -10,7 +10,11 @@ export default defineConfig({
     target: ["esnext", "node10.4"],
     sourcemap: true,
     minify: "terser",
-    treeshake: true,
     external: ["graphql"],
     clean: true,
+    outExtension({format}) {
+        return {
+            js: `.${format}.js`,
+        };
+    },
 });
