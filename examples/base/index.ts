@@ -15,7 +15,7 @@ import {
     Kind,
 } from "graphql";
 
-import createSchema from "./index";
+import createSchema from "@gwesseling/graphql-json";
 
 const dateScalar = new GraphQLScalarType({
     name: "Date",

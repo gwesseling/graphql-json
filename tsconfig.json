@@ -1,28 +1,26 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
-        "lib": ["ES2020", "DOM"],
-        "allowJs": false,
-        "noEmit": true,
-        "isolatedModules": false,
-        "strict": true,
-        "moduleResolution": "node",
-        "allowSyntheticDefaultImports": true,
-        "esModuleInterop": true,
-        "skipLibCheck": true,
-        "resolveJsonModule": true,
-        "declaration": true,
-        "forceConsistentCasingInFileNames": true,
-        "noImplicitThis": false,
-        "sourceMap": true,
-        "noImplicitAny": false,
-        "baseUrl": ".",
-        "paths": {
-            "*": ["src/*"],
-            "_TYPES/*": ["src/types/*"],
-            "_MOCKS/*": ["src/mocks/*"],
-            "_LIBS/*": ["src/libs/*"],
-            "_RESOLVERS/*": ["src/resolvers/*"],
-        }
-    }
-}
+      "allowJs": true,
+      "allowSyntheticDefaultImports": true,
+      "declaration": true,
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+      "incremental": true,
+      "isolatedModules": true,
+      "lib": ["dom", "esnext"],
+      "module": "esnext",
+      "moduleResolution": "node",
+      "noEmit": false,
+      "noFallthroughCasesInSwitch": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "resolveJsonModule": true,
+      "skipLibCheck": true,
+      "sourceMap": true,
+      "strict": true,
+      "noImplicitAny": false,
+      "target": "es6"
+    },
+    "include": ["packages"],
+    "exclude": ["**/build", "node_modules"]
+  }

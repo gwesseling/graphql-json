@@ -1,0 +1,86 @@
+schema {
+  query: query
+  mutation: mutation
+}
+
+"""Queries"""
+type query {
+  """Get all cars"""
+  getCars: [carTypes!]!
+
+  """Get all electric engine cars"""
+  getElectricCars: [electricCar!]!
+
+  """Get all combustion engine cars"""
+  getCombustionCars: [combustionCar!]!
+
+  """Get a car"""
+  getCar(id: ID!): carTypes
+}
+
+"""Any car"""
+union carTypes = electricCar | combustionCar
+
+"""Electric engine car"""
+type electricCar implements car {
+  id: ID!
+  description: String
+  brand: brand!
+  price: Float!
+  tags: [String!]!
+  createdAt: Date!
+  charge: Float!
+}
+
+"""This is the car itself"""
+interface car {
+  id: ID!
+  description: String
+  brand: brand!
+  price: Float!
+  tags: [String!]!
+  createdAt: Date!
+}
+
+"""This is the brand of the car"""
+enum brand {
+  """Tesla"""
+  tesla
+
+  """Lightyear"""
+  lightyear
+
+  """Volkwagen"""
+  volkwagen
+
+  """Porsche"""
+  porsche
+}
+
+"""Date custom scalar type"""
+scalar Date
+
+"""Combustion engine car"""
+type combustionCar implements car {
+  id: ID!
+  description: String
+  brand: brand!
+  price: Float!
+  tags: [String!]!
+  createdAt: Date!
+  fuel: String!
+}
+
+"""Mutations"""
+type mutation {
+  """Create a car"""
+  createCar(car: carInput): carTypes
+}
+
+"""This is the input for the create car mutation"""
+input carInput {
+  description: String
+  brand: brand!
+  price: Float = 0
+  tags: [String!]!
+}
