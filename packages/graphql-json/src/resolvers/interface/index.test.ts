@@ -1,5 +1,5 @@
-import {context, graphqlInterface} from "_MOCKS/graphqlTypes";
-import {interfaceConfig} from "_MOCKS/config";
+import {context, graphqlInterface} from "../../mocks/graphqlTypes";
+import {interfaceConfig} from "../../mocks/config";
 import composeGraphQLInterfaceType from "./index";
 
 // TODO: test object specific stuff to get 100% test coverage

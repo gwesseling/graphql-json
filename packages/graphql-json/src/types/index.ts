@@ -25,8 +25,8 @@ import type {
     GraphqlInputType,
     GraphqlItemConfig,
     GraphqlOutputType,
-} from "_TYPES/input";
-import type {Maybe} from "_TYPES/utils";
+} from "./input";
+import type {Maybe} from "./utils";
 
 // TODO: we might be able to add Directive to this too
 export type InputSchemaType =
