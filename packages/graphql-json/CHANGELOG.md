@@ -1,5 +1,11 @@
 # @gwesseling/graphql-json
 
+## 0.0.4
+
+### Patch Changes
+
+-   [#9](https://github.com/gwesseling/graphql-json/pull/9) [`54528fb`](https://github.com/gwesseling/graphql-json/commit/54528fbd6dafdacfcbe8d79f6a9836bf41d7cfd7) Thanks [@gwesseling](https://github.com/gwesseling)! - Added treeshaking, code splitting and esm example
+
 ## 0.0.3
 
 ### Patch Changes
