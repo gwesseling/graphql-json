@@ -9,6 +9,8 @@ export default defineConfig({
     platform: "node",
     target: ["esnext", "node10.4"],
     sourcemap: true,
+    treeshake: true,
+    splitting: true,
     minify: "terser",
     external: ["graphql"],
     clean: true,
