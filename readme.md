@@ -69,6 +69,7 @@ For a complete input examples, please refer to the [examples](https://github.com
 | interface | A GraphQL interface type                                                   |
 | id        | A GraphQL id scalar type                                                   |
 | string    | A GraphQL string scalar type                                               |
+| int       | A GraphQL integer scalar type                                              |
 | float     | A GraphQL float scalar type                                                |
 | boolean   | A GraphQL boolean scalar type                                              |
 | name      | Either the name of a GraphQL type inside the schema or a GraphQL type name |
