@@ -187,10 +187,10 @@
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.2.0.tgz#5f3d96ec6b2354ad6d8a28bf216a1d97b5426861"
   integrity sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==
 
-"@gwesseling/graphql-json@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@gwesseling/graphql-json/-/graphql-json-0.0.2.tgz#b2e72028dd53ef385430d01ec8bc2ffab832fd31"
-  integrity sha512-qxzWJV6g6yZGyVL8E5BtSLxbds/V5/DT6PjfevdPR52JtBIPv/pWjx9znjTFrk5L/bEbRXPpgo16iT518/5cqw==
+"@gwesseling/graphql-json@0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@gwesseling/graphql-json/-/graphql-json-0.0.4.tgz#c0abbfca8b7f530c660b5d79cbeadaecec49e0d2"
+  integrity sha512-spE5SIXO7WPLs7IKXNxubpQNkhHAGgvf6Xa0MdGV8TCBdrWGF4niH39Ebcu2/CxnO05+N/9Bc7n7ukpxteWIuw==
 
 "@josephg/resolvable@^1.0.0":
   version "1.0.1"

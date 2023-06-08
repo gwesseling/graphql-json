@@ -1,5 +1,6 @@
 import {
     GraphQLEnumType,
+    GraphQLID,
     GraphQLInputObjectType,
     GraphQLInputType,
     GraphQLInterfaceType,
@@ -10,6 +11,10 @@ import {
     GraphQLScalarType,
     GraphQLType,
     GraphQLUnionType,
+    GraphQLInt,
+    GraphQLFloat,
+    GraphQLString,
+    GraphQLBoolean,
 } from "graphql";
 import type {ObjMap} from "../types/utils";
 import type {
@@ -30,7 +35,11 @@ const typeResolver = {
     union: GraphQLUnionType,
     interface: GraphQLInterfaceType,
     scalar: GraphQLScalarType,
-    list: GraphQLList<GraphQLType>,
+    id: GraphQLID,
+    int: GraphQLInt,
+    float: GraphQLFloat,
+    string: GraphQLString,
+    boolean: GraphQLBoolean,
 };
 
 /**
