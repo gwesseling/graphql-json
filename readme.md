@@ -55,7 +55,7 @@ For a complete input examples, please refer to the [examples](https://github.com
 | GraphQLUnionType       | A GraphQL union type                                                                       |
 | GraphQLInputObjectType | A GraphQL input object type                                                                |
 | GraphQLInterfaceType   | A GraphQL interface type                                                                   |
-| string                 | Either the name of a GraphQL type inside the schema or a [GraphQL type name](#named-types) |
+| name                   | Either the name of a GraphQL type inside the schema or a [GraphQL type name](#named-types) |
 
 ### Named types
 
@@ -67,7 +67,11 @@ For a complete input examples, please refer to the [examples](https://github.com
 | union     | A GraphQL union type                                                       |
 | input     | A GraphQL input object type                                                |
 | interface | A GraphQL interface type                                                   |
-| string    | Either the name of a GraphQL type inside the schema or a GraphQL type name |
+| id        | A GraphQL id scalar type                                                   |
+| string    | A GraphQL string scalar type                                               |
+| float     | A GraphQL float scalar type                                                |
+| boolean   | A GraphQL boolean scalar type                                              |
+| name      | Either the name of a GraphQL type inside the schema or a GraphQL type name |
 
 ### Input types
 
@@ -76,7 +80,7 @@ For a complete input examples, please refer to the [examples](https://github.com
 | GraphQLEnumType        | A GraphQL enum type                                                                        |
 | GraphQLScalarType      | A GraphQL scalar type                                                                      |
 | GraphQLInputObjectType | A GraphQL input object type                                                                |
-| string                 | Either the name of a GraphQL type inside the schema or a [GraphQL type name](#named-types) |
+| name                   | Either the name of a GraphQL type inside the schema or a [GraphQL type name](#named-types) |
 
 ### Output types
 
@@ -87,7 +91,7 @@ For a complete input examples, please refer to the [examples](https://github.com
 | GraphQLScalarType    | A GraphQL scalar type                                                                      |
 | GraphQLUnionType     | A GraphQL union type                                                                       |
 | GraphQLInterfaceType | A GraphQL interface type                                                                   |
-| string               | Either the name of a GraphQL type inside the schema or a [GraphQL type name](#named-types) |
+| name                 | Either the name of a GraphQL type inside the schema or a [GraphQL type name](#named-types) |
 
 #### Enum type
 
