@@ -1,5 +1,11 @@
 # @gwesseling/graphql-json
 
+## 0.0.5
+
+### Patch Changes
+
+-   [#11](https://github.com/gwesseling/graphql-json/pull/11) [`b7199cb`](https://github.com/gwesseling/graphql-json/commit/b7199cb25963ff2218b5f6e8bc89831772558c92) Thanks [@gwesseling](https://github.com/gwesseling)! - Added built in scalar types to type resolver
+
 ## 0.0.4
 
 ### Patch Changes
