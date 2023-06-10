@@ -11,7 +11,6 @@ export default defineConfig({
     sourcemap: true,
     treeshake: true,
     splitting: true,
-    minify: "terser",
     external: ["graphql"],
     clean: true,
     outExtension({format}) {
