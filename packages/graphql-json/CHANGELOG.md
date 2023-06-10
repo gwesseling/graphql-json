@@ -1,5 +1,11 @@
 # @gwesseling/graphql-json
 
+## 0.0.6
+
+### Patch Changes
+
+-   [#15](https://github.com/gwesseling/graphql-json/pull/15) [`956e351`](https://github.com/gwesseling/graphql-json/commit/956e351f076029e1e80fef19d305882656d3b333) Thanks [@gwesseling](https://github.com/gwesseling)! - Remove minify to improve error logging
+
 ## 0.0.5
 
 ### Patch Changes
