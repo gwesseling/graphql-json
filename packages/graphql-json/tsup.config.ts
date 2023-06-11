@@ -8,7 +8,6 @@ export default defineConfig({
     dts: true,
     platform: "node",
     target: ["esnext", "node10.4"],
-    sourcemap: true,
     treeshake: true,
     splitting: true,
     external: ["graphql"],
