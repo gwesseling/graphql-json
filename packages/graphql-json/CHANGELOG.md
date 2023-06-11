@@ -1,5 +1,13 @@
 # @gwesseling/graphql-json
 
+## 0.0.7
+
+### Patch Changes
+
+-   [#20](https://github.com/gwesseling/graphql-json/pull/20) [`de72bb8`](https://github.com/gwesseling/graphql-json/commit/de72bb81eee456a92b39960d31e4940658b818f0) Thanks [@gwesseling](https://github.com/gwesseling)! - Added the context option to pre-fill the context graphql-json uses to resolve (custom) types
+
+-   [#18](https://github.com/gwesseling/graphql-json/pull/18) [`895ae4b`](https://github.com/gwesseling/graphql-json/commit/895ae4bb148b321093565ea594f97095fee1faca) Thanks [@gwesseling](https://github.com/gwesseling)! - Remove sourcemaps from build
+
 ## 0.0.6
 
 ### Patch Changes
