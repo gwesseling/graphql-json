@@ -1,9 +1,9 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
-      "module": "commonjs",
-      "target": "es2017",
-      "baseUrl": ".",
+        "module": "commonjs",
+        "target": "es2017",
+        "baseUrl": "."
     },
     "exclude": ["build"]
-  }
+}

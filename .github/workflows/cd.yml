@@ -1,39 +1,39 @@
 name: Release
 on:
-  push:
-    branches:
-      - main
+    push:
+        branches:
+            - main
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-  release:
-    name: Release
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
+    release:
+        name: Release
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repo
+              uses: actions/checkout@v3
 
-      - name: Setup Node.js 16
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: yarn
+            - name: Setup Node.js 16
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 16
+                  cache: yarn
 
-      - name: Install Dependencies
-        run: yarn --frozen-lockfile
+            - name: Install Dependencies
+              run: yarn --frozen-lockfile
 
-      - name: Copy readme to package
-        run: cp readme.md packages/graphql-json
+            - name: Copy readme to package
+              run: cp readme.md packages/graphql-json
 
-      - name: Build packages
-        run: yarn build
+            - name: Build packages
+              run: yarn build
 
-      - name: Create Release Pull Request or Publish to npm
-        id: changesets
-        uses: changesets/action@v1
-        with:
-          publish: yarn release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+            - name: Create Release Pull Request or Publish to npm
+              id: changesets
+              uses: changesets/action@v1
+              with:
+                  publish: yarn release
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

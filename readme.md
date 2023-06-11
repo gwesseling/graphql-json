@@ -9,6 +9,7 @@ This package offers a TypeScript-typed solution for creating schemas for your Gr
 The main goal of this package is to simplify the process of constructing GraphQL schemas. It helps you eliminate unnecessary clutter, making it easier to understand and modify your schemas. This way, you can reduce errors and build a reliable GraphQL API without the downsides of the GraphQL Types API or the GraphQL Schema Language.
 
 ## Installation
+
 You can install `graphql-json` by running one of the commands below.
 
 ```
@@ -22,15 +23,15 @@ yarn add @gwesseling/graphql-json
 pnpm install @gwesseling/graphql-json
 ```
 
-
 ## Usage
+
 The usage of these packages is very straightforward.
 
 ```javascript
 import createSchema from "@gwesseling/graphql-json";
 
 const server = new ApolloServer({
-    schema: createSchema({...}),
+    schema: createSchema(schema, options),
 });
 ```
 
@@ -196,3 +197,15 @@ For a complete input examples, please refer to the [examples](https://github.com
 | -------- | ---------------------------------- | ------------------------------------------------------------------------- | -------- |
 | type     | `GraphQLList` type                 | [Input type](#input-types) or `string` (a GraphQL type inside the schema) | Yes      |
 | required | Whenever the field is non-nullable | `boolean`                                                                 | No       |
+
+### Options
+
+| Property          | Description                                                                       | Type                                    | Required |
+| ----------------- | --------------------------------------------------------------------------------- | --------------------------------------- | -------- |
+| context           | Pre-fill the context with custom types that graphql-json can use to resolve types | `object`                                | No       |
+| description       | Schema description                                                                | `string`                                | No       |
+| types             | Schema description types                                                          | Array of `GraphQLNamedType` or `string` | No       |
+| directives        | Schema directives                                                                 | Array of `GraphQLDirective`             | No       |
+| extensions        | Schena extension                                                                  | `GraphQLSchemaExtensions`               | No       |
+| astNode           | Schema astNode                                                                    | `SchemaDefinitionNode`                  | No       |
+| extensionASTNodes | Schema extensionASTNodes                                                          | `SchemaExtensionNode`                   | No       |

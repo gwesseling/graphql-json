@@ -40,6 +40,7 @@ export type InputSchemaType =
 export type InputSchema = {[name: string]: InputSchemaType};
 
 export type InputConfig = {
+    context?: Context;
     description?: Maybe<string>;
     types?: Maybe<ReadonlyArray<GraphQLNamedType | string>>;
     directives?: Maybe<ReadonlyArray<GraphQLDirective>>;
