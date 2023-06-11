@@ -183,7 +183,7 @@
                 "required": true
             },
             "getMediaItem": {
-                "description" : "Get media item by id",
+                "description": "Get media item by id",
                 "type": "mediaType",
                 "args": {
                     "id": {

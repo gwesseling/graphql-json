@@ -65,12 +65,13 @@ function getTypesField(context: Context, types?: Maybe<ReadonlyArray<GraphQLName
 /**
  * Create a GraphQL schema
  */
-export default function createSchema(schema: InputSchema, config?: InputConfig) {
+export default function createSchema(schema: InputSchema, {context = {}, ...config}: InputConfig = {}) {
     const schemaTypes = Object.entries(schema).reduce<Context>((context, [name, {type, ...input}]) => {
         const graphqlTypeResolver: GraphqlResolverFunction = getInputType(name, type);
+
         context[name] = graphqlTypeResolver(context, name, input);
         return context;
-    }, {});
+    }, context);
 
     const query = schemaTypes["query"] as GraphQLObjectType<unknown, unknown> | undefined;
     const mutation = schemaTypes["mutation"] as GraphQLObjectType<unknown, unknown> | undefined;

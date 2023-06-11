@@ -1,9 +1,9 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "esModuleInterop": true,
-    "moduleResolution": "node",
-    "module": "ESNext",
-    "lib": ["esnext", "dom"]
-  }
+    "compilerOptions": {
+        "target": "es5",
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "module": "ESNext",
+        "lib": ["esnext", "dom"]
+    }
 }

@@ -5,7 +5,7 @@
         "release": "changeset publish",
         "lint": "eslint --cache .",
         "prettier": "prettier --cache --write .",
-        "tsc":  "yarn workspaces run tsc",
+        "tsc": "yarn workspaces run tsc",
         "test": "yarn workspaces run test"
     },
     "devDependencies": {
