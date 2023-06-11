@@ -9,7 +9,7 @@
     "dependencies": {
         "@apollo/server": "4.7.1",
         "graphql": "16.6.0",
-        "@gwesseling/graphql-json": "0.0.6"
+        "@gwesseling/graphql-json": "0.0.7"
     },
     "devDependencies": {
         "@types/node": "18.16.3",
