@@ -7,7 +7,7 @@
         "start": "ts-node-esm index.ts"
     },
     "dependencies": {
-        "@apollo/server": "4.7.1",
+        "@apollo/server": "4.7.4",
         "graphql": "16.6.0",
         "@gwesseling/graphql-json": "0.0.7"
     },
