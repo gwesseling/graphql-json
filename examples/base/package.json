@@ -8,11 +8,11 @@
     },
     "dependencies": {
         "@apollo/server": "4.7.4",
-        "graphql": "16.6.0",
+        "graphql": "16.7.1",
         "@gwesseling/graphql-json": "0.0.7"
     },
     "devDependencies": {
-        "@types/node": "18.16.3",
+        "@types/node": "20.3.1",
         "ts-node": "10.9.1",
         "typescript": "5.0.4"
     }
