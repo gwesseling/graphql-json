@@ -1,69 +1,93 @@
 schema {
-  query: query
-  mutation: mutation
+    query: query
+    mutation: mutation
 }
 
-"""Queries"""
+"""
+Queries
+"""
 type query {
-  """Get all media items"""
-  getMediaItems: [mediaType!]!
+    """
+    Get all media items
+    """
+    getMediaItems: [mediaType!]!
 
-  """Get all movies"""
-  getMovies: [movie!]!
+    """
+    Get all movies
+    """
+    getMovies: [movie!]!
 
-  """Get all series"""
-  getSeries: [serie!]!
+    """
+    Get all series
+    """
+    getSeries: [serie!]!
 
-  """Get media item by id"""
-  getMediaItem(id: ID!): mediaType
+    """
+    Get media item by id
+    """
+    getMediaItem(id: ID!): mediaType
 }
 
-"""Media item type"""
+"""
+Media item type
+"""
 union mediaType = movie | serie
 
-"""A movie"""
+"""
+A movie
+"""
 type movie implements media {
-  id: ID!
-  title: String!
-  description: String
-  type: Int!
-  price: Float!
-  duration: Int!
-  tags: [String]!
+    id: ID!
+    title: String!
+    description: String
+    type: Int!
+    price: Float!
+    duration: Int!
+    tags: [String]!
 }
 
-"""A media item"""
+"""
+A media item
+"""
 interface media {
-  id: ID!
-  title: String!
-  description: String
-  type: Int!
-  price: Float!
-  tags: [String]!
+    id: ID!
+    title: String!
+    description: String
+    type: Int!
+    price: Float!
+    tags: [String]!
 }
 
-"""A serie"""
+"""
+A serie
+"""
 type serie implements media {
-  id: ID!
-  title: String!
-  description: String
-  type: Int!
-  price: Float!
-  seasons: Int!
-  tags: [String]!
+    id: ID!
+    title: String!
+    description: String
+    type: Int!
+    price: Float!
+    seasons: Int!
+    tags: [String]!
 }
 
-"""Mutations"""
+"""
+Mutations
+"""
 type mutation {
-  """Create a media item"""
-  createMediaItem(mediaItem: mediaItemInput): mediaType
+    """
+    Create a media item
+    """
+    createMediaItem(mediaItem: mediaItemInput): mediaType
 }
 
-"""Input for a media item"""
+"""
+Input for a media item
+"""
 input mediaItemInput {
-  title: String!
-  description: String
-  type: Int!
-  price: Float!
-  tags: [String]
+    title: String!
+    description: String
+    type: Int!
+    price: Float!
+    tags: [String]
 }
