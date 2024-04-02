@@ -1,0 +1,211 @@
+{
+  "genre": {
+    "description": "The genre of the media item",
+    "type": "enum",
+    "values": {
+      "action": {
+        "description": "Action",
+        "value": "Action"
+      },
+      "comedy": {
+        "description": "Comedy",
+        "value": "Comedy"
+      },
+      "horror": {
+        "description": "Horror",
+        "value": "Horror"
+      },
+      "fantasy": {
+        "description": "Fantasy",
+        "value": "Fantasy"
+      }
+    }
+  },
+  "mediaItemInput": {
+    "description": "Input for a media item",
+    "type": "input",
+    "fields": {
+      "title": {
+        "type": "string",
+        "required": true
+      },
+      "description": {
+        "type": "string"
+      },
+      "type": {
+        "type": "int",
+        "required": true
+      },
+      "price": {
+        "type": "float",
+        "required": true
+      },
+      "tags": {
+        "list": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "media": {
+    "description": "A media item",
+    "type": "interface",
+    "fields": {
+      "id": {
+        "type": "id",
+        "required": true
+      },
+      "title": {
+        "type": "string",
+        "required": true
+      },
+      "description": {
+        "type": "string"
+      },
+      "type": {
+        "type": "int",
+        "required": true
+      },
+      "price": {
+        "type": "float",
+        "required": true
+      },
+      "tags": {
+        "list": {
+          "type": "string"
+        },
+        "required": true
+      }
+    }
+  },
+  "movie": {
+    "description": "A movie",
+    "type": "object",
+    "interfaces": ["media"],
+    "fields": {
+      "id": {
+        "type": "id",
+        "required": true
+      },
+      "title": {
+        "type": "string",
+        "required": true
+      },
+      "description": {
+        "type": "string"
+      },
+      "type": {
+        "type": "int",
+        "required": true
+      },
+      "price": {
+        "type": "float",
+        "required": true
+      },
+      "duration": {
+        "type": "int",
+        "required": true
+      },
+      "tags": {
+        "list": {
+          "type": "string"
+        },
+        "required": true
+      }
+    }
+  },
+  "serie": {
+    "description": "A serie",
+    "type": "object",
+    "interfaces": ["media"],
+    "fields": {
+      "id": {
+        "type": "id",
+        "required": true
+      },
+      "title": {
+        "type": "string",
+        "required": true
+      },
+      "description": {
+        "type": "string"
+      },
+      "type": {
+        "type": "int",
+        "required": true
+      },
+      "price": {
+        "type": "float",
+        "required": true
+      },
+      "seasons": {
+        "type": "int",
+        "required": true
+      },
+      "tags": {
+        "list": {
+          "type": "string"
+        },
+        "required": true
+      }
+    }
+  },
+  "mediaType": {
+    "description": "Media item type",
+    "type": "union",
+    "types": ["movie", "serie"]
+  },
+  "query": {
+    "description": "Queries",
+    "fields": {
+      "getMediaItems": {
+        "description": "Get all media items",
+        "list": {
+          "type": "mediaType",
+          "required": true
+        },
+        "required": true
+      },
+      "getMovies": {
+        "description": "Get all movies",
+        "list": {
+          "type": "movie",
+          "required": true
+        },
+        "required": true
+      },
+      "getSeries": {
+        "description": "Get all series",
+        "list": {
+          "type": "serie",
+          "required": true
+        },
+        "required": true
+      },
+      "getMediaItem": {
+        "description": "Get media item by id",
+        "type": "mediaType",
+        "args": {
+          "id": {
+            "type": "id",
+            "required": true
+          }
+        }
+      }
+    }
+  },
+  "mutation": {
+    "description": "Mutations",
+    "fields": {
+      "createMediaItem": {
+        "description": "Create a media item",
+        "type": "mediaType",
+        "args": {
+          "mediaItem": {
+            "type": "mediaItemInput"
+          }
+        }
+      }
+    }
+  }
+}
