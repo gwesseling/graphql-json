@@ -102,7 +102,7 @@ func main() {
 			imports = append(imports, graphqlType)
 		}
 
-		output = append(output, "const "+key+" = new "+graphqlType+"({", `name: "`+key+`",`)
+		output = append(output, "export const "+key+" = new "+graphqlType+"({", `name: "`+key+`",`)
 
 		if value.Description != nil {
 			output = append(output, `description: "`+*value.Description+`",`)

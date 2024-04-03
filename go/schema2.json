@@ -1,114 +1,114 @@
 {
-  "brand": {
-    "description": "This is the brand of the car",
-    "type": "enum",
-    "values": {
-      "tesla": { "description": "Tesla", "value": "Tesla" },
-      "lightyear": { "description": "Lightyear", "value": "Lightyear" },
-      "volkwagen": { "description": "Volkwagen", "value": "Volkwagen" },
-      "porsche": { "description": "Porsche", "value": "Porsche" }
+    "brand": {
+        "description": "This is the brand of the car",
+        "type": "enum",
+        "values": {
+            "tesla": {"description": "Tesla", "value": "Tesla"},
+            "lightyear": {"description": "Lightyear", "value": "Lightyear"},
+            "volkwagen": {"description": "Volkwagen", "value": "Volkwagen"},
+            "porsche": {"description": "Porsche", "value": "Porsche"}
+        }
+    },
+    "carInput": {
+        "description": "This is the input for the create car mutation",
+        "type": "object",
+        "fields": {
+            "description": {"type": "string"},
+            "brand": {"type": "brand", "required": true},
+            "price": {"type": "float", "defaultValue": 0},
+            "tags": {
+                "list": {"type": "string", "required": true},
+                "required": true
+            }
+        }
+    },
+    "car": {
+        "description": "This is the car itself",
+        "type": "interface",
+        "fields": {
+            "id": {"type": "ID", "required": true},
+            "description": {"type": "string"},
+            "brand": {"type": "brand", "required": true},
+            "price": {"type": "float", "required": true},
+            "tags": {
+                "list": {"type": "string", "required": true},
+                "required": true
+            },
+            "createdAt": {"type": "string", "required": true}
+        }
+    },
+    "electricCar": {
+        "description": "Electric engine car",
+        "type": "object",
+        "interfaces": ["car"],
+        "fields": {
+            "id": {"type": "ID", "required": true},
+            "description": {"type": "string"},
+            "brand": {"type": "brand", "required": true},
+            "price": {"type": "float", "required": true},
+            "tags": {
+                "list": {"type": "string", "required": true},
+                "required": true
+            },
+            "createdAt": {"type": "string", "required": true},
+            "charge": {"type": "float", "required": true}
+        }
+    },
+    "combustionCar": {
+        "description": "Combustion engine car",
+        "type": "object",
+        "interfaces": ["car"],
+        "fields": {
+            "id": {"type": "ID", "required": true},
+            "description": {"type": "string"},
+            "brand": {"type": "brand", "required": true},
+            "price": {"type": "float", "required": true},
+            "tags": {
+                "list": {"type": "string", "required": true},
+                "required": true
+            },
+            "createdAt": {"type": "string", "required": true},
+            "fuel": {"type": "string", "required": true}
+        }
+    },
+    "carTypes": {
+        "description": "Any car",
+        "type": "union",
+        "types": ["electricCar", "combustionCar"]
+    },
+    "query": {
+        "description": "Queries",
+        "fields": {
+            "getCars": {
+                "description": "Get all cars",
+                "list": {"type": "carTypes", "required": true},
+                "required": true
+            },
+            "getElectricCars": {
+                "description": "Get all electric engine cars",
+                "list": {"type": "electricCar", "required": true},
+                "required": true
+            },
+            "getCombustionCars": {
+                "description": "Get all combustion engine cars",
+                "list": {"type": "combustionCar", "required": true},
+                "required": true
+            },
+            "getCar": {
+                "description": "Get a car",
+                "type": "carTypes",
+                "args": {"id": {"type": "ID", "required": true}}
+            }
+        }
+    },
+    "mutation": {
+        "description": "Mutations",
+        "fields": {
+            "createCar": {
+                "description": "Create a car",
+                "type": "carTypes",
+                "args": {"car": {"type": "carInput"}}
+            }
+        }
     }
-  },
-  "carInput": {
-    "description": "This is the input for the create car mutation",
-    "type": "object",
-    "fields": {
-      "description": { "type": "string" },
-      "brand": { "type": "brand", "required": true },
-      "price": { "type": "float", "defaultValue": 0 },
-      "tags": {
-        "list": { "type": "string", "required": true },
-        "required": true
-      }
-    }
-  },
-  "car": {
-    "description": "This is the car itself",
-    "type": "interface",
-    "fields": {
-      "id": { "type": "ID", "required": true },
-      "description": { "type": "string" },
-      "brand": { "type": "brand", "required": true },
-      "price": { "type": "float", "required": true },
-      "tags": {
-        "list": { "type": "string", "required": true },
-        "required": true
-      },
-      "createdAt": { "type": "string", "required": true }
-    }
-  },
-  "electricCar": {
-    "description": "Electric engine car",
-    "type": "object",
-    "interfaces": ["car"],
-    "fields": {
-      "id": { "type": "ID", "required": true },
-      "description": { "type": "string" },
-      "brand": { "type": "brand", "required": true },
-      "price": { "type": "float", "required": true },
-      "tags": {
-        "list": { "type": "string", "required": true },
-        "required": true
-      },
-      "createdAt": { "type": "string", "required": true },
-      "charge": { "type": "float", "required": true }
-    }
-  },
-  "combustionCar": {
-    "description": "Combustion engine car",
-    "type": "object",
-    "interfaces": ["car"],
-    "fields": {
-      "id": { "type": "ID", "required": true },
-      "description": { "type": "string" },
-      "brand": { "type": "brand", "required": true },
-      "price": { "type": "float", "required": true },
-      "tags": {
-        "list": { "type": "string", "required": true },
-        "required": true
-      },
-      "createdAt": { "type": "string", "required": true },
-      "fuel": { "type": "string", "required": true }
-    }
-  },
-  "carTypes": {
-    "description": "Any car",
-    "type": "union",
-    "types": ["electricCar", "combustionCar"]
-  },
-  "query": {
-    "description": "Queries",
-    "fields": {
-      "getCars": {
-        "description": "Get all cars",
-        "list": { "type": "carTypes", "required": true },
-        "required": true
-      },
-      "getElectricCars": {
-        "description": "Get all electric engine cars",
-        "list": { "type": "electricCar", "required": true },
-        "required": true
-      },
-      "getCombustionCars": {
-        "description": "Get all combustion engine cars",
-        "list": { "type": "combustionCar", "required": true },
-        "required": true
-      },
-      "getCar": {
-        "description": "Get a car",
-        "type": "carTypes",
-        "args": { "id": { "type": "ID", "required": true } }
-      }
-    }
-  },
-  "mutation": {
-    "description": "Mutations",
-    "fields": {
-      "createCar": {
-        "description": "Create a car",
-        "type": "carTypes",
-        "args": { "car": { "type": "carInput" } }
-      }
-    }
-  }
 }
