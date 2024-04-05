@@ -9,11 +9,20 @@
             "porsche": {"description": "Porsche", "value": "Porsche"}
         }
     },
+    "test": {
+        "description": "This is a test",
+        "type": "enum",
+        "values": {
+            "t": {"description": "t", "value": 0},
+            "e": {"description": "e", "value": 1},
+            "s": {"description": "s", "value": 2}
+        }
+    },
     "carInput": {
         "description": "This is the input for the create car mutation",
-        "type": "object",
+        "type": "input",
         "fields": {
-            "description": {"type": "string"},
+            "description": {"type": "string", "defaultValue": "test"},
             "brand": {"type": "brand", "required": true},
             "price": {"type": "float", "defaultValue": 0},
             "tags": {
@@ -26,7 +35,7 @@
         "description": "This is the car itself",
         "type": "interface",
         "fields": {
-            "id": {"type": "ID", "required": true},
+            "id": {"type": "id", "required": true},
             "description": {"type": "string"},
             "brand": {"type": "brand", "required": true},
             "price": {"type": "float", "required": true},
@@ -42,7 +51,7 @@
         "type": "object",
         "interfaces": ["car"],
         "fields": {
-            "id": {"type": "ID", "required": true},
+            "id": {"type": "id", "required": true},
             "description": {"type": "string"},
             "brand": {"type": "brand", "required": true},
             "price": {"type": "float", "required": true},
@@ -59,7 +68,7 @@
         "type": "object",
         "interfaces": ["car"],
         "fields": {
-            "id": {"type": "ID", "required": true},
+            "id": {"type": "id", "required": true},
             "description": {"type": "string"},
             "brand": {"type": "brand", "required": true},
             "price": {"type": "float", "required": true},
@@ -97,7 +106,7 @@
             "getCar": {
                 "description": "Get a car",
                 "type": "carTypes",
-                "args": {"id": {"type": "ID", "required": true}}
+                "args": {"id": {"type": "id", "required": true}}
             }
         }
     },

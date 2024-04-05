@@ -1,59 +1,52 @@
-import {GraphQLObjectType, GraphQLEnumType, GraphQLInterfaceType, GraphQLUnionType} from "graphql";
+import {
+    GraphQLEnumType,
+    GraphQLInputObjectType,
+    GraphQLString,
+    GraphQLNonNull,
+    GraphQLFloat,
+    GraphQLList,
+    GraphQLInterfaceType,
+    GraphQLID,
+    GraphQLObjectType,
+    GraphQLUnionType,
+} from "graphql";
 
-export const mutation = new GraphQLObjectType({
-    name: "mutation",
-    description: "Mutations",
-    fields: () => ({
-        createCar: {
-            type: carTypes,
-            description: "Create a car",
-            args: {
-                car: {
-                    type: carInput,
-                },
-            },
-        },
-    }),
-});
-
-export const brand = new GraphQLEnumType({
-    name: "brand",
-    description: "This is the brand of the car",
+export const test = new GraphQLEnumType({
+    name: "test",
+    description: "This is a test",
     values: {
-        tesla: {
-            description: "Tesla",
-            value: "Tesla",
+        t: {
+            description: "t",
+            value: 0,
         },
-        lightyear: {
-            description: "Lightyear",
-            value: "Lightyear",
+        e: {
+            description: "e",
+            value: 1,
         },
-        volkwagen: {
-            description: "Volkwagen",
-            value: "Volkwagen",
-        },
-        porsche: {
-            description: "Porsche",
-            value: "Porsche",
+        s: {
+            description: "s",
+            value: 2,
         },
     },
 });
 
-export const carInput = new GraphQLObjectType({
+export const carInput = new GraphQLInputObjectType({
     name: "carInput",
     description: "This is the input for the create car mutation",
     fields: () => ({
-        price: {
-            type: GraphQLFloat,
-        },
-        tags: {
-            type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(GraphQLString))),
-        },
         description: {
             type: GraphQLString,
+            defaultValue: "test",
         },
         brand: {
             type: new GraphQLNonNull(brand),
+        },
+        price: {
+            type: GraphQLFloat,
+            defaultValue: 0,
+        },
+        tags: {
+            type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(GraphQLString))),
         },
     }),
 });
@@ -62,12 +55,6 @@ export const car = new GraphQLInterfaceType({
     name: "car",
     description: "This is the car itself",
     fields: () => ({
-        brand: {
-            type: new GraphQLNonNull(brand),
-        },
-        price: {
-            type: new GraphQLNonNull(GraphQLFloat),
-        },
         tags: {
             type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(GraphQLString))),
         },
@@ -80,14 +67,29 @@ export const car = new GraphQLInterfaceType({
         description: {
             type: GraphQLString,
         },
+        brand: {
+            type: new GraphQLNonNull(brand),
+        },
+        price: {
+            type: new GraphQLNonNull(GraphQLFloat),
+        },
     }),
 });
 
 export const electricCar = new GraphQLObjectType({
     name: "electricCar",
     description: "Electric engine car",
-    Interfaces: [car],
+    interfaces: [car],
     fields: () => ({
+        id: {
+            type: new GraphQLNonNull(GraphQLID),
+        },
+        description: {
+            type: GraphQLString,
+        },
+        brand: {
+            type: new GraphQLNonNull(brand),
+        },
         price: {
             type: new GraphQLNonNull(GraphQLFloat),
         },
@@ -100,29 +102,14 @@ export const electricCar = new GraphQLObjectType({
         charge: {
             type: new GraphQLNonNull(GraphQLFloat),
         },
-        id: {
-            type: new GraphQLNonNull(GraphQLID),
-        },
-        description: {
-            type: GraphQLString,
-        },
-        brand: {
-            type: new GraphQLNonNull(brand),
-        },
     }),
 });
 
 export const combustionCar = new GraphQLObjectType({
     name: "combustionCar",
     description: "Combustion engine car",
-    Interfaces: [car],
+    interfaces: [car],
     fields: () => ({
-        fuel: {
-            type: new GraphQLNonNull(GraphQLString),
-        },
-        id: {
-            type: new GraphQLNonNull(GraphQLID),
-        },
         description: {
             type: GraphQLString,
         },
@@ -138,7 +125,36 @@ export const combustionCar = new GraphQLObjectType({
         createdAt: {
             type: new GraphQLNonNull(GraphQLString),
         },
+        fuel: {
+            type: new GraphQLNonNull(GraphQLString),
+        },
+        id: {
+            type: new GraphQLNonNull(GraphQLID),
+        },
     }),
+});
+
+export const brand = new GraphQLEnumType({
+    name: "brand",
+    description: "This is the brand of the car",
+    values: {
+        volkwagen: {
+            description: "Volkwagen",
+            value: "Volkwagen",
+        },
+        porsche: {
+            description: "Porsche",
+            value: "Porsche",
+        },
+        tesla: {
+            description: "Tesla",
+            value: "Tesla",
+        },
+        lightyear: {
+            description: "Lightyear",
+            value: "Lightyear",
+        },
+    },
 });
 
 export const carTypes = new GraphQLUnionType({
@@ -151,10 +167,6 @@ export const query = new GraphQLObjectType({
     name: "query",
     description: "Queries",
     fields: () => ({
-        getCars: {
-            type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(carTypes))),
-            description: "Get all cars",
-        },
         getElectricCars: {
             type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(electricCar))),
             description: "Get all electric engine cars",
@@ -169,6 +181,26 @@ export const query = new GraphQLObjectType({
             args: {
                 id: {
                     type: new GraphQLNonNull(GraphQLID),
+                },
+            },
+        },
+        getCars: {
+            type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(carTypes))),
+            description: "Get all cars",
+        },
+    }),
+});
+
+export const mutation = new GraphQLObjectType({
+    name: "mutation",
+    description: "Mutations",
+    fields: () => ({
+        createCar: {
+            type: carTypes,
+            description: "Create a car",
+            args: {
+                car: {
+                    type: carInput,
                 },
             },
         },

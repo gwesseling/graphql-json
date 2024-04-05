@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"encoding/json"
-	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -13,7 +12,7 @@ import (
 
 type Values struct {
 	Description *string `json:"description"`
-	Value       string  `json:"value"`
+	Value       any     `json:"value"`
 }
 
 type List struct {
@@ -21,13 +20,13 @@ type List struct {
 	Required bool   `json:"required"`
 }
 
-// TODO: default value
 type Arg struct {
 	Type              string  `json:"type"`
 	Description       *string `json:"description"`
 	Required          bool    `json:"required"`
 	List              *List   `json:"list"`
 	DeprecationReason *string `json:"deprecationReason"`
+	DefaultValue      *any    `json:"defaultValue"`
 }
 
 type Field struct {
@@ -37,6 +36,7 @@ type Field struct {
 	List              *List           `json:"list"`
 	Args              *map[string]Arg `json:"args"`
 	DeprecationReason *string         `json:"deprecationReason"`
+	DefaultValue      *any            `json:"defaultValue"`
 }
 
 type GraphQLType struct {
@@ -56,19 +56,28 @@ type GraphQLType struct {
 	Fields *map[string]Field `json:"fields"`
 }
 
+var typeMap = map[string]string{
+	// Scalar types
+	"string":  "GraphQLString",
+	"int":     "GraphQLInt",
+	"float":   "GraphQLFloat",
+	"id":      "GraphQLID",
+	"boolean": "GraphQLBoolean",
+	// Definitions
+	"interface": "GraphQLInterfaceType",
+	"object":    "GraphQLObjectType",
+	"enum":      "GraphQLEnumType",
+	"union":     "GraphQLUnionType",
+	"input":     "GraphQLInputObjectType",
+}
+
 /**
  * TODO:
- * - Add missing imports (GraphQLList, GraphQLNonNull)
- * - Default values
+ * - Fix blocked scope issue
+ * - Field and args are basically the same
  * - Cleanup code (split into multiple files)
  */
 func main() {
-	// Turn on debug mode
-	debugMode := flag.Bool("debug", false, "enabled debug mode")
-
-	// Parse flags
-	flag.Parse()
-
 	// Try to open json file
 	jsonFile, err := os.Open("schema2.json")
 
@@ -92,24 +101,24 @@ func main() {
 	var imports []string
 
 	for key, value := range keys {
-		var graphqlType = getType(value.Type)
+		var graphqlType = typeMap[value.Type]
 
 		if key == "query" || key == "mutation" {
 			graphqlType = "GraphQLObjectType"
 		}
 
-		if !slices.Contains(imports, graphqlType) {
+		if len(graphqlType) != 0 && !slices.Contains(imports, graphqlType) {
 			imports = append(imports, graphqlType)
+		}
+
+		if len(graphqlType) == 0 {
+			graphqlType = value.Type
 		}
 
 		output = append(output, "export const "+key+" = new "+graphqlType+"({", `name: "`+key+`",`)
 
 		if value.Description != nil {
 			output = append(output, `description: "`+*value.Description+`",`)
-		}
-
-		if *debugMode {
-			fmt.Println("[DEBUG] Type: " + graphqlType)
 		}
 
 		// Enums
@@ -127,8 +136,7 @@ func main() {
 					output = append(output, `description: "`+*enumValue.Description+`",`)
 				}
 
-				// TODO: support different values (numbers)
-				output = append(output, `value: "`+enumValue.Value+`"`)
+				output = append(output, `value: `+fmt.Sprintf("%#v", enumValue.Value)+``)
 
 				output = append(output, "},")
 			}
@@ -138,29 +146,60 @@ func main() {
 		}
 
 		if graphqlType == "GraphQLUnionType" {
-			if value.Types == nil {
-				continue
+			if value.Types != nil {
+				output = append(output, "types: ["+strings.Join(*value.Types, ", ")+"]", "});", "")
 			}
 
-			output = append(output, "types: ["+strings.Join(*value.Types, ", ")+"]", "});", "")
 			continue
 		}
 
-		if graphqlType == "GraphQLObjectType" || graphqlType == "GraphQLInputType" || graphqlType == "GraphQLInterfaceType" {
+		if graphqlType == "GraphQLObjectType" || graphqlType == "GraphQLInputObjectType" || graphqlType == "GraphQLInterfaceType" {
 
 			if value.Interfaces != nil {
-				output = append(output, "Interfaces: ["+strings.Join(*value.Interfaces, ", ")+"],")
+				output = append(output, "interfaces: ["+strings.Join(*value.Interfaces, ", ")+"],")
 			}
 
 			if value.Fields != nil {
 				output = append(output, "fields: () => ({")
 
 				for fieldKey, fieldValue := range *value.Fields {
-					if *debugMode {
-						fmt.Println("[DEBUG] Field key: " + fieldKey + "; value: " + fieldValue.Type)
+					var fieldType = typeMap[fieldValue.Type]
+
+					if len(fieldType) != 0 && !slices.Contains(imports, fieldType) {
+						imports = append(imports, fieldType)
 					}
 
-					output = append(output, fieldKey+": {", "type: "+composeType(fieldValue.Type, fieldValue.Required, fieldValue.List)+",")
+					if len(fieldType) == 0 {
+						fieldType = fieldValue.Type
+					}
+
+					if fieldValue.List != nil {
+						if !slices.Contains(imports, "GraphQLList") {
+							imports = append(imports, "GraphQLList")
+						}
+
+						var listType = typeMap[fieldValue.List.Type]
+
+						if len(listType) != 0 && !slices.Contains(imports, listType) {
+							imports = append(imports, listType)
+						}
+
+						if len(listType) == 0 {
+							listType = fieldValue.List.Type
+						}
+
+						fieldType = composeList(listType, fieldValue.List.Required)
+					}
+
+					if fieldValue.Required {
+						if !slices.Contains(imports, "GraphQLNonNull") {
+							imports = append(imports, "GraphQLNonNull")
+						}
+
+						fieldType = "new GraphQLNonNull(" + fieldType + ")"
+					}
+
+					output = append(output, fieldKey+": {", "type: "+fieldType+",")
 
 					if fieldValue.Description != nil {
 						output = append(output, `description: "`+*fieldValue.Description+`",`)
@@ -170,15 +209,51 @@ func main() {
 						output = append(output, `deprecationReason: "`+*fieldValue.DeprecationReason+`",`)
 					}
 
+					if fieldValue.DefaultValue != nil {
+						output = append(output, `defaultValue: `+fmt.Sprintf("%#v", *fieldValue.DefaultValue)+`,`)
+					}
+
 					if fieldValue.Args != nil {
 						output = append(output, "args: {")
 
 						for argKey, argValue := range *fieldValue.Args {
-							if *debugMode {
-								fmt.Println("[DEBUG] Argument key: " + argKey + "; value: " + argValue.Type)
+							var argType = typeMap[argValue.Type]
+
+							if len(argType) != 0 && !slices.Contains(imports, argType) {
+								imports = append(imports, argType)
 							}
 
-							output = append(output, argKey+": {", "type: "+composeType(argValue.Type, argValue.Required, argValue.List)+",")
+							if len(argType) == 0 {
+								argType = argValue.Type
+							}
+
+							if argValue.List != nil {
+								if !slices.Contains(imports, "GraphQLList") {
+									imports = append(imports, "GraphQLList")
+								}
+
+								var listType = typeMap[argValue.List.Type]
+
+								if len(listType) != 0 && !slices.Contains(imports, listType) {
+									imports = append(imports, listType)
+								}
+
+								if len(listType) == 0 {
+									listType = argValue.List.Type
+								}
+
+								argType = composeList(listType, argValue.List.Required)
+							}
+
+							if argValue.Required {
+								if !slices.Contains(imports, "GraphQLNonNull") {
+									imports = append(imports, "GraphQLNonNull")
+								}
+
+								argType = "new GraphQLNonNull(" + argType + ")"
+							}
+
+							output = append(output, argKey+": {", "type: "+argType+",")
 
 							if argValue.Description != nil {
 								output = append(output, `description: "`+*argValue.Description+`",`)
@@ -186,6 +261,10 @@ func main() {
 
 							if argValue.DeprecationReason != nil {
 								output = append(output, `deprecationReason: "`+*argValue.DeprecationReason+`",`)
+							}
+
+							if argValue.DefaultValue != nil {
+								output = append(output, `defaultValue: `+fmt.Sprintf("%#v", *argValue.DefaultValue)+`,`)
 							}
 
 							output = append(output, "},")
@@ -226,47 +305,8 @@ func main() {
 	buffer.Flush()
 }
 
-func getType(graphqlType string) string {
-	switch graphqlType {
-	case "enum":
-		return "GraphQLEnumType"
-	case "input":
-		return "GraphQLInputObjectType"
-	case "interface":
-		return "GraphQLInterfaceType"
-	case "object":
-		return "GraphQLObjectType"
-	case "union":
-		return "GraphQLUnionType"
-	case "ID":
-		return "GraphQLID"
-	case "string":
-		return "GraphQLString"
-	case "float":
-		return "GraphQLFloat"
-	default:
-		return graphqlType
-	}
-}
-
-func composeType(graphqlType string, required bool, list *List) string {
-	var output = ""
-
-	if list != nil {
-		output = composeList(list.Type, list.Required)
-	} else {
-		output = getType(graphqlType)
-	}
-
-	if required {
-		output = "new GraphQLNonNull(" + output + ")"
-	}
-
-	return output
-}
-
 func composeList(graphqlType string, required bool) string {
-	var output = getType(graphqlType)
+	var output = graphqlType
 
 	if required {
 		output = "new GraphQLNonNull(" + output + ")"
