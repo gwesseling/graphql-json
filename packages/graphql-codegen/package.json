@@ -1,0 +1,21 @@
+{
+    "name": "@gwesseling/graphql-codegen",
+    "description": "graphql-codegen - a JSON based graphql codegen",
+    "keywords": [
+        "apollo",
+        "graphql",
+        "json",
+        "codegen"
+    ],
+    "version": "0.0.1",
+    "author": "gwesseling",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/gwesseling/graphql-json.git",
+        "directory": "packages/graphql-codegen"
+    },
+    "bin": {
+        "graphql-codegen": "bin/graphql-codegen"
+    }
+}

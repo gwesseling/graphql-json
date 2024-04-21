@@ -1,0 +1,65 @@
+name: Build
+on:
+    push:
+        paths:
+            - go/**
+        branches:
+            - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+    build:
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    - arch: amd64
+                      os: windows
+                    # - arch: arm64
+                    #   os: windows
+                    # - arch: 386
+                    #   os: windows
+
+        name: ${{ matrix.os }} ${{ matrix.arch }}
+        runs-on: ubuntu-latest
+        steps:
+            # make it only fetch the go folder
+            - name: Checkout Repo
+              uses: actions/checkout@v4
+            #              with:
+            #                  sparse-checkout: "go"
+
+            - name: Set up Go
+              uses: actions/setup-go@v5
+              with:
+                  go-version: "1.22"
+
+            - name: Build go binary
+              run: scripts/build.sh
+              env:
+                  GOOS: ${{ matrix.os }}
+                  GOARCH: ${{ matrix.arch }}
+                  # might be windows only
+                  CGO_ENABLED: 0
+
+            - run: jfigoesfoies
+
+            # - uses: actions/upload-artifact@v3.1.1
+            #   with:
+            #       name: ${{ github.sha }}
+            #       path: graphql-codegen-${{matrix.os}}-${{ matrix.arch }}
+
+    # Release binary packages
+    # package:
+    #     name: NPM Package
+    #     runs-on: ubuntu-latest
+    #     needs: [build]
+    #     steps:
+    #         - name: Checkout Repo
+    #           uses: actions/checkout@v4
+
+    #         - name: Install Node
+    #           uses: actions/setup-node@v4
+    #           with:
+    #               cache: yarn
