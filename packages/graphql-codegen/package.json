@@ -7,6 +7,9 @@
         "json",
         "codegen"
     ],
+    "scripts": {
+        "test": "echo no tests specified"
+    },
     "version": "0.0.1",
     "author": "gwesseling",
     "license": "MIT",
