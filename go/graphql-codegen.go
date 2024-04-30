@@ -78,12 +78,20 @@ var typeMap = map[string]string{
  * - Cleanup code (split into multiple files)
  */
 func main() {
+	var args = os.Args[1:]
+
+	if len(args) == 0 {
+		fmt.Println("Invalid args. Expecting a path to an input file")
+		os.Exit(1)
+	}
+
 	// Try to open json file
-	jsonFile, err := os.Open("schema2.json")
+	jsonFile, err := os.Open(args[0])
 
 	// Something went wrong while opening the json file
 	if err != nil {
 		fmt.Println(err)
+		os.Exit(1)
 	}
 
 	// Close json file
@@ -284,7 +292,7 @@ func main() {
 	}
 
 	// Create file
-	f, err := os.Create("output.js")
+	f, err := os.Create("schema.js")
 
 	if err != nil {
 		fmt.Println("Something went wrong while creating the output file")
