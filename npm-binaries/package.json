@@ -1,0 +1,17 @@
+{
+    "name": "@graphql-json/$OS-$ARCH",
+    "version": "0.0.1",
+    "description": "The $OS $ARCH binary for graphql-json codegen.",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/gwesseling/graphql-json.git"
+    },
+    "private": true,
+    "license": "MIT",
+    "preferUnplugged": true,
+    "engines": {
+        "node": ">=12"
+    },
+    "os": [],
+    "cpu": []
+}
