@@ -5,8 +5,7 @@
     "keywords": [
         "codegen",
         "graphql",
-        "json",
-        "apollo"
+        "json"
     ],
     "repository": {
         "type": "git",

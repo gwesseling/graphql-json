@@ -64,7 +64,7 @@ jobs:
               run: node scripts/build.js ${{ matrix.os }} ${{ matrix.arch }}
 
             - name: Publish npm package
-              run: cd npm-binaries/${{matrix.os}}-${{matrix.arch}} && npm publish --provenance --access public
+              run: cd npm-binaries/${{matrix.os}}-${{matrix.arch}} && npm publish --access public
               env:
                   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
