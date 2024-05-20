@@ -8,6 +8,7 @@
         "codegen"
     ],
     "scripts": {
+        "build": "echo no build command",
         "test": "echo no tests specified"
     },
     "version": "0.0.1",
