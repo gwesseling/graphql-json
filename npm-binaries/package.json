@@ -2,6 +2,11 @@
     "name": "@graphql-json/$OS-$ARCH",
     "version": "0.0.1",
     "description": "The $OS $ARCH binary for graphql-json codegen.",
+    "keywords": [
+        "codegen",
+        "graphql",
+        "json"
+    ],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/gwesseling/graphql-json.git"
