@@ -37,7 +37,6 @@ jobs:
         runs-on: ubuntu-latest
         permissions:
             contents: read
-            packages: write
         steps:
             - name: Checkout Repo
               uses: actions/checkout@v4
@@ -71,6 +70,8 @@ jobs:
     deps:
         name: Update binary versions
         runs-on: ubuntu-latest
+        permissions:
+            contents: write
         needs: [build]
         steps:
             - name: Checkout Repo
@@ -79,8 +80,14 @@ jobs:
             - name: Build binary npm package
               run: node scripts/update-deps.js
 
+            - name: Set user
+              run: git config --global user.name "github-actions[bot]"
+
+            - name: Set email
+              run: git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
             - name: Commit changes
-              run: git commit -m "publish new version to npm"
+              run: git commit -m "Version Go Binaries"
 
             - name: Push changes
               run: git push
