@@ -8,6 +8,9 @@
         "codegen"
     ],
     "scripts": {
+        "postinstall": "node ./install.js",
+        "build": "tsup",
+        "tsc": "tsc --pretty --noEmit",
         "test": "echo no tests specified"
     },
     "version": "0.0.1",
@@ -18,18 +21,25 @@
         "url": "https://github.com/gwesseling/graphql-json.git",
         "directory": "packages/graphql-codegen"
     },
-    "bin": {
-        "graphql-codegen": "bin/graphql-codegen"
+    "main": "build/index.cjs.js",
+    "module": "build/index.esm.js",
+    "typings": "build/index.d.ts",
+    "devDependencies": {
+        "tsup": "8.1.0"
     },
     "optionalDependencies": {
-        "@graphql-json/linux-arm": "0.0.0",
-        "@graphql-json/linux-386": "0.0.0",
-        "@graphql-json/linux-arm64": "0.0.0",
-        "@graphql-json/linux-x64": "0.0.0",
-        "@graphql-json/win32-arm64": "0.0.0",
-        "@graphql-json/win32-386": "0.0.0",
-        "@graphql-json/win32-x64": "0.0.0",
-        "@graphql-json/darwin-arm64": "0.0.0",
-        "@graphql-json/darwin-x64": "0.0.0"
-    }
+        "@graphql-json/linux-arm": "0.0.1",
+        "@graphql-json/linux-386": "0.0.1",
+        "@graphql-json/linux-arm64": "0.0.1",
+        "@graphql-json/linux-x64": "0.0.1",
+        "@graphql-json/win32-arm64": "0.0.1",
+        "@graphql-json/win32-386": "0.0.1",
+        "@graphql-json/win32-x64": "0.0.1",
+        "@graphql-json/darwin-arm64": "0.0.1",
+        "@graphql-json/darwin-x64": "0.0.1"
+    },
+    "files": [
+        "build",
+        "README.md"
+    ]
 }

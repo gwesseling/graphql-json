@@ -35,9 +35,17 @@ jobs:
 
         name: ${{ matrix.os }} ${{ matrix.arch }}
         runs-on: ubuntu-latest
+        permissions:
+            contents: read
         steps:
             - name: Checkout Repo
               uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20.x"
+                  registry-url: "https://registry.npmjs.org"
 
             - name: Set up Go
               uses: actions/setup-go@v5
@@ -55,11 +63,15 @@ jobs:
               run: node scripts/build.js ${{ matrix.os }} ${{ matrix.arch }}
 
             - name: Publish npm package
-              run: cd npm-binaries/${{matrix.os}}-${{matrix.arch}} && npm publish
+              run: cd npm-binaries/${{matrix.os}}-${{matrix.arch}} && npm publish --access public
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     deps:
         name: Update binary versions
         runs-on: ubuntu-latest
+        permissions:
+            contents: write
         needs: [build]
         steps:
             - name: Checkout Repo
@@ -68,8 +80,14 @@ jobs:
             - name: Build binary npm package
               run: node scripts/update-deps.js
 
+            - name: Set user
+              run: git config --global user.name "github-actions[bot]"
+
+            - name: Set email
+              run: git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
             - name: Commit changes
-              run: git commit -m "publish new version to npm"
+              run: git commit -m "Version Go Binaries"
 
             - name: Push changes
               run: git push
