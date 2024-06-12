@@ -6,6 +6,11 @@ const os = require("os");
 
 const pkgInfo = require("./package.json");
 
+const PLATFORM = os.platform();
+const ARCH = os.arch();
+const VERSION = pkgInfo.version;
+
+// Package binary lookup table.
 const BINARY_PACKAGES = {
     "linux-arm": "@graphql-json/linux-arm",
     "linux-x64": "@graphql-json/linux-x64",
@@ -18,30 +23,20 @@ const BINARY_PACKAGES = {
     "darwin-x64": "@graphql-json/darwin-x64",
 };
 
-const PLATFORM = os.platform();
-const ARCH = os.arch();
-const VERSION = pkgInfo.version;
-
-// Determine package name for this platform
-const platformSpecificPackageName = BINARY_PACKAGES[`${PLATFORM}-${ARCH}`];
-
-// Compute the path we want to emit the fallback binary to
-const fallbackBinaryPath = path.join(__dirname, "bin", "graphql-codegen");
-
 /**
- * Get platform specific binary information
+ * Get platform specific binary path
  */
-function getPlatformBinaryInfo() {
+function getPath() {
     if (PLATFORM === "win32") {
         return {
             exe: "graphql-codegen.exe",
-            path: "",
+            subpath: "",
         };
     }
 
     return {
         exe: "graphql-codegen",
-        path: "bin/",
+        subpath: "bin/",
     };
 }
 
@@ -104,18 +99,18 @@ function extractFileFromTarball(tarballBuffer, filepath) {
 /**
  * Download binary from npm
  */
-async function downloadBinaryFromNpm() {
+async function downloadBinaryFromNpm(packageName, subpath, exe) {
     // Download the tarball of the right binary distribution package
     const tarballDownloadBuffer = await makeRequest(
-        `https://registry.npmjs.org/${platformSpecificPackageName}/-/${platformSpecificPackageName.replace("@graphql-json/", "")}-${VERSION}.tgz`,
+        `https://registry.npmjs.org/${packageName}/-/${packageName.replace("@graphql-json/", "")}-${VERSION}.tgz`,
     );
 
     const tarballBuffer = zlib.unzipSync(tarballDownloadBuffer);
 
     // Extract binary from package and write to disk
     fs.writeFileSync(
-        fallbackBinaryPath,
-        extractFileFromTarball(tarballBuffer, `package/${binaryInfo.path}${binaryInfo.exe}`),
+        path.join(__dirname, `${subpath}${exe}`),
+        extractFileFromTarball(tarballBuffer, `package/${subpath}${exe}`),
         {mode: 0o755}, // Make binary file executable
     );
 }
@@ -123,26 +118,34 @@ async function downloadBinaryFromNpm() {
 /**
  * Check if a binary is installed
  */
-function isPlatformSpecificPackageInstalled() {
+function packageIsInstalled(packageName, subpath, exe) {
     try {
         // Resolving will fail if the optionalDependency was not installed
-        require.resolve(`@graphql-json/${platformSpecificPackageName}/${binaryInfo.path}${binaryInfo.exe}`);
+        require.resolve(`${packageName}/${subpath}${exe}`);
         return true;
     } catch (e) {
         return false;
     }
 }
 
-const binaryInfo = getPlatformBinaryInfo();
+/**
+ * Install package manually
+ */
+function installPackage() {
+    // Determine package name for this platform
+    const platformSpecificPackageName = BINARY_PACKAGES[`${PLATFORM}-${ARCH}`];
 
-if (!platformSpecificPackageName) {
-    throw new Error("Platform not supported!");
+    if (!platformSpecificPackageName) {
+        throw new Error("Platform not supported!");
+    }
+
+    const {subpath, exe} = getPath();
+
+    // Skip downloading the binary if it was already installed via optionalDependencies
+    if (!packageIsInstalled(platformSpecificPackageName, subpath, exe)) {
+        console.log(`Platform specific package not found. Installing ${platformSpecificPackageName}`);
+        downloadBinaryFromNpm(platformSpecificPackageName, subpath, exe);
+    }
 }
 
-// Skip downloading the binary if it was already installed via optionalDependencies
-if (!isPlatformSpecificPackageInstalled()) {
-    console.log(`Platform specific package not found. Installing ${platformSpecificPackageName}`);
-    downloadBinaryFromNpm();
-} else {
-    console.log("Platform specific package already installed.");
-}
+installPackage();
