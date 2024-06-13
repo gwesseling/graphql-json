@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "codegen": "node index.js",
-        "start": "tsx server.ts"
+        "start": "tsx src/server.ts"
     },
     "dependencies": {
         "@apollo/server": "4.10.2",

@@ -1,21 +1,31 @@
 import {
+    GraphQLUnionType,
     GraphQLObjectType,
     GraphQLList,
     GraphQLNonNull,
     GraphQLID,
     GraphQLEnumType,
     GraphQLInputObjectType,
+    GraphQLFloat,
     GraphQLString,
     GraphQLInt,
-    GraphQLFloat,
     GraphQLInterfaceType,
-    GraphQLUnionType,
 } from "graphql";
+
+export const mediaType = new GraphQLUnionType({
+    name: "mediaType",
+    description: "Media item type",
+    types: [movie, serie],
+});
 
 export const query = new GraphQLObjectType({
     name: "query",
     description: "Queries",
     fields: () => ({
+        getMovies: {
+            type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(movie))),
+            description: "Get all movies",
+        },
         getSeries: {
             type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(serie))),
             description: "Get all series",
@@ -32,10 +42,6 @@ export const query = new GraphQLObjectType({
         getMediaItems: {
             type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(mediaType))),
             description: "Get all media items",
-        },
-        getMovies: {
-            type: new GraphQLNonNull(new GraphQLList(new GraphQLNonNull(movie))),
-            description: "Get all movies",
         },
     }),
 });
@@ -60,10 +66,6 @@ export const genre = new GraphQLEnumType({
     name: "genre",
     description: "The genre of the media item",
     values: {
-        fantasy: {
-            description: "Fantasy",
-            value: "Fantasy",
-        },
         action: {
             description: "Action",
             value: "Action",
@@ -76,6 +78,10 @@ export const genre = new GraphQLEnumType({
             description: "Horror",
             value: "Horror",
         },
+        fantasy: {
+            description: "Fantasy",
+            value: "Fantasy",
+        },
     },
 });
 
@@ -83,6 +89,12 @@ export const mediaItemInput = new GraphQLInputObjectType({
     name: "mediaItemInput",
     description: "Input for a media item",
     fields: () => ({
+        price: {
+            type: new GraphQLNonNull(GraphQLFloat),
+        },
+        tags: {
+            type: new GraphQLList(GraphQLString),
+        },
         title: {
             type: new GraphQLNonNull(GraphQLString),
         },
@@ -92,12 +104,6 @@ export const mediaItemInput = new GraphQLInputObjectType({
         type: {
             type: new GraphQLNonNull(GraphQLInt),
         },
-        price: {
-            type: new GraphQLNonNull(GraphQLFloat),
-        },
-        tags: {
-            type: new GraphQLList(GraphQLString),
-        },
     }),
 });
 
@@ -105,6 +111,12 @@ export const media = new GraphQLInterfaceType({
     name: "media",
     description: "A media item",
     fields: () => ({
+        description: {
+            type: GraphQLString,
+        },
+        type: {
+            type: new GraphQLNonNull(GraphQLInt),
+        },
         price: {
             type: new GraphQLNonNull(GraphQLFloat),
         },
@@ -116,12 +128,6 @@ export const media = new GraphQLInterfaceType({
         },
         title: {
             type: new GraphQLNonNull(GraphQLString),
-        },
-        description: {
-            type: GraphQLString,
-        },
-        type: {
-            type: new GraphQLNonNull(GraphQLInt),
         },
     }),
 });
@@ -182,10 +188,4 @@ export const serie = new GraphQLObjectType({
             type: new GraphQLNonNull(new GraphQLList(GraphQLString)),
         },
     }),
-});
-
-export const mediaType = new GraphQLUnionType({
-    name: "mediaType",
-    description: "Media item type",
-    types: [movie, serie],
 });

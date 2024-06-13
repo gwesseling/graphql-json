@@ -109,7 +109,7 @@ async function downloadBinaryFromNpm(packageName, subpath, exe) {
 
     // Extract binary from package and write to disk
     fs.writeFileSync(
-        path.join(__dirname, `${subpath}${exe}`),
+        path.join(__dirname, exe),
         extractFileFromTarball(tarballBuffer, `package/${subpath}${exe}`),
         {mode: 0o755}, // Make binary file executable
     );
