@@ -1,5 +1,4 @@
 import os from "os";
-import fs from "fs";
 import path from "path";
 import childProcess from "child_process";
 
@@ -22,25 +21,19 @@ const PLATFORM = os.platform();
 /**
  * Get binary path
  */
-function getPath() {
+function getBinaryPath() {
     try {
         // Find binary package matching platform and arch using lookup table.
         const {packageName, binPath} = BINARY_PACKAGES[`${PLATFORM}-${ARCH}`];
 
-        // Look if binary is install as fallback.
-        const fallback = path.join(__dirname, "..", `graphql-codegen${PLATFORM === "win32" ? ".exe" : ""}`);
-        if (fs.existsSync(fallback)) {
-            return fallback;
-        }
-
         // Couldn't find the package from lookup table.
-        if (!packageName) throw new Error("no valid package installed");
+        if (!packageName) throw new Error("No valid package installed");
 
         // Resolve binary package.
         return require.resolve(packageName + binPath);
     } catch (err) {
-        // TODO: we could check if there is an other package binary is installed.
-        return;
+        // Try to resolve fallback
+        return path.join(__dirname, "..", `graphql-codegen${PLATFORM === "win32" ? ".exe" : ""}`);
     }
 }
 
@@ -49,7 +42,7 @@ function getPath() {
  */
 function codegen(args: Array<string>) {
     return new Promise((resolve, reject) => {
-        const path = getPath();
+        const path = getBinaryPath();
 
         if (!path) {
             return reject(new Error("Unsupported operating system or architecture"));
@@ -63,4 +56,4 @@ function codegen(args: Array<string>) {
     });
 }
 
-export {codegen};
+export {codegen, getBinaryPath};

@@ -24,23 +24,6 @@ const BINARY_PACKAGES = {
 };
 
 /**
- * Get platform specific binary path
- */
-function getPath() {
-    if (PLATFORM === "win32") {
-        return {
-            exe: "graphql-codegen.exe",
-            subpath: "",
-        };
-    }
-
-    return {
-        exe: "graphql-codegen",
-        subpath: "bin/",
-    };
-}
-
-/**
  * Fetch package from npm
  */
 function makeRequest(url) {
@@ -99,7 +82,7 @@ function extractFileFromTarball(tarballBuffer, filepath) {
 /**
  * Download binary from npm
  */
-async function downloadBinaryFromNpm(packageName, subpath, exe) {
+async function downloadBinaryFromNpm(packageName, binaryName, binaryPath) {
     // Download the tarball of the right binary distribution package
     const tarballDownloadBuffer = await makeRequest(
         `https://registry.npmjs.org/${packageName}/-/${packageName.replace("@graphql-json/", "")}-${VERSION}.tgz`,
@@ -110,7 +93,7 @@ async function downloadBinaryFromNpm(packageName, subpath, exe) {
     // Extract binary from package and write to disk
     fs.writeFileSync(
         path.join(__dirname, exe),
-        extractFileFromTarball(tarballBuffer, `package/${subpath}${exe}`),
+        extractFileFromTarball(tarballBuffer, `package/${binaryPath}${binaryName}`),
         {mode: 0o755}, // Make binary file executable
     );
 }
@@ -118,10 +101,10 @@ async function downloadBinaryFromNpm(packageName, subpath, exe) {
 /**
  * Check if a binary is installed
  */
-function packageIsInstalled(packageName, subpath, exe) {
+function packageIsInstalled(packageName, binaryName, binaryPath) {
     try {
         // Resolving will fail if the optionalDependency was not installed
-        require.resolve(`${packageName}/${subpath}${exe}`);
+        require.resolve(`${packageName}/${binaryPath}${binaryName}`);
         return true;
     } catch (e) {
         return false;
@@ -139,12 +122,13 @@ function installPackage() {
         throw new Error("Platform not supported!");
     }
 
-    const {subpath, exe} = getPath();
+    const binaryName = `graphql-codegen${process.platform === "win32" ? ".exe" : ""}`;
+    const binaryPath = process.platform === "win32" ? "" : "bin/";
 
     // Skip downloading the binary if it was already installed via optionalDependencies
-    if (!packageIsInstalled(platformSpecificPackageName, subpath, exe)) {
+    if (!packageIsInstalled(platformSpecificPackageName, binaryName, binaryPath)) {
         console.log(`Platform specific package not found. Installing ${platformSpecificPackageName}`);
-        downloadBinaryFromNpm(platformSpecificPackageName, subpath, exe);
+        downloadBinaryFromNpm(platformSpecificPackageName, binaryName, binaryPath);
     }
 }
 
