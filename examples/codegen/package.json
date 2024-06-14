@@ -3,13 +3,15 @@
     "version": "0.0.1",
     "private": true,
     "scripts": {
-        "start": "tsx index.ts"
+        "codegen": "node index.js",
+        "start": "tsx src/server.ts"
     },
     "dependencies": {
         "@apollo/server": "4.10.2",
         "graphql": "16.8.1"
     },
     "devDependencies": {
+        "@gwesseling/graphql-codegen": "0.0.1",
         "@types/node": "20.12.3",
         "tsx": "4.7.1",
         "typescript": "5.4.3"

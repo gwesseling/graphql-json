@@ -2,3 +2,6 @@ build
 node_modules
 tsup.config.ts
 go
+examples
+scripts
+install.js
