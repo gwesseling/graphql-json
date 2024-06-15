@@ -13,7 +13,7 @@
         "tsc": "tsc --pretty --noEmit",
         "test": "echo no tests specified"
     },
-    "version": "0.0.2",
+    "version": "0.0.3",
     "author": "gwesseling",
     "license": "MIT",
     "repository": {
