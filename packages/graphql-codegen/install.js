@@ -8,7 +8,6 @@ const pkgInfo = require("./package.json");
 
 const PLATFORM = os.platform();
 const ARCH = os.arch();
-const VERSION = pkgInfo.version;
 
 // Package binary lookup table.
 const BINARY_PACKAGES = {
@@ -83,16 +82,18 @@ function extractFileFromTarball(tarballBuffer, filepath) {
  * Download binary from npm
  */
 async function downloadBinaryFromNpm(packageName, binaryName, binaryPath) {
+    const version = pkgInfo.optionalDependencies[packageName];
+
     // Download the tarball of the right binary distribution package
     const tarballDownloadBuffer = await makeRequest(
-        `https://registry.npmjs.org/${packageName}/-/${packageName.replace("@graphql-json/", "")}-${VERSION}.tgz`,
+        `https://registry.npmjs.org/${packageName}/-/${packageName.replace("@graphql-json/", "")}-${version}.tgz`,
     );
 
     const tarballBuffer = zlib.unzipSync(tarballDownloadBuffer);
 
     // Extract binary from package and write to disk
     fs.writeFileSync(
-        path.join(__dirname, exe),
+        path.join(__dirname, binaryName),
         extractFileFromTarball(tarballBuffer, `package/${binaryPath}${binaryName}`),
         {mode: 0o755}, // Make binary file executable
     );
