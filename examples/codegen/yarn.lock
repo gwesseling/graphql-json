@@ -339,10 +339,10 @@
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.2.0.tgz#5f3d96ec6b2354ad6d8a28bf216a1d97b5426861"
   integrity sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==
 
-"@gwesseling/graphql-codegen@0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@gwesseling/graphql-codegen/-/graphql-codegen-0.0.3.tgz#0f30a21018e74e4bffa819488cb0b264db46b831"
-  integrity sha512-tL0HbIZ+Xnb7w/ew7Pmc5Js3nNSkicOr3/WKU/DaK0TZdgLW4DIOgjk9GJ1kVqt2Q7lzeXkZIbyMTbfzzEID8A==
+"@gwesseling/graphql-codegen@0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@gwesseling/graphql-codegen/-/graphql-codegen-0.0.4.tgz#0724140ae067d3ae7cffa1dee01ff744c01e78d8"
+  integrity sha512-bzeLtwxWbTiboojCO5MHBO6JPM7Xa22rN3pMJ6UYkjVaORHmcW3Khe4fQby19oiYnIOV70lSyI+f/6N/CBzeZg==
   optionalDependencies:
     "@graphql-json/darwin-arm64" "0.0.1"
     "@graphql-json/darwin-x64" "0.0.1"
