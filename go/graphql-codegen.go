@@ -157,8 +157,6 @@ func main() {
 			if value.Types != nil {
 				output = append(output, "types: ["+strings.Join(*value.Types, ", ")+"]", "});", "")
 			}
-
-			continue
 		}
 
 		if graphqlType == "GraphQLObjectType" || graphqlType == "GraphQLInputObjectType" || graphqlType == "GraphQLInterfaceType" {
@@ -171,29 +169,29 @@ func main() {
 				output = append(output, "fields: () => ({")
 
 				for fieldKey, fieldValue := range *value.Fields {
-					var fieldType = typeMap[fieldValue.Type]
+					var fieldType = fieldValue.Type
 
-					if len(fieldType) != 0 && !slices.Contains(imports, fieldType) {
-						imports = append(imports, fieldType)
-					}
+					if len(typeMap[fieldValue.Type]) != 0 {
+						fieldType = typeMap[fieldValue.Type]
 
-					if len(fieldType) == 0 {
-						fieldType = fieldValue.Type
+						if !slices.Contains(imports, fieldType) {
+							imports = append(imports, fieldType)
+						}
 					}
 
 					if fieldValue.List != nil {
+						var listType = fieldValue.List.Type
+
+						if len(typeMap[fieldValue.List.Type]) != 0 {
+							listType = typeMap[fieldValue.List.Type]
+
+							if !slices.Contains(imports, listType) {
+								imports = append(imports, listType)
+							}
+						}
+
 						if !slices.Contains(imports, "GraphQLList") {
 							imports = append(imports, "GraphQLList")
-						}
-
-						var listType = typeMap[fieldValue.List.Type]
-
-						if len(listType) != 0 && !slices.Contains(imports, listType) {
-							imports = append(imports, listType)
-						}
-
-						if len(listType) == 0 {
-							listType = fieldValue.List.Type
 						}
 
 						fieldType = composeList(listType, fieldValue.List.Required)
@@ -225,29 +223,29 @@ func main() {
 						output = append(output, "args: {")
 
 						for argKey, argValue := range *fieldValue.Args {
-							var argType = typeMap[argValue.Type]
+							var argType = argValue.Type
 
-							if len(argType) != 0 && !slices.Contains(imports, argType) {
-								imports = append(imports, argType)
-							}
+							if len(typeMap[argValue.Type]) != 0 {
+								argType = typeMap[argValue.Type]
 
-							if len(argType) == 0 {
-								argType = argValue.Type
+								if !slices.Contains(imports, argType) {
+									imports = append(imports, argType)
+								}
 							}
 
 							if argValue.List != nil {
+								var listType = argValue.List.Type
+
+								if len(typeMap[argValue.List.Type]) != 0 {
+									listType = typeMap[argValue.List.Type]
+
+									if !slices.Contains(imports, listType) {
+										imports = append(imports, listType)
+									}
+								}
+
 								if !slices.Contains(imports, "GraphQLList") {
 									imports = append(imports, "GraphQLList")
-								}
-
-								var listType = typeMap[argValue.List.Type]
-
-								if len(listType) != 0 && !slices.Contains(imports, listType) {
-									imports = append(imports, listType)
-								}
-
-								if len(listType) == 0 {
-									listType = argValue.List.Type
 								}
 
 								argType = composeList(listType, argValue.List.Required)
