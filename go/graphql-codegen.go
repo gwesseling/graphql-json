@@ -241,7 +241,7 @@ func generateType(schema map[string]GraphQLType, key string, value GraphQLType) 
 							imports = append(imports, listType)
 						}
 					} else {
-						store(fieldType, generateType(schema, listType, schema[listType]))
+						store(listType, generateType(schema, listType, schema[listType]))
 					}
 
 					fieldType = composeList(listType, fieldValue.List.Required)
@@ -286,7 +286,7 @@ func generateType(schema map[string]GraphQLType, key string, value GraphQLType) 
 
 							if len(listType) == 0 {
 								listType = argValue.List.Type
-								store(argType, generateType(schema, listType, schema[listType]))
+								store(listType, generateType(schema, listType, schema[listType]))
 							} else if !slices.Contains(imports, listType) {
 								imports = append(imports, listType)
 							}
