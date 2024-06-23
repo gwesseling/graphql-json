@@ -83,7 +83,7 @@ var hasRequired = false
 
 /**
  * TODO:
- * - Skip recursive type call
+ * - Replace Contains with Map
  * - Field and args are basically the same
  * - Cleanup code (split into multiple files)
  */
@@ -116,7 +116,9 @@ func main() {
 	json.Unmarshal(byteValue, &keys)
 
 	for key, value := range keys {
-		store(key, generateType(keys, key, value))
+		if !slices.Contains(order, key) {
+			store(key, generateType(keys, key, value))
+		}
 	}
 
 	if hasRequired {
@@ -149,20 +151,13 @@ func main() {
 }
 
 func store(key string, value []string) {
-	if !slices.Contains(order, key) {
-		order = append(order, key)
-		output[key] = value
-	}
+	order = append(order, key)
+	output[key] = value
 }
 
 func generateType(schema map[string]GraphQLType, key string, value GraphQLType) []string {
 	var graphqlType = value.Type
 	var item []string
-
-	// TODO: remove
-	if slices.Contains(order, key) {
-		return item
-	}
 
 	if key == "query" || key == "mutation" {
 		graphqlType = "GraphQLObjectType"
@@ -208,7 +203,9 @@ func generateType(schema map[string]GraphQLType, key string, value GraphQLType) 
 	if graphqlType == "GraphQLUnionType" {
 		if value.Types != nil {
 			for _, typeName := range *value.Types {
-				store(typeName, generateType(schema, typeName, schema[typeName]))
+				if !slices.Contains(order, typeName) {
+					store(typeName, generateType(schema, typeName, schema[typeName]))
+				}
 			}
 
 			item = append(item, "types: ["+strings.Join(*value.Types, ",")+"]", "});", "")
@@ -218,7 +215,9 @@ func generateType(schema map[string]GraphQLType, key string, value GraphQLType) 
 	if graphqlType == "GraphQLObjectType" || graphqlType == "GraphQLInputObjectType" || graphqlType == "GraphQLInterfaceType" {
 		if value.Interfaces != nil {
 			for _, interfaceName := range *value.Interfaces {
-				store(interfaceName, generateType(schema, interfaceName, schema[interfaceName]))
+				if !slices.Contains(order, interfaceName) {
+					store(interfaceName, generateType(schema, interfaceName, schema[interfaceName]))
+				}
 			}
 
 			item = append(item, "interfaces: ["+strings.Join(*value.Interfaces, ",")+"],")
@@ -241,7 +240,9 @@ func generateType(schema map[string]GraphQLType, key string, value GraphQLType) 
 							imports = append(imports, listType)
 						}
 					} else {
-						store(listType, generateType(schema, listType, schema[listType]))
+						if !slices.Contains(order, listType) {
+							store(listType, generateType(schema, listType, schema[listType]))
+						}
 					}
 
 					fieldType = composeList(listType, fieldValue.List.Required)
@@ -252,7 +253,9 @@ func generateType(schema map[string]GraphQLType, key string, value GraphQLType) 
 						imports = append(imports, fieldType)
 					}
 				} else {
-					store(fieldType, generateType(schema, fieldType, schema[fieldType]))
+					if !slices.Contains(order, fieldType) {
+						store(fieldType, generateType(schema, fieldType, schema[fieldType]))
+					}
 				}
 
 				if fieldValue.Required {
@@ -286,7 +289,10 @@ func generateType(schema map[string]GraphQLType, key string, value GraphQLType) 
 
 							if len(listType) == 0 {
 								listType = argValue.List.Type
-								store(listType, generateType(schema, listType, schema[listType]))
+
+								if !slices.Contains(order, listType) {
+									store(listType, generateType(schema, listType, schema[listType]))
+								}
 							} else if !slices.Contains(imports, listType) {
 								imports = append(imports, listType)
 							}
@@ -299,7 +305,9 @@ func generateType(schema map[string]GraphQLType, key string, value GraphQLType) 
 								imports = append(imports, argType)
 							}
 						} else {
-							store(argType, generateType(schema, argType, schema[argType]))
+							if !slices.Contains(order, argType) {
+								store(argType, generateType(schema, argType, schema[argType]))
+							}
 						}
 
 						if argValue.Required {
