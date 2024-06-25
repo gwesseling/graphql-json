@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"slices"
 	"strings"
 )
 
@@ -71,8 +70,10 @@ var typeMap = map[string]string{
 	"input":     "GraphQLInputObjectType",
 }
 
-var imports []string
+var noop = struct{}{}
+
 var order []string
+var imports = make(map[string]struct{})
 var output = make(map[string][]string)
 
 // Schema contains a list
@@ -122,11 +123,11 @@ func main() {
 	}
 
 	if hasRequired {
-		imports = append(imports, "GraphQLNonNull")
+		imports["GraphQLNonNull"] = noop
 	}
 
 	if hasList {
-		imports = append(imports, "GraphQLList")
+		imports["GraphQLList"] = noop
 	}
 
 	// Create file
@@ -140,8 +141,15 @@ func main() {
 	defer f.Close()
 
 	buffer := bufio.NewWriter(f)
-	buffer.WriteString("import { " + strings.Join(imports, ", ") + `} from "graphql";` + "\n\n")
 
+	// Define imports
+	buffer.WriteString("import { ")
+	for key := range imports {
+		buffer.WriteString(key + ", ")
+	}
+	buffer.WriteString(` } from "graphql";` + "\n\n")
+
+	// Define graphql types
 	for _, key := range order {
 		var lines = output[key]
 		buffer.WriteString(strings.Join(lines, "") + "\n\n")
@@ -157,7 +165,11 @@ func store(key string, value []string) {
 
 func hasKey(key string) bool {
 	_, ok := output[key]
+	return ok
+}
 
+func hasImport(key string) bool {
+	_, ok := imports[key]
 	return ok
 }
 
@@ -171,10 +183,7 @@ func generateType(schema map[string]GraphQLType, key string, value GraphQLType) 
 
 	if val, ok := typeMap[value.Type]; ok {
 		graphqlType = val
-
-		if !slices.Contains(imports, graphqlType) {
-			imports = append(imports, graphqlType)
-		}
+		imports[graphqlType] = noop
 	}
 
 	item = append(item, "export const "+key+" = new "+graphqlType+"({", `name: "`+key+`",`)
@@ -241,10 +250,7 @@ func generateType(schema map[string]GraphQLType, key string, value GraphQLType) 
 
 					if val, ok := typeMap[fieldValue.List.Type]; ok {
 						listType = val
-
-						if !slices.Contains(imports, listType) {
-							imports = append(imports, listType)
-						}
+						imports[listType] = noop
 					} else {
 						if !hasKey(listType) {
 							store(listType, generateType(schema, listType, schema[listType]))
@@ -254,10 +260,7 @@ func generateType(schema map[string]GraphQLType, key string, value GraphQLType) 
 					fieldType = composeList(listType, fieldValue.List.Required)
 				} else if val, ok := typeMap[fieldValue.Type]; ok {
 					fieldType = val
-
-					if !slices.Contains(imports, fieldType) {
-						imports = append(imports, fieldType)
-					}
+					imports[fieldType] = noop
 				} else {
 					if !hasKey(fieldType) {
 						store(fieldType, generateType(schema, fieldType, schema[fieldType]))
@@ -299,17 +302,13 @@ func generateType(schema map[string]GraphQLType, key string, value GraphQLType) 
 								if !hasKey(listType) {
 									store(listType, generateType(schema, listType, schema[listType]))
 								}
-							} else if !slices.Contains(imports, listType) {
-								imports = append(imports, listType)
+							} else if !hasImport(listType) {
+								imports[listType] = noop
 							}
-
 							argType = composeList(listType, argValue.List.Required)
 						} else if val, ok := typeMap[argValue.Type]; ok {
 							argType = val
-
-							if !slices.Contains(imports, argType) {
-								imports = append(imports, argType)
-							}
+							imports[argType] = noop
 						} else {
 							if !hasKey(argType) {
 								store(argType, generateType(schema, argType, schema[argType]))
