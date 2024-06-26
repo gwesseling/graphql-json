@@ -84,20 +84,20 @@ var hasRequired = false
 
 /**
  * TODO:
- * - Replace Contains with Map
- * - Field and args are basically the same
  * - Cleanup code (split into multiple files)
+ * - Better error handling
  */
 func main() {
 	var args = os.Args[1:]
 
+	// TODO: improve error throwing
 	if len(args) == 0 {
 		fmt.Println("Invalid args. Expecting a path to an input file")
 		os.Exit(1)
 	}
 
 	// Try to open json file
-	jsonFile, err := os.Open(args[0])
+	file, err := os.Open(args[0])
 
 	// Something went wrong while opening the json file
 	if err != nil {
@@ -106,19 +106,20 @@ func main() {
 	}
 
 	// Close json file
-	defer jsonFile.Close()
+	defer file.Close()
 
 	// Read the file content as bytes
-	byteValue, _ := io.ReadAll(jsonFile)
+	bytes, _ := io.ReadAll(file)
 
-	var keys map[string]GraphQLType
+	var schema map[string]GraphQLType
 
 	// Parse json files
-	json.Unmarshal(byteValue, &keys)
+	json.Unmarshal(bytes, &schema)
 
-	for key, value := range keys {
+	// TODO: move to different file
+	for key, value := range schema {
 		if !hasKey(key) {
-			store(key, generateType(keys, key, value))
+			store(key, composeGraphqlType(schema, key, value))
 		}
 	}
 
@@ -130,17 +131,18 @@ func main() {
 		imports["GraphQLList"] = noop
 	}
 
+	// TODO: make this configurable
 	// Create file
-	f, err := os.Create("schema.js")
+	outputFile, err := os.Create("schema.js")
 
 	if err != nil {
 		fmt.Println("Something went wrong while creating the output file")
 	}
 
 	// Close file
-	defer f.Close()
+	defer outputFile.Close()
 
-	buffer := bufio.NewWriter(f)
+	buffer := bufio.NewWriter(outputFile)
 
 	// Define imports
 	buffer.WriteString("import { ")
@@ -158,194 +160,168 @@ func main() {
 	buffer.Flush()
 }
 
-func store(key string, value []string) {
-	order = append(order, key)
-	output[key] = value
-}
+// TODO: Move to own file
+func composeGraphqlType(schema map[string]GraphQLType, key string, value GraphQLType) []string {
+	var result []string
+	var graphqlType = typeMap[value.Type]
 
-func hasKey(key string) bool {
-	_, ok := output[key]
-	return ok
-}
-
-func hasImport(key string) bool {
-	_, ok := imports[key]
-	return ok
-}
-
-func generateType(schema map[string]GraphQLType, key string, value GraphQLType) []string {
-	var graphqlType = value.Type
-	var item []string
-
+	// Default to GraphQLObjectType for query and mutation
 	if key == "query" || key == "mutation" {
-		graphqlType = "GraphQLObjectType"
+		graphqlType = typeMap["object"]
 	}
 
-	if val, ok := typeMap[value.Type]; ok {
-		graphqlType = val
-		imports[graphqlType] = noop
-	}
+	imports[graphqlType] = noop
 
-	item = append(item, "export const "+key+" = new "+graphqlType+"({", `name: "`+key+`",`)
+	result = append(result, "export const "+key+" = new "+graphqlType+"({", `name: "`+key+`",`)
 
 	if value.Description != nil {
-		item = append(item, `description: "`+*value.Description+`",`)
+		result = append(result, `description: "`+*value.Description+`",`)
 	}
 
 	// Enums
-	if graphqlType == "GraphQLEnumType" {
+	if graphqlType == typeMap["enum"] {
+		// TODO: improve error throwing
 		if value.Values == nil {
 			fmt.Println("Enum type should have values")
 			os.Exit(1)
 		}
 
-		item = append(item, "values: {")
+		result = append(result, "values: {")
 
 		for enumKey, enumValue := range *value.Values {
-			item = append(item, enumKey+":"+" {")
+			result = append(result, enumKey+":"+" {")
 
 			if enumValue.Description != nil {
-				item = append(item, `description: "`+*enumValue.Description+`",`)
+				result = append(result, `description: "`+*enumValue.Description+`",`)
 			}
 
-			item = append(item, `value: `+fmt.Sprintf("%#v", enumValue.Value)+``)
-			item = append(item, "},")
+			result = append(result, `value: `+fmt.Sprintf("%#v", enumValue.Value)+``)
+			result = append(result, "},")
 		}
 
-		item = append(item, "},", "});", "")
+		result = append(result, "},", "});")
 	}
 
-	if graphqlType == "GraphQLUnionType" {
-		if value.Types != nil {
-			for _, typeName := range *value.Types {
-				if !hasKey(typeName) {
-					store(typeName, generateType(schema, typeName, schema[typeName]))
-				}
+	if graphqlType == typeMap["union"] {
+		// TODO: improve error throwing
+		if value.Types == nil {
+			fmt.Println("Union type should have types")
+			os.Exit(1)
+		}
+
+		result = append(result, "types: [")
+
+		for _, typeName := range *value.Types {
+			result = append(result, typeName+",")
+
+			if !hasKey(typeName) {
+				store(typeName, composeGraphqlType(schema, typeName, schema[typeName]))
 			}
-
-			item = append(item, "types: ["+strings.Join(*value.Types, ",")+"]", "});", "")
 		}
+
+		result = append(result, "]", "});")
 	}
 
-	if graphqlType == "GraphQLObjectType" || graphqlType == "GraphQLInputObjectType" || graphqlType == "GraphQLInterfaceType" {
+	if graphqlType == typeMap["object"] || graphqlType == typeMap["input"] || graphqlType == typeMap["interface"] {
 		if value.Interfaces != nil {
+			result = append(result, "interfaces: [")
+
 			for _, interfaceName := range *value.Interfaces {
+				result = append(result, interfaceName+",")
+
 				if !hasKey(interfaceName) {
-					store(interfaceName, generateType(schema, interfaceName, schema[interfaceName]))
+					store(interfaceName, composeGraphqlType(schema, interfaceName, schema[interfaceName]))
 				}
 			}
 
-			item = append(item, "interfaces: ["+strings.Join(*value.Interfaces, ",")+"],")
+			result = append(result, "],")
 		}
 
 		if value.Fields != nil {
-			item = append(item, "fields: () => ({")
+			result = append(result, "fields: () => ({")
 
 			for fieldKey, fieldValue := range *value.Fields {
-				var fieldType = fieldValue.Type
+				var fieldType = composeListableType(schema, fieldValue.Type, fieldValue.Required, fieldValue.List)
 
-				if fieldValue.List != nil {
-					var listType = fieldValue.List.Type
-					hasList = true
-
-					if val, ok := typeMap[fieldValue.List.Type]; ok {
-						listType = val
-						imports[listType] = noop
-					} else {
-						if !hasKey(listType) {
-							store(listType, generateType(schema, listType, schema[listType]))
-						}
-					}
-
-					fieldType = composeList(listType, fieldValue.List.Required)
-				} else if val, ok := typeMap[fieldValue.Type]; ok {
-					fieldType = val
-					imports[fieldType] = noop
-				} else {
-					if !hasKey(fieldType) {
-						store(fieldType, generateType(schema, fieldType, schema[fieldType]))
-					}
-				}
-
-				if fieldValue.Required {
-					fieldType = "new GraphQLNonNull(" + fieldType + ")"
-					hasRequired = true
-				}
-
-				item = append(item, fieldKey+": {", "type: "+fieldType+",")
+				result = append(result, fieldKey+": {", "type: "+fieldType+",")
 
 				if fieldValue.Description != nil {
-					item = append(item, `description: "`+*fieldValue.Description+`",`)
+					result = append(result, `description: "`+*fieldValue.Description+`",`)
 				}
 
 				if fieldValue.DeprecationReason != nil {
-					item = append(item, `deprecationReason: "`+*fieldValue.DeprecationReason+`",`)
+					result = append(result, `deprecationReason: "`+*fieldValue.DeprecationReason+`",`)
 				}
 
 				if fieldValue.DefaultValue != nil {
-					item = append(item, `defaultValue: `+fmt.Sprintf("%#v", *fieldValue.DefaultValue)+`,`)
+					result = append(result, `defaultValue: `+fmt.Sprintf("%#v", *fieldValue.DefaultValue)+`,`)
 				}
 
 				if fieldValue.Args != nil {
-					item = append(item, "args: {")
+					result = append(result, "args: {")
 
 					for argKey, argValue := range *fieldValue.Args {
-						var argType = argValue.Type
+						var argType = composeListableType(schema, argValue.Type, argValue.Required, argValue.List)
 
-						if argValue.List != nil {
-							var listType = typeMap[argValue.List.Type]
-							hasList = true
-
-							if len(listType) == 0 {
-								listType = argValue.List.Type
-
-								if !hasKey(listType) {
-									store(listType, generateType(schema, listType, schema[listType]))
-								}
-							} else if !hasImport(listType) {
-								imports[listType] = noop
-							}
-							argType = composeList(listType, argValue.List.Required)
-						} else if val, ok := typeMap[argValue.Type]; ok {
-							argType = val
-							imports[argType] = noop
-						} else {
-							if !hasKey(argType) {
-								store(argType, generateType(schema, argType, schema[argType]))
-							}
-						}
-
-						if argValue.Required {
-							argType = "new GraphQLNonNull(" + argType + ")"
-							hasRequired = true
-						}
-
-						item = append(item, argKey+": {", "type: "+argType+",")
+						result = append(result, argKey+": {", "type: "+argType+",")
 
 						if argValue.Description != nil {
-							item = append(item, `description: "`+*argValue.Description+`",`)
+							result = append(result, `description: "`+*argValue.Description+`",`)
 						}
 
 						if argValue.DeprecationReason != nil {
-							item = append(item, `deprecationReason: "`+*argValue.DeprecationReason+`",`)
+							result = append(result, `deprecationReason: "`+*argValue.DeprecationReason+`",`)
 						}
 
 						if argValue.DefaultValue != nil {
-							item = append(item, `defaultValue: `+fmt.Sprintf("%#v", *argValue.DefaultValue)+`,`)
+							result = append(result, `defaultValue: `+fmt.Sprintf("%#v", *argValue.DefaultValue)+`,`)
 						}
 
-						item = append(item, "},")
+						result = append(result, "},")
 					}
-					item = append(item, "},")
+					result = append(result, "},")
 				}
-				item = append(item, "},")
+				result = append(result, "},")
 			}
-			item = append(item, "}),")
+			result = append(result, "}),")
 		}
-		item = append(item, "});")
+		result = append(result, "});")
 	}
 
-	return item
+	return result
+}
+
+func composeType(schema map[string]GraphQLType, key string) string {
+	resolvedType, isGraphqlType := typeMap[key]
+
+	if isGraphqlType {
+		imports[resolvedType] = noop
+		return resolvedType
+	}
+
+	if !hasKey(key) {
+		store(key, composeGraphqlType(schema, key, schema[key]))
+	}
+
+	return key
+}
+
+func composeListableType(schema map[string]GraphQLType, subtype string, isRequired bool, list *List) string {
+	if list != nil {
+		hasList = true
+
+		var listType = composeType(schema, list.Type)
+		return composeList(listType, list.Required)
+	}
+
+	var graphqlType = composeType(schema, subtype)
+
+	if isRequired {
+		hasRequired = true
+		graphqlType = "new GraphQLNonNull(" + graphqlType + ")"
+	}
+
+	return graphqlType
 }
 
 func composeList(graphqlType string, required bool) string {
@@ -356,4 +332,14 @@ func composeList(graphqlType string, required bool) string {
 	}
 
 	return "new GraphQLList(" + output + ")"
+}
+
+func store(key string, value []string) {
+	order = append(order, key)
+	output[key] = value
+}
+
+func hasKey(key string) bool {
+	_, ok := output[key]
+	return ok
 }
