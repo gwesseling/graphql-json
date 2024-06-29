@@ -31,15 +31,15 @@
         "tsup": "8.0.2"
     },
     "optionalDependencies": {
-        "@graphql-json/linux-arm": "0.0.1",
-        "@graphql-json/linux-386": "0.0.1",
-        "@graphql-json/linux-arm64": "0.0.1",
-        "@graphql-json/linux-x64": "0.0.1",
-        "@graphql-json/win32-arm64": "0.0.1",
-        "@graphql-json/win32-386": "0.0.1",
-        "@graphql-json/win32-x64": "0.0.1",
-        "@graphql-json/darwin-arm64": "0.0.1",
-        "@graphql-json/darwin-x64": "0.0.1"
+        "@graphql-json/linux-arm": "0.0.2",
+        "@graphql-json/linux-386": "0.0.2",
+        "@graphql-json/linux-arm64": "0.0.2",
+        "@graphql-json/linux-x64": "0.0.2",
+        "@graphql-json/win32-arm64": "0.0.2",
+        "@graphql-json/win32-386": "0.0.2",
+        "@graphql-json/win32-x64": "0.0.2",
+        "@graphql-json/darwin-arm64": "0.0.2",
+        "@graphql-json/darwin-x64": "0.0.2"
     },
     "files": [
         "bin",
