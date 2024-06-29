@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"os"
+	"log"
 )
 
 var typeMap = map[string]string{
@@ -52,6 +52,7 @@ func composeSchema(schema map[string]GraphQLType) ([]string, map[string]struct{}
 
 func composeGraphqlType(schema map[string]GraphQLType, key string, value GraphQLType) []string {
 	var result []string
+
 	var graphqlType = typeMap[value.Type]
 
 	// Default to GraphQLObjectType for query and mutation
@@ -69,10 +70,8 @@ func composeGraphqlType(schema map[string]GraphQLType, key string, value GraphQL
 
 	// Enums
 	if graphqlType == typeMap["enum"] {
-		// TODO: improve error throwing
 		if value.Values == nil {
-			fmt.Println("Enum type should have values")
-			os.Exit(1)
+			log.Fatal("Enum type should have values")
 		}
 
 		result = append(result, "values: {")
@@ -92,10 +91,8 @@ func composeGraphqlType(schema map[string]GraphQLType, key string, value GraphQL
 	}
 
 	if graphqlType == typeMap["union"] {
-		// TODO: improve error throwing
 		if value.Types == nil {
-			fmt.Println("Union type should have types")
-			os.Exit(1)
+			log.Fatal("Union type should have types")
 		}
 
 		result = append(result, "types: [")

@@ -28,7 +28,6 @@ import type {
 } from "./input";
 import type {Maybe} from "./utils";
 
-// TODO: we might be able to add Directive to this too
 export type InputSchemaType =
     | GraphqlObjectConfig<unknown, unknown>
     | GraphqlEnumConfig

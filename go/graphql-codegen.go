@@ -3,23 +3,20 @@ package main
 import (
 	"bufio"
 	"encoding/json"
-	"fmt"
 	"io"
+	"log"
 	"os"
 	"strings"
 )
 
-/**
- * TODO:
- * - Better error handling
- */
 func main() {
+	log.SetPrefix("[GraphQL-Codegen]: ")
+	log.SetFlags(0)
+
 	var args = os.Args[1:]
 
-	// TODO: improve error throwing
 	if len(args) == 0 {
-		fmt.Println("Invalid args. Expecting a path to an input file")
-		os.Exit(1)
+		log.Fatal("Invalid input file, expected first argument to be a path to the input file")
 	}
 
 	// Try to open json file
@@ -27,8 +24,7 @@ func main() {
 
 	// Something went wrong while opening the json file
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
 
 	// Close json file
@@ -49,7 +45,7 @@ func main() {
 	outputFile, err := os.Create("schema.js")
 
 	if err != nil {
-		fmt.Println("Something went wrong while creating the output file")
+		log.Fatal(err)
 	}
 
 	// Close file
