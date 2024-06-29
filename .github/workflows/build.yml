@@ -87,7 +87,7 @@ jobs:
               run: git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
             - name: Commit changes
-              run: git commit -m "Version Go Binaries"
+              run: git commit -am "Version Binaries"
 
             - name: Push changes
               run: git push
