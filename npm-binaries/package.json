@@ -1,6 +1,6 @@
 {
     "name": "@graphql-json/$OS-$ARCH",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "The $OS $ARCH binary for graphql-json codegen.",
     "keywords": [
         "codegen",
