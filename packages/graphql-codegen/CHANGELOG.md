@@ -1,5 +1,11 @@
 # @gwesseling/graphql-codegen
 
+## 0.0.5
+
+### Patch Changes
+
+-   [#34](https://github.com/gwesseling/graphql-json/pull/34) [`6e0cdbf`](https://github.com/gwesseling/graphql-json/commit/6e0cdbfc96db46e44a34f8a2291e5cc005591c6f) Thanks [@gwesseling](https://github.com/gwesseling)! - update @graphql-codegen to version 0.0.2
+
 ## 0.0.4
 
 ### Patch Changes
