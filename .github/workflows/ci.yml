@@ -2,7 +2,7 @@ name: CI
 on:
     push:
         paths-ignore:
-            - go/**
+            - cmd/**
 jobs:
     lint:
         name: Linting
