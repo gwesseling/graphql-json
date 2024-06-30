@@ -1,7 +1,7 @@
 build
 node_modules
 tsup.config.ts
-go
+cmd
 examples
 scripts
 install.js

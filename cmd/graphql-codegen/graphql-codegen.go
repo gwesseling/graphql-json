@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"encoding/json"
+	"flag"
 	"io"
 	"log"
 	"os"
@@ -13,14 +14,12 @@ func main() {
 	log.SetPrefix("[GraphQL-Codegen]: ")
 	log.SetFlags(0)
 
-	var args = os.Args[1:]
-
-	if len(args) == 0 {
-		log.Fatal("Invalid input file, expected first argument to be a path to the input file")
-	}
+	var inputFilePath = flag.String("inputFile", "schema.json", "Path to the input json file")
+	var outputFilePath = flag.String("outputFile", "schema.js", "Path for the out schema file")
+	flag.Parse()
 
 	// Try to open json file
-	file, err := os.Open(args[0])
+	file, err := os.Open(*inputFilePath)
 
 	// Something went wrong while opening the json file
 	if err != nil {
@@ -40,9 +39,8 @@ func main() {
 
 	var order, imports, output = composeSchema(schema)
 
-	// TODO: make this configurable
 	// Create file
-	outputFile, err := os.Create("schema.js")
+	outputFile, err := os.Create(*outputFilePath)
 
 	if err != nil {
 		log.Fatal(err)
