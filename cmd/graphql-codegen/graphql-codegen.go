@@ -14,8 +14,8 @@ func main() {
 	log.SetPrefix("[GraphQL-Codegen]: ")
 	log.SetFlags(0)
 
-	var inputFilePath = flag.String("inputFile", "schema.json", "Path to the input json file")
-	var outputFilePath = flag.String("outputFile", "schema.js", "Path for the out schema file")
+	var inputFilePath = flag.String("inputFile", "schema.json", "Input json file path")
+	var outputFilePath = flag.String("outputFile", "schema.js", "Output schema file path")
 	flag.Parse()
 
 	// Try to open json file
