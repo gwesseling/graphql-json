@@ -11,7 +11,7 @@
         "graphql": "16.8.2"
     },
     "devDependencies": {
-        "@gwesseling/graphql-codegen": "0.0.5",
+        "@gwesseling/graphql-codegen": "0.0.6",
         "@types/node": "20.14.2",
         "tsx": "4.15.5",
         "typescript": "5.4.5"

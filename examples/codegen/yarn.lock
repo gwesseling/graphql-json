@@ -263,50 +263,50 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.21.5.tgz#acad351d582d157bb145535db2a6ff53dd514b5c"
   integrity sha512-tQd/1efJuzPC6rCFwEvLtci/xNFcTZknmXs98FYDfGE4wP9ClFV98nyKrzJKVPMhdDnjzLhdUyMX4PsQAPjwIw==
 
-"@graphql-json/darwin-arm64@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@graphql-json/darwin-arm64/-/darwin-arm64-0.0.2.tgz#5b934a78c1e0a50f9527f7d65e45218d7729e5b1"
-  integrity sha512-wmywwOj2hBD+LxrvFMiGNfqGuWJ8TKLStZGwSfb3AKJy2g+q6Y45hraI9VWoNEVRATaW0RNEO+Dl/rvKl/8peA==
+"@graphql-json/darwin-arm64@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@graphql-json/darwin-arm64/-/darwin-arm64-0.0.3.tgz#e68a0144dfdf635b07a53948260f33f7fe8852e1"
+  integrity sha512-+52GGExkkm0QObaPjO6beDRyvVTTvfSt0l94w3nbxfMXXBeJ58UmU8Q5roDAyEdq2ar+2wA3Cjln5Dag4mFjpw==
 
-"@graphql-json/darwin-x64@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@graphql-json/darwin-x64/-/darwin-x64-0.0.2.tgz#44d398a11de0e3e17379934d696d721915417af8"
-  integrity sha512-seaOmxbIQ2y7tiM7FYTyjan9kSz+OWi2HezOmeUd3HadedYlHXEmMNin+l5FbeQ2sCdae+OTjW1JCk0LAQEjhQ==
+"@graphql-json/darwin-x64@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@graphql-json/darwin-x64/-/darwin-x64-0.0.3.tgz#d025616319d7c533415596d993299349ab08f621"
+  integrity sha512-YFsayL7LDtA0MhVZ+swQHTRvS6Olwrg96WKlAF3s96DapqJm19Vr5LNyACpRh5fkC/8d0crql0wVzSOkRudJDQ==
 
-"@graphql-json/linux-386@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@graphql-json/linux-386/-/linux-386-0.0.2.tgz#d40f4cc93cc0a09de5870e3399bccc8433733cc1"
-  integrity sha512-VxRtksVEepaue8NWBVYQAfv0il6GdP40rUEFccNwA7ARLnZ0h60/pycUsDr/iT3qb8PqIOIuTYG9ac4+COLvqA==
+"@graphql-json/linux-386@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@graphql-json/linux-386/-/linux-386-0.0.3.tgz#95482d816ca001903af9027617baeaf53cd4fa82"
+  integrity sha512-yGP7QHx8E2VN3pr0IRoz8ck+SKD4LYeyP26tEO1Zzl/Y7Ix03JfdbSffXpT3OqFs0Ca3PR71BZKFRi2shSjK/Q==
 
-"@graphql-json/linux-arm64@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@graphql-json/linux-arm64/-/linux-arm64-0.0.2.tgz#3c736f7fe47f2210151c01213750e9d0f7abc3c4"
-  integrity sha512-S4Wo1/mK1egggG4WoXq4p2lZQj5vC3izhKET7zB2RnEXMike+zaIsNaCy/JQ+riEnRgqVpq1GaX7JqrbA8VhUA==
+"@graphql-json/linux-arm64@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@graphql-json/linux-arm64/-/linux-arm64-0.0.3.tgz#d47d94bb86765dd729c1dfbfc9f2f249386ec415"
+  integrity sha512-Pi0x+2PwhT5J7CJMpmiBd1kGB8AMUhAgHTV5wxjlHfxf9Oe5aKN5xHufadcHY4zalnmWuece8nZNob4YqxuXxQ==
 
-"@graphql-json/linux-arm@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@graphql-json/linux-arm/-/linux-arm-0.0.2.tgz#ee6d3e96e3c9cc1ad967b3f871a27ecb7bf6f508"
-  integrity sha512-AQnfTbMVnA8ZRI273EnJ3UM3WOU4U5xwwLIuJRzITBLJT2eL+SEhCdU7IN3s85uNi5F5za5iSimX0FnYi2ubMQ==
+"@graphql-json/linux-arm@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@graphql-json/linux-arm/-/linux-arm-0.0.3.tgz#2ca8659e7bda11d18bf6d9aef6fdcec72a4a03be"
+  integrity sha512-wCEq7GKgsZbaKD5KmP/LD0nFV7MoJMwXBEqRD7+5RBqTeAB7Z0MOGjq9YTudHEJC2CUCyuMFR0z1rEeK5lkhFg==
 
-"@graphql-json/linux-x64@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@graphql-json/linux-x64/-/linux-x64-0.0.2.tgz#9b3d57c3536ff747924bbef08605e0fefa753595"
-  integrity sha512-WStLFRn3a4Se4FILyiVnfiVPIRSDBUrY/O5dUcxF9Uw0XctmTvCS0IBiJ6/r95risnaC0Mve3x2j29PPQqW+1g==
+"@graphql-json/linux-x64@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@graphql-json/linux-x64/-/linux-x64-0.0.3.tgz#b8517824e2534933835e36fa4118692f9efc69c3"
+  integrity sha512-WvGuoTNK5467KOKuE4kHKtUGAKFy7BJ87TiQss8SFTwM0RrcwFkF8eszuRXqAFVYUsiGyEjQOsTYXiaKBgN+6Q==
 
-"@graphql-json/win32-386@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@graphql-json/win32-386/-/win32-386-0.0.2.tgz#055a0b02ca608295b0f80db1e696cdbba8d83554"
-  integrity sha512-gUUvbJdUaGXy0pGDQVBCWYe4dZ0mtzKyjP7D7AiROruR84KQurwHnNIg23HcuUwr9o/cJkkcJJfdc5K98A62zg==
+"@graphql-json/win32-386@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@graphql-json/win32-386/-/win32-386-0.0.3.tgz#bb2b372449b9853162b01b9931c9871836e737a6"
+  integrity sha512-7Uigs79M5HM1pQFjqPxjT+B2XvpM/forFXFlf/LA4qrzdgc4wLSSPo+Pm9ZP7IUzUZl6JnAnbktGE+x1N6tIzA==
 
-"@graphql-json/win32-arm64@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@graphql-json/win32-arm64/-/win32-arm64-0.0.2.tgz#e256fc94845153813894f9f962d06c4c34a83dab"
-  integrity sha512-CniBLK3OKmnOe7wNNJ6KDH/bbruugewKEDyZ7GhWnfTE96L78Dd5EZXjkGFR3JQAe2KK1b1r9WxJFMwMSioOqQ==
+"@graphql-json/win32-arm64@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@graphql-json/win32-arm64/-/win32-arm64-0.0.3.tgz#e45a556ec64d8a4cedf242b152b5ac9dacefadf3"
+  integrity sha512-SpBrdNBqRw+7gv1j3k3iL3/Cbex/RlAI+lLrvZ4HORUBTjS5M4Y3mlIVmWyOfvTR1mUFzZLIVksEOxuMdXPH7Q==
 
-"@graphql-json/win32-x64@0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@graphql-json/win32-x64/-/win32-x64-0.0.2.tgz#968a4e4d71070d8b44ec4450bcea9deed20f4601"
-  integrity sha512-zeD+hJde/vddQ+wiblT32JX0fewnRXKyeLNdh8SLchmaNqKV00P+ga4ue4+XQBS8rhKJhBeEllhtsl50FGJJEw==
+"@graphql-json/win32-x64@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@graphql-json/win32-x64/-/win32-x64-0.0.3.tgz#8c57495445f69148b88df1ef26689bbfc737f587"
+  integrity sha512-UkBW+V6XOLIh7ElIEflVEzU1Fv3VpUdKIs2e6k5VhxV1VFF+2CcNh3XUhJ7ab2hERcr23MJpVZfy12vol7ecxA==
 
 "@graphql-tools/merge@^8.4.1":
   version "8.4.2"
@@ -339,20 +339,20 @@
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.2.0.tgz#5f3d96ec6b2354ad6d8a28bf216a1d97b5426861"
   integrity sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==
 
-"@gwesseling/graphql-codegen@0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@gwesseling/graphql-codegen/-/graphql-codegen-0.0.5.tgz#6bf633d96002d4021818ac9c3f01a2ea176e5874"
-  integrity sha512-NLWk33U/bvCusnlhECh51tsd/VCAHp1Zu3zGBJ5QAOSl6zX+NjzBoyeWogGR+bUBe/PpZLemwifTH8wr5WrxYQ==
+"@gwesseling/graphql-codegen@0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@gwesseling/graphql-codegen/-/graphql-codegen-0.0.6.tgz#7e2f5ef47e611474b98cfd40c99cf9e825a4e143"
+  integrity sha512-S4G1uWBUf+cDeaUNOtIl2bRe4nlGRf/wyRZ4o9EZM2MyHmF8Gb7Phw67aZ1ukd/sUu+1pV1LdjSOLyFcUZ8AOw==
   optionalDependencies:
-    "@graphql-json/darwin-arm64" "0.0.2"
-    "@graphql-json/darwin-x64" "0.0.2"
-    "@graphql-json/linux-386" "0.0.2"
-    "@graphql-json/linux-arm" "0.0.2"
-    "@graphql-json/linux-arm64" "0.0.2"
-    "@graphql-json/linux-x64" "0.0.2"
-    "@graphql-json/win32-386" "0.0.2"
-    "@graphql-json/win32-arm64" "0.0.2"
-    "@graphql-json/win32-x64" "0.0.2"
+    "@graphql-json/darwin-arm64" "0.0.3"
+    "@graphql-json/darwin-x64" "0.0.3"
+    "@graphql-json/linux-386" "0.0.3"
+    "@graphql-json/linux-arm" "0.0.3"
+    "@graphql-json/linux-arm64" "0.0.3"
+    "@graphql-json/linux-x64" "0.0.3"
+    "@graphql-json/win32-386" "0.0.3"
+    "@graphql-json/win32-arm64" "0.0.3"
+    "@graphql-json/win32-x64" "0.0.3"
 
 "@josephg/resolvable@^1.0.0":
   version "1.0.1"
