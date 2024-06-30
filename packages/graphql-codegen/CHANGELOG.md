@@ -1,5 +1,11 @@
 # @gwesseling/graphql-codegen
 
+## 0.0.6
+
+### Patch Changes
+
+-   [#37](https://github.com/gwesseling/graphql-json/pull/37) [`e2ff2c0`](https://github.com/gwesseling/graphql-json/commit/e2ff2c02842183f02ed0615305effdb03ad09016) Thanks [@gwesseling](https://github.com/gwesseling)! - Added input and output file options
+
 ## 0.0.5
 
 ### Patch Changes
