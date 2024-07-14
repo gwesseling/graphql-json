@@ -1,19 +1,19 @@
 # GraphQL JSON
 
-[intro]
+GraphQL JSON is a powerful tool that helps you create GraphQL schemas based on JSON.
 
 ## Packages
 
-This repository contains the following packages below.
+This repository contains the following packages.
 
-| Package                                                                                  | Description                                                                                                                |
-| ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| [@gwesseling/graphql-json](https://www.npmjs.com/package/@gwesseling/graphql-json)       | GraphQL JSON is a powerful tool that helps you create GraphQL schemas in runtime using JSON.                               |
-| [@gwesseling/graphql-codegen](https://www.npmjs.com/package/@gwesseling/graphql-codegen) | GraphQL JSON is a powerful tool that helps you create GraphQL schemas by generating GraphQl schemas based on a JSON input. |
+| Package                                                                                  | Description                                                     |
+| ---------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| [@gwesseling/graphql-json](https://www.npmjs.com/package/@gwesseling/graphql-json)       | A runtime solutation to create GraphQl schemas based on JSON.   |
+| [@gwesseling/graphql-codegen](https://www.npmjs.com/package/@gwesseling/graphql-codegen) | A solutation that generates GraphQL schema files based on JSON. |
 
 ## Binary packages
 
-This repository contains the following binary packages below.
+This repository contains the following binary packages.
 
 | Package                                                                                | Description                                        |
 | -------------------------------------------------------------------------------------- | -------------------------------------------------- |
