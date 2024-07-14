@@ -6,10 +6,10 @@ GraphQL JSON is a powerful tool that helps you create GraphQL schemas based on J
 
 This repository contains the following packages.
 
-| Package                                                                                  | Description                                                     |
-| ---------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| [@gwesseling/graphql-json](https://www.npmjs.com/package/@gwesseling/graphql-json)       | A runtime solutation to create GraphQl schemas based on JSON.   |
-| [@gwesseling/graphql-codegen](https://www.npmjs.com/package/@gwesseling/graphql-codegen) | A solutation that generates GraphQL schema files based on JSON. |
+| Package                                                                                  | Description                                                   |
+| ---------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| [@gwesseling/graphql-json](https://www.npmjs.com/package/@gwesseling/graphql-json)       | A runtime solution to create GraphQl schemas based on JSON.   |
+| [@gwesseling/graphql-codegen](https://www.npmjs.com/package/@gwesseling/graphql-codegen) | A solution that generates GraphQL schema files based on JSON. |
 
 ## Binary packages
 
