@@ -24,9 +24,6 @@ jobs:
             - name: Install Dependencies
               run: yarn --frozen-lockfile
 
-            - name: Copy readme to package
-              run: cp readme.md packages/graphql-json
-
             - name: Build packages
               run: yarn build
 

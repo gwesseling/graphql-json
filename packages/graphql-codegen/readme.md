@@ -1,8 +1,10 @@
 # GraphQL Codegen
 
+GraphQL Codegen is a powerful tool that helps you create GraphQL schemas using JSON. With an input schema based on the GraphQL type API, it should feel familiar to most users.
+
 ## Installation
 
-You can install `graphql-codegen` by running one of the commands below.
+You can install `graphql-codegen` by running one of the commands below:
 
 ```bash
 # npm
@@ -17,12 +19,27 @@ pnpm install @gwesseling/graphql-codegen
 
 ## Usage
 
-The usage of this packag is very straightforward.
+The usage of this package is straightforward.
 
 ```javascript
 import {codegen} from "@gwesseling/graphql-codegen";
 
+// Using the default config
 codegen()
+    .then((result) => console.log(result))
+    .catch((err) => console.log(err));
+```
+
+or
+
+```javascript
+import {codegen} from "@gwesseling/graphql-codegen";
+
+// Using a custom config
+codegen({
+    inputFile: "input.json",
+    outputFile: "schema.ts",
+})
     .then((result) => console.log(result))
     .catch((err) => console.log(err));
 ```
@@ -31,9 +48,9 @@ For a complete input examples, please refer to the [examples](https://github.com
 
 ## Options
 
-GraphQL-Codegen accepts the following options.
+GraphQL-Codegen accepts the following options:
 
-| Option     | Description                                                                                                         | Type     | Default     |
-| ---------- | ------------------------------------------------------------------------------------------------------------------- | -------- | ----------- |
-| inputFile  | [graphql-json](https://github.com/gwesseling/graphql-json/tree/main/packages/graphql-json#schema) input schema file | `string` | schema.json |
-| outputFile | Output file for the schema                                                                                          | `string` | schema.js   |
+| Option     | Description                                                                                                                  | Type     | Default     |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------- | -------- | ----------- |
+| inputFile  | Path to a file containing a [JSON schema](https://github.com/gwesseling/graphql-json/tree/main/packages/graphql-json#schema) | `string` | schema.json |
+| outputFile | Output file for the schema                                                                                                   | `string` | schema.js   |
