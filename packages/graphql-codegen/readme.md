@@ -2,6 +2,8 @@
 
 GraphQL Codegen is a powerful tool that helps you create GraphQL schemas using JSON. With an input schema based on the GraphQL type API, it should feel familiar to most users.
 
+![image](https://github.com/user-attachments/assets/cac88db4-f5ff-40e8-9e9e-e6507ba95b73)
+
 ## Installation
 
 You can install `graphql-codegen` by running one of the commands below:
