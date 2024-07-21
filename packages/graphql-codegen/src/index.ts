@@ -9,7 +9,7 @@ type Config = {
 /**
  * Generate Graphql schema
  */
-function codegen(config: Config) {
+function codegen(config: Config = {}) {
     const args: Array<string> = [];
 
     if (config.inputFile) {
