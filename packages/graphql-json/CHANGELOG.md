@@ -1,5 +1,11 @@
 # @gwesseling/graphql-json
 
+## 0.0.8
+
+### Patch Changes
+
+-   [#40](https://github.com/gwesseling/graphql-json/pull/40) [`715bda4`](https://github.com/gwesseling/graphql-json/commit/715bda4c64568ef227f8adff3dc80865e436a39b) Thanks [@gwesseling](https://github.com/gwesseling)! - update docs
+
 ## 0.0.7
 
 ### Patch Changes
